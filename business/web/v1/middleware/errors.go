@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/adamwoolhether/htmxbook/business/web/response"
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
-	"github.com/adamwoolhether/htmxbook/foundation/validate"
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/business/web/v1/response"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/validate"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 // Errors handles errors coming out of the call chain. It detects normal

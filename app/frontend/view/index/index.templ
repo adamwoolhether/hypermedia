@@ -1,7 +1,7 @@
 package index
 
 import (
-    "github.com/adamwoolhether/htmxbook/business/contacts"
+    "github.com/adamwoolhether/hypermedia/business/contacts"
     "fmt"
 )
 
@@ -23,7 +23,11 @@ templ renderContacts(contacts []contacts.Contact) {
     <table>
         <thead>
         <tr>
-            <th>First</th> <th>Last</th> <th>Phone</th> <th>Email</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>

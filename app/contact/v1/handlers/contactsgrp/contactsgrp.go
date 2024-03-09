@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/adamwoolhether/htmxbook/app/frontend/view/index"
-	"github.com/adamwoolhether/htmxbook/business/contacts"
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/app/frontend/view/index"
+	"github.com/adamwoolhether/hypermedia/business/contacts"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 // Handlers manages the set of check points.

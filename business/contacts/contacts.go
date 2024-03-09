@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-json-experiment/json"
 
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
 )
 
 const fileDB = "business/contacts/contacts.json"

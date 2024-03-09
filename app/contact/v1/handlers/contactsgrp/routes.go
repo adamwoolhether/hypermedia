@@ -3,9 +3,9 @@ package contactsgrp
 import (
 	"net/http"
 
-	"github.com/adamwoolhether/htmxbook/business/contacts"
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/business/contacts"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 // Routes adds specific routes for this group.

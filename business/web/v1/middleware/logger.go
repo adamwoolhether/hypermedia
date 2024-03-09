@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 // Logger writes some information about the request to the logs.

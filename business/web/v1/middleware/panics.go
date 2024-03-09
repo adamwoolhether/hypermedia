@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 // Panics recovers from panics and converts the panic to an error,

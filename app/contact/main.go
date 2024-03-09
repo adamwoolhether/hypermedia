@@ -8,10 +8,11 @@ import (
 	"os/signal"
 	"time"
 
-	v1 "github.com/adamwoolhether/htmxbook/app/contact/v1"
-	"github.com/adamwoolhether/htmxbook/business/web/middlware"
-	"github.com/adamwoolhether/htmxbook/foundation/logger"
-	"github.com/adamwoolhether/htmxbook/foundation/web"
+	"github.com/adamwoolhether/hypermedia/app/contact/v1/handlers"
+	"github.com/adamwoolhether/hypermedia/app/frontend"
+	v1 "github.com/adamwoolhether/hypermedia/business/web/v1"
+	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
 func main() {
@@ -35,11 +36,12 @@ func run(ctx context.Context, log *logger.Logger) error {
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, os.Interrupt, os.Kill)
 
-	app := web.NewApp(shutdown,
-		mid.Logger(log),
-		mid.Errors(log),
-		mid.Panics())
-	v1.RegisterRoutes(build, log, app)
+	app := v1.APIMux(
+		v1.APIMuxConfig{
+			Build:    build,
+			Shutdown: shutdown,
+			Log:      log,
+		}, handlers.Routes(), v1.WithStaticFS(frontend.Static()))
 
 	api := http.Server{
 		Addr:    "localhost:42069",
