@@ -1,0 +1,44 @@
+package index
+
+import (
+    "github.com/adamwoolhether/htmxbook/business/contacts"
+    "fmt"
+)
+
+templ Index(query string, contacts []contacts.Contact) {
+    @Layout() {
+        <form action="/contacts" method="get" class="tool-bar">
+            <label for="search">Search Term</label>
+            <input id="search" type="search" name="q" value={ query }/>
+            <input type="submit" value="Search"/>
+        </form>
+            @renderContacts(contacts)
+        <p>
+            <a href="/contacts/new">Add Contact</a>
+        </p>
+    }
+}
+
+templ renderContacts(contacts []contacts.Contact) {
+    <table>
+        <thead>
+        <tr>
+            <th>First</th> <th>Last</th> <th>Phone</th> <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+            for _, contact := range contacts {
+                <tr>
+                <td>{ contact.First }</td>
+                <td>{ contact.Last }</td>
+                <td>{ contact.Phone }</td>
+                <td>{ contact.Email }</td>
+                <td>
+                    <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) }>Edit</a>
+                    <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/view", contact.ID)) }>View</a>
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
