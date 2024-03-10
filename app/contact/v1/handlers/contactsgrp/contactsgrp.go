@@ -2,8 +2,8 @@ package contactsgrp
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	fe "github.com/adamwoolhether/hypermedia/app/frontend/view/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
@@ -43,15 +43,14 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		//FieldErrs: ,
 	}
 
-	fmt.Println("VALDATE")
 	if err := validate.Check(newContact); err != nil {
 		fieldErrs := validate.GetFieldErrors(err)
 
-		newContact.FieldErrs = fe.NewContactErrors{
-			First: fieldErrs.Fields()["first_name"],
-			Last:  fieldErrs.Fields()["last_name"],
-			Phone: fieldErrs.Fields()["phone"],
-			Email: fieldErrs.Fields()["email"],
+		newContact.FieldErrs = fe.ContactErrors{
+			FirstName: fieldErrs.Fields()["first_name"],
+			LastName:  fieldErrs.Fields()["last_name"],
+			Phone:     fieldErrs.Fields()["phone"],
+			Email:     fieldErrs.Fields()["email"],
 		}
 
 		return fe.NewForm(newContact).Render(ctx, w)
@@ -63,11 +62,11 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return fe.NewForm(newContact).Render(ctx, w)
 	}
 
-	if err := h.sessions.AddFlash(w, r, "New contact added successfully"); err != nil {
+	if err := h.sessions.AddFlash(w, r, "Created contact!"); err != nil {
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
 
-	web.Redirect(w, r, "/contacts")
+	web.Redirect(w, r, "/v1/contacts")
 
 	return nil
 }
@@ -80,19 +79,120 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		return err
 	}
 
-	return fe.Index(query, contacts).Render(h.sessions.GetFlashCtx(w, r), w)
+	flashCtx := h.sessions.GetFlashCtx(w, r)
+	return fe.Index(query, contacts).Render(flashCtx, w)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		// better err handling
+		return err
+	}
 
-	h.log.Error(ctx, "UNIMPLEMENTED", "id", userID)
-	return nil
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return fe.ShowByID(contact).Render(ctx, w)
+}
+
+func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		// better err handling
+		return err
+	}
+
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	// embed the db contact into this to access the fields.
+	c := fe.UpdateContact{
+		ID:        contact.ID,
+		FirstName: contact.FirstName,
+		LastName:  contact.LastName,
+		Phone:     contact.Phone,
+		Email:     contact.Email,
+		//FieldErrs:      fe.ContactErrors{},
+		//InternalErrors: "",
+	}
+
+	return fe.EditByID(c).Render(ctx, w)
 }
 
 func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
 
-	h.log.Error(ctx, "UNIMPLEMENTED", "id", userID)
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	uc := fe.UpdateContact{
+		ID:        contact.ID,
+		FirstName: r.FormValue("first_name"),
+		LastName:  r.FormValue("last_name"),
+		Phone:     r.FormValue("phone"),
+		Email:     r.FormValue("email"),
+		//FieldErrs:      fe.ContactErrors{},
+		//InternalErrors: "",
+	}
+
+	if err := validate.Check(uc); err != nil {
+		fieldErrs := validate.GetFieldErrors(err)
+
+		uc.FieldErrs = fe.ContactErrors{
+			FirstName: fieldErrs.Fields()["first_name"],
+			LastName:  fieldErrs.Fields()["last_name"],
+			Phone:     fieldErrs.Fields()["phone"],
+			Email:     fieldErrs.Fields()["email"],
+		}
+
+		return fe.EditByID(uc).Render(ctx, w)
+	}
+
+	err = h.core.Update(ctx, uc.ToDB())
+	if err != nil {
+		// Or do failure flash here?
+		uc.InternalErrors = err.Error()
+		return fe.EditByID(uc).Render(ctx, w)
+	}
+
+	if err := h.sessions.AddFlash(w, r, "Updated contact!"); err != nil {
+		h.log.Error(ctx, "adding flash", "err", err)
+	}
+
+	web.Redirect(w, r, "/v1/contacts"+userID)
+
+	return nil
+}
+
+func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	err = h.core.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if err := h.sessions.AddFlash(w, r, "Deleted contact!"); err != nil {
+		h.log.Error(ctx, "adding flash", "err", err)
+	}
+
+	web.Redirect(w, r, "/v1/contacts")
 	return nil
 }

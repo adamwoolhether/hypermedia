@@ -1,0 +1,19 @@
+package contacts
+
+import (
+    "github.com/adamwoolhether/hypermedia/business/contacts"
+    "fmt"
+)
+
+templ ShowByID(contact contacts.Contact) {
+    <h1>{ contact.FirstName } { contact.LastName }</h1>
+    <div>
+        <div>Phone: { contact.Phone } </div>
+        <div>Email: { contact.Email } </div>
+    </div>
+
+    <p>
+        <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) }>Edit</a>
+        <a href="/v1/contacts">Back</a>
+    </p>
+}
