@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/go-json-experiment/json"
 
@@ -16,6 +17,7 @@ const fileDB = "business/contacts/contacts.json"
 type Core struct {
 	log *logger.Logger
 	db  []Contact
+	mu  sync.RWMutex
 }
 
 // NewCore constructs a core for the user api access.
@@ -40,6 +42,8 @@ func NewCore(log *logger.Logger) *Core {
 
 func (c *Core) Query(ctx context.Context, query string) ([]Contact, error) {
 	if query == "" {
+		c.mu.RLock()
+		defer c.mu.RUnlock()
 		return c.db, nil
 	}
 
@@ -47,6 +51,8 @@ func (c *Core) Query(ctx context.Context, query string) ([]Contact, error) {
 
 	var results []Contact
 
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 	for i := range c.db {
 		if strings.Contains(c.db[i].First, query) || strings.Contains(c.db[i].Last, query) || strings.Contains(c.db[i].Email, query) || strings.Contains(c.db[i].Phone, query) {
 			results = append(results, c.db[i])
@@ -54,4 +60,18 @@ func (c *Core) Query(ctx context.Context, query string) ([]Contact, error) {
 	}
 
 	return results, nil
+}
+
+func (c *Core) Create(ctx context.Context, newContact Contact) error {
+	c.log.Info(ctx, "creating", "newContact", newContact)
+
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	latestID := c.db[len(c.db)-1].ID
+
+	newContact.ID = latestID + 1
+
+	c.db = append(c.db, newContact)
+
+	return nil
 }

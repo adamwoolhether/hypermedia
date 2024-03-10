@@ -1,4 +1,4 @@
-package index
+package contacts
 
 import (
     "github.com/adamwoolhether/hypermedia/business/contacts"
@@ -15,7 +15,7 @@ templ Index(query string, contacts []contacts.Contact) {
         </form>
             @renderContacts(contacts)
         <p>
-            <a href="/contacts/new">Add Contact</a>
+            <a href="/v1/contacts/new">Add Contact</a>
         </p>
     }
 }

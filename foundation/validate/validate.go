@@ -63,7 +63,7 @@ func Check(val any) error {
 		for _, verror := range verrors {
 			field := FieldError{
 				Field: verror.Field(),
-				Err:   verror.Translate(translator),
+				Err:   customErrForTag(verror.Tag(), verror),
 			}
 			fields = append(fields, field)
 		}
@@ -71,4 +71,13 @@ func Check(val any) error {
 	}
 
 	return nil
+}
+
+func customErrForTag(tag string, verror validator.FieldError) string {
+	switch tag {
+	case "required":
+		return "This field is required."
+	default:
+		return verror.Translate(translator)
+	}
 }
