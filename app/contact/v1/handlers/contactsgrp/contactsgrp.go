@@ -4,7 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/adamwoolhether/hypermedia/app/frontend/view/index"
+	"github.com/adamwoolhether/hypermedia/app/frontend/view/contacts"
+
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/web"

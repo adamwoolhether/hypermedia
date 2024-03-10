@@ -2,11 +2,12 @@ package index
 
 import (
     "github.com/adamwoolhether/hypermedia/business/contacts"
+    "github.com/adamwoolhether/hypermedia/app/frontend/view/layout"
     "fmt"
 )
 
 templ Index(query string, contacts []contacts.Contact) {
-    @Layout() {
+    @layout.Layout() {
         <form action="/contacts" method="get" class="tool-bar">
             <label for="search">Search Term</label>
             <input id="search" type="search" name="q" value={ query }/>

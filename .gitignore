@@ -3,4 +3,4 @@
 bin
 vendor
 app/frontend/view/**/*.txt
-*_templ.go*%   
+app/frontend/view/**/*_templ.go
