@@ -6,6 +6,7 @@ import (
 
 	mid "github.com/adamwoolhether/hypermedia/business/web/v1/middleware"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
@@ -18,6 +19,7 @@ type APIMuxConfig struct {
 	Build    string
 	Shutdown chan os.Signal
 	Log      *logger.Logger
+	Session  *session.Store
 }
 
 // APIMux constructs a http.Handler with all application routes defined.

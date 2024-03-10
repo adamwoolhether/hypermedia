@@ -21,7 +21,7 @@ type add struct{}
 func (add) Add(app *web.App, cfg v1.APIMuxConfig) {
 	app.Handle(http.MethodGet, "", "/", root)
 
-	contactsgrp.Routes(cfg.Build, cfg.Log, app)
+	contactsgrp.Routes(cfg.Build, cfg.Log, cfg.Session, app)
 }
 
 func root(ctx context.Context, w http.ResponseWriter, r *http.Request) error {

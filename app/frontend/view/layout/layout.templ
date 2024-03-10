@@ -21,10 +21,9 @@ templ Layout() {
                 <sub-title>A Demo Contacts Application</sub-title>
             </h1>
         </header>
-        //{% for message in get_flashed_messages() %}
-        //  <div class="flash">MESSAGE</div>
-        //{% endfor %}
-        //{% block content %}{% endblock %}
+        for _, flash := range getFlash(ctx) {
+            <div class="flash">{ flash }</div>
+        }
     </main>
         { children... }
     </body>

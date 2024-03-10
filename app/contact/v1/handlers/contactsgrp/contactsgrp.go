@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	fe "github.com/adamwoolhether/hypermedia/app/frontend/view/contacts"
+	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/validate"
 
 	"github.com/adamwoolhether/hypermedia/business/contacts"
@@ -15,15 +16,16 @@ import (
 
 // Handlers manages the set of check points.
 type Handlers struct {
-	log  *logger.Logger
-	core *contacts.Core
-	//db json.RawMessage
+	log      *logger.Logger
+	core     *contacts.Core
+	sessions *session.Store
 }
 
-func New(build string, log *logger.Logger, core *contacts.Core) *Handlers {
+func New(build string, log *logger.Logger, core *contacts.Core, store *session.Store) *Handlers {
 	return &Handlers{
-		log:  log,
-		core: core,
+		log:      log,
+		core:     core,
+		sessions: store,
 	}
 }
 
@@ -55,16 +57,16 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return fe.NewForm(newContact).Render(ctx, w)
 	}
 
-	// do some validation here
-
-	// need generalized error for internal stuff, duplicate users, etc.
 	err := h.core.Create(ctx, newContact.ToDB())
 	if err != nil {
 		newContact.InternalErrors = err.Error()
 		return fe.NewForm(newContact).Render(ctx, w)
 	}
 
-	// FLASH HERE, whatever that is
+	if err := h.sessions.AddFlash(w, r, "New contact added successfully"); err != nil {
+		h.log.Error(ctx, "adding flash", "err", err)
+	}
+
 	web.Redirect(w, r, "/contacts")
 
 	return nil
@@ -78,7 +80,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		return err
 	}
 
-	return fe.Index(query, contacts).Render(ctx, w)
+	return fe.Index(query, contacts).Render(h.sessions.GetFlashCtx(w, r), w)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
