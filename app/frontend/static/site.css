@@ -67,3 +67,29 @@ tr:is(:hover, :focus-within) [data-overflow-menu] {
 .all-caps {
     text-transform: uppercase;
 }
+
+.form-container {
+    max-width: 800px; /* Adjust based on your design needs */
+    margin: auto;
+}
+
+.inline-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inline-field label {
+    width: 150px; /* Fixed width for all labels */
+    text-align: left; /* Adjusts label text alignment */
+}
+
+.inline-field input {
+    flex: .5; /* Takes up the remaining space */
+}
+
+.inline-field .error {
+    margin-left: 10px; /* Space between the input and error message */
+    color: red; /* Example styling for error messages */
+}
+

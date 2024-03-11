@@ -7,43 +7,48 @@ import (
 
 templ EditByID(contact UpdateContact) {
     @layout.Layout() {
-        <form action={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) } method="POST">
+        <form
+            class="form-container"
+            action={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) } method="POST">
         <fieldset>
             <legend>Contact Values</legend>
-            <p>
+            <p class="inline-field">
                 <label for="email">Email</label>
                 <input name="email" id="email" type="email" placeholder="Email" value={ contact.Email }/>
                 <span class="error">{ contact.FieldErrs.Email }</span>
             </p>
-            <p>
+            <p class="inline-field">
                 <label for="first_name">First Name</label>
                 <input name="first_name" id="first_name" type="text" placeholder="First Name" value={ contact.FirstName }/>
                 <span class="error">{ contact.FieldErrs.FirstName }</span>
             </p>
-            <p>
+            <p class="inline-field">
                 <label for="last_name">Last Name</label>
                 <input name="last_name" id="last_name" type="text" placeholder="Last Name" value={ contact.LastName }/>
                 <span class="error">{ contact.FieldErrs.LastName }</span>
             </p>
-            <p>
+            <p class="inline-field">
                 <label for="phone">Phone</label>
                 <input name="phone" id="phone" type="text" placeholder="Phone" value={ contact.Phone }/>
                 <span class="error">{ contact.FieldErrs.Phone }</span>
             </p>
             <button>Save</button>
+            <button hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+                    hx-push-url="true"
+                    hx-confirm="Are you sure you want to delete this contact?"
+                    hx-target="body"
+                    >
+                Delete Contact
+            </button>
         </fieldset>
-        </form>
-
-        <button hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
-                hx-push-url="true"
-                hx-confirm="Are you sure you want to delete this contact?"
-                hx-target="body">
-            Delete Contact
-        </button>
-
         <p>
             <a href="/v1/contacts">Back</a>
         </p>
+        </form>
+
+
+
+
         <p><span class="error">{ contact.InternalErrors }</span></p>
     }
 }
