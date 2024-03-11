@@ -34,9 +34,11 @@ templ EditByID(contact UpdateContact) {
         </fieldset>
         </form>
 
-        <form action={ templ.URL(fmt.Sprintf("/v1/contacts/%d/delete", contact.ID)) } method="POST">
-            <button>Delete</button>
-        </form>
+        <button hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+                hx-target="body">
+            Delete Contact
+        </button>
+
         <p>
             <a href="/v1/contacts">Back</a>
         </p>
