@@ -85,11 +85,13 @@ tr:is(:hover, :focus-within) [data-overflow-menu] {
 }
 
 .inline-field input {
-    flex: .5; /* Takes up the remaining space */
+    flex: 1; /* Takes up the remaining space */
 }
 
 .inline-field .error {
     margin-left: 10px; /* Space between the input and error message */
     color: red; /* Example styling for error messages */
+    flex-basis: 200px; /* Optional: Allocate fixed space for error messages */
+    text-align: left;
 }
 

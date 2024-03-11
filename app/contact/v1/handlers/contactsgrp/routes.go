@@ -19,6 +19,7 @@ func Routes(build string, log *logger.Logger, store *session.Store, app *web.App
 	app.Handle(http.MethodGet, version, "/contacts/new", handlers.CreateForm)
 	app.Handle(http.MethodPost, version, "/contacts/new", handlers.Create)
 	app.Handle(http.MethodGet, version, "/contacts/{id}", handlers.QueryByID)
+	app.Handle(http.MethodGet, version, "/contacts/{id}/email", handlers.ValidateEmail)
 	app.Handle(http.MethodGet, version, "/contacts/{id}/edit", handlers.UpdateForm)
 	app.Handle(http.MethodPost, version, "/contacts/{id}/edit", handlers.Update)
 	app.Handle(http.MethodDelete, version, "/contacts/{id}", handlers.Delete)

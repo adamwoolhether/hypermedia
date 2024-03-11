@@ -99,6 +99,26 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 	return fe.ShowByID(contact).Render(ctx, w)
 }
 
+func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		// better err handling
+		return err
+	}
+
+	email := r.FormValue("email")
+
+	if !h.core.UniqueEmail(ctx, id, email) {
+		_, err := w.Write([]byte("This email is taken"))
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	userID := web.Param(r, "id")
 	id, err := strconv.Atoi(userID)

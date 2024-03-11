@@ -79,6 +79,21 @@ func (c *Core) QueryByID(ctx context.Context, id int) (Contact, error) {
 	return Contact{}, errors.New("not found")
 }
 
+func (c *Core) UniqueEmail(ctx context.Context, id int, email string) bool {
+	c.log.Info(ctx, "checking unique email", "email", email)
+
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	for _, contact := range c.db {
+		if contact.Email == email && contact.ID != id {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (c *Core) Create(ctx context.Context, newContact Contact) error {
 	c.log.Info(ctx, "creating", "newContact", newContact)
 

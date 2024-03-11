@@ -14,7 +14,12 @@ templ EditByID(contact UpdateContact) {
             <legend>Contact Values</legend>
             <p class="inline-field">
                 <label for="email">Email</label>
-                <input name="email" id="email" type="email" placeholder="Email" value={ contact.Email }/>
+                <input
+                    name="email" id="email" type="email"
+                    hx-get={ fmt.Sprintf("/v1/contacts/%d/email", contact.ID) }
+                    hx-target="next .error"
+                    hx-trigger="change, keyup delay:1000ms changed"
+                    placeholder="Email" value={ contact.Email }/>
                 <span class="error">{ contact.FieldErrs.Email }</span>
             </p>
             <p class="inline-field">
