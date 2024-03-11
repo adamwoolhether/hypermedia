@@ -35,6 +35,8 @@ templ EditByID(contact UpdateContact) {
         </form>
 
         <button hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+                hx-push-url="true"
+                hx-confirm="Are you sure you want to delete this contact?"
                 hx-target="body">
             Delete Contact
         </button>
