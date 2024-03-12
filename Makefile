@@ -6,9 +6,14 @@ tidy:
 	go mod tidy
 	go mod vendor
 
-run:
+dev:
 	./run.sh
 	@#wgo -file=.go -file=.templ -file=.js -file=.css -xfile=_templ.go templ generate :: go run app/contact/main.go
+
+run: templ
+	@trap 'osascript -e "tell application \"Google Chrome\" to close (tabs of window 1 whose URL contains \"http://localhost:42069/\")"' INT TERM EXIT && \
+	open -a "Google Chrome" http://localhost:42069/ && \
+	go run app/contact/main.go
 
 templ:
 	templ generate
