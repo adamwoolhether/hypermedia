@@ -87,6 +87,10 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		return err
 	}
 
+	if r.Header.Get("HX-Trigger") == "search" {
+		return fe.Rows(contacts).Render(ctx, w)
+	}
+
 	flashCtx := h.sessions.GetFlashCtx(w, r)
 	return fe.Index(query, page, contacts).Render(flashCtx, w)
 }

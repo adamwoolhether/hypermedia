@@ -38,18 +38,7 @@ templ renderContacts(page int, contacts []contacts.Contact) {
         </tr>
         </thead>
         <tbody>
-            for _, contact := range contacts {
-                <tr>
-                <td>{ contact.FirstName }</td>
-                <td>{ contact.LastName }</td>
-                <td>{ contact.Phone }</td>
-                <td>{ contact.Email }</td>
-                <td>
-                    <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) }>Edit</a>
-                    <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d", contact.ID)) }>View</a>
-                </td>
-                </tr>
-            }
+            @Rows(contacts)
             if len(contacts) == 10 {
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 10px;">
@@ -80,3 +69,4 @@ templ renderContacts(page int, contacts []contacts.Contact) {
     //    </span>
     //</div>
 }
+
