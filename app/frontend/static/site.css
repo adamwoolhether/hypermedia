@@ -19,7 +19,7 @@ table {
     color: darkred;
 }
 
-tr.htmx-swapping {
+tr.htmx-swapping { /* Apply to ts elements with htmx-swapping class */
     opacity: 0;
     transition: opacity 1s ease-out;
 }
