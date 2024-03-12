@@ -15,10 +15,10 @@ templ Rows(contacts []contacts.Contact) {
         <td>
             <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) }>Edit</a>
             <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d", contact.ID)) }>View</a>
-            <a href="#"
-                hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+            <a href="#" hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+                hx-swap="outerHTML"
                 hx-confirm="Are you sure you want to delete this contact?"
-                hx-target="body">Delete</a>
+                hx-target="closest tr">Delete</a>
         </td>
         </tr>
     }

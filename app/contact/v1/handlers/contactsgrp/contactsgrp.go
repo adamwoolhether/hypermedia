@@ -231,6 +231,12 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return err
 	}
 
+	if r.Header.Get("HX-Trigger") != "delete-btn" {
+		_, err := w.Write([]byte(""))
+
+		return err
+	}
+
 	if err := h.sessions.AddFlash(w, r, "Deleted contact!"); err != nil {
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
