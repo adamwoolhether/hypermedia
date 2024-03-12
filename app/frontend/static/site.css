@@ -72,6 +72,16 @@ tr:is(:hover, :focus-within) [data-overflow-menu] {
     max-width: 800px; /* Adjust based on your design needs */
     margin: auto;
 }
+.form-container table {
+    width: 100%; /* Makes sure the table spans the full width of its container */
+    table-layout: fixed; /* Ensures the table adheres to the width specified */
+}
+.form-container th, .form-container td {
+    width: 25%; /* Example width, adjust as necessary */
+    overflow: hidden; /* Prevents content from overflowing */
+    text-overflow: ellipsis; /* Adds ellipsis if the content overflows */
+    white-space: nowrap; /* Ensures the content stays on one line */
+}
 
 .inline-field {
     display: flex;
