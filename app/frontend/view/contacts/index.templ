@@ -21,7 +21,15 @@ templ Index(query string, page int, contacts []contacts.Contact) {
             <input type="submit" value="Search"/>
             <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
         </form>
+        <form>
+
             @renderContacts(page, contacts)
+
+            <button hx-delete="/v1/contacts"
+                    hx-confirm="Are you sure you want to delete these contacts?"
+                    hx-target="body">Delete Selected
+            </button>
+        </form>
         <p>
             <a href="/v1/contacts/new">Add Contact</a>
             // use hx-trigger="load" to load as soon as page laods, even if not in view.
@@ -37,6 +45,7 @@ templ renderContacts(page int, contacts []contacts.Contact) {
     <table>
         <thead>
         <tr>
+            <th style="width:6%"></th>
             <th style="width:15%">First</th>
             <th style="width:15%">Last</th>
             <th>Phone</th>

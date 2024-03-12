@@ -3,7 +3,9 @@ package contactsgrp
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 
@@ -243,6 +245,44 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 	web.Redirect(w, r, "/v1/contacts")
 	return nil
+}
+
+func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	// Not sure why the req isn't settings the form... Should investigate later.
+	bodyBytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+	bodyString := string(bodyBytes)
+
+	data, err := url.ParseQuery(bodyString)
+	if err != nil {
+		return err
+	}
+
+	toDelete := data["selected_contact_ids"]
+	for _, id := range toDelete {
+		id, err := strconv.Atoi(id)
+		if err != nil {
+			return err
+		}
+
+		if err := h.core.Delete(ctx, id); err != nil {
+			h.log.Error(ctx, "deleting contact", "id", id, "err", err)
+		}
+	}
+
+	if err := h.sessions.AddFlash(w, r, "Deleted contacts!"); err != nil {
+		h.log.Error(ctx, "adding flash", "err", err)
+	}
+
+	contacts, err := h.core.Query(ctx, "", 1)
+	if err != nil {
+		return err
+	}
+
+	flashCtx := h.sessions.GetFlashCtx(w, r)
+	return fe.Index("", 1, contacts).Render(flashCtx, w)
 }
 
 func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
