@@ -15,9 +15,11 @@ templ Index(query string, page int, contacts []contacts.Contact) {
                    hx-get="/contacts"
                    hx-trigger="change, keyup delay:200ms changed"
                    hx-target="tbody"
-                   hx-select="tbody tr"
-                   hx-push-url="true"/>
+                   hx-push-url="true"
+                   hx-indicator="#spinner"/>
+            // htmx-indicator is a CSS class that is automatically injected into the page by htmx.
             <input type="submit" value="Search"/>
+            <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
         </form>
             @renderContacts(page, contacts)
         <p>

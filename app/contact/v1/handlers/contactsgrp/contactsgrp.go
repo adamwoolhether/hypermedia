@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"time"
 
 	fe "github.com/adamwoolhether/hypermedia/app/frontend/view/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
@@ -80,6 +81,11 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		if err == nil {
 			page = p
 		}
+	}
+
+	// Simulate a slow query so we can see our beautiful spinner at work.
+	if len(query) > 0 {
+		time.Sleep(500 * time.Millisecond)
 	}
 
 	contacts, err := h.core.Query(ctx, query, page)
