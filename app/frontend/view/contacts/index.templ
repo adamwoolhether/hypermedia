@@ -11,7 +11,11 @@ templ Index(query string, page int, contacts []contacts.Contact) {
     <div class="form-container">
         <form action="/contacts" method="get" class="tool-bar">
             <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value={ query }/>
+            <input id="search" type="search" name="q" value={ query }
+                   hx-get="/contacts"
+                   hx-trigger="search, keyup delay:200ms changed"
+                   hx-target="tbody"
+                   hx-select="tbody tr"/>
             <input type="submit" value="Search"/>
         </form>
             @renderContacts(page, contacts)
