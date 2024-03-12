@@ -151,3 +151,10 @@ func (c *Core) Delete(ctx context.Context, id int) error {
 
 	return errors.New("contact not found")
 }
+
+func (c *Core) Count(ctx context.Context) int {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return len(c.db)
+}

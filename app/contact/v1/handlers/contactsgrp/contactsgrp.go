@@ -2,6 +2,7 @@ package contactsgrp
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -236,4 +237,16 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 	web.Redirect(w, r, "/v1/contacts")
 	return nil
+}
+
+func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	// Pretend this is a slow req to demonstrate lazy loading.
+	time.Sleep(2000 * time.Millisecond)
+	count := h.core.Count(ctx)
+
+	retStr := fmt.Sprintf("( %d total Contacts )", count)
+
+	_, err := w.Write([]byte(retStr))
+
+	return err
 }

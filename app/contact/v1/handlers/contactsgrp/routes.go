@@ -16,6 +16,7 @@ func Routes(build string, log *logger.Logger, store *session.Store, app *web.App
 	core := contacts.NewCore(log)
 	handlers := New(build, log, core, store)
 	app.Handle(http.MethodGet, version, "/contacts", handlers.Query)
+	app.Handle(http.MethodGet, version, "/contacts/count", handlers.Count)
 	app.Handle(http.MethodGet, version, "/contacts/new", handlers.CreateForm)
 	app.Handle(http.MethodPost, version, "/contacts/new", handlers.Create)
 	app.Handle(http.MethodGet, version, "/contacts/{id}", handlers.QueryByID)

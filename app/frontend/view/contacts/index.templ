@@ -9,10 +9,10 @@ import (
 templ Index(query string, page int, contacts []contacts.Contact) {
     @layout.Layout() {
     <div class="form-container">
-        <form action="/contacts" method="get" class="tool-bar">
+        <form action="/v1/contacts" method="get" class="tool-bar">
             <label for="search">Search Term</label>
             <input id="search" type="search" name="q" value={ query }
-                   hx-get="/contacts"
+                   hx-get="/v1/contacts"
                    hx-trigger="change, keyup delay:200ms changed"
                    hx-target="tbody"
                    hx-push-url="true"
@@ -24,6 +24,10 @@ templ Index(query string, page int, contacts []contacts.Contact) {
             @renderContacts(page, contacts)
         <p>
             <a href="/v1/contacts/new">Add Contact</a>
+            // use hx-trigger="load" to load as soon as page laods, even if not in view.
+            <span hx-get="/v1/contacts/count" hx-trigger="revealed">
+                <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg"/>
+            </span>
         </p>
     </div>
     }
