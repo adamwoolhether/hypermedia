@@ -49,6 +49,9 @@ templ renderContacts(page int, contacts []contacts.Contact) {
             if len(contacts) == 10 {
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 10px;">
+                        // To auto-scroll instead of loading more on click
+                        // change button to space and add a relvealed trigger.
+                        //<span   hx-trigger="revealed"
                         <button hx-target="closest tr"
                                 hx-swap="outerHTML"
                                 hx-select="tbody > tr"
@@ -61,6 +64,7 @@ templ renderContacts(page int, contacts []contacts.Contact) {
         </tbody>
     </table>
     // Example to do simple pagination, but forget the previously loaded page
+    //
     //<div>
     //    <span style="float: right">
     //        if page > 1 {
