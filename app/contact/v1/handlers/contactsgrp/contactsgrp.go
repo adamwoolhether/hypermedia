@@ -87,6 +87,9 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		return err
 	}
 
+	// If the specific trigger header is present, then
+	// we know we only need to update a very specific
+	// part of the page, so we just return the rows.
 	if r.Header.Get("HX-Trigger") == "search" {
 		return fe.Rows(contacts).Render(ctx, w)
 	}
