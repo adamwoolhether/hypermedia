@@ -73,14 +73,22 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	query := web.QueryString(r, "q")
+	page := 1
+	pageStr := web.QueryString(r, "page")
+	if len(pageStr) > 0 {
+		p, err := strconv.Atoi(pageStr)
+		if err == nil {
+			page = p
+		}
+	}
 
-	contacts, err := h.core.Query(ctx, query)
+	contacts, err := h.core.Query(ctx, query, page)
 	if err != nil {
 		return err
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index(query, contacts).Render(flashCtx, w)
+	return fe.Index(query, page, contacts).Render(flashCtx, w)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {

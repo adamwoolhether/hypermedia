@@ -42,26 +42,37 @@ func NewCore(log *logger.Logger) *Core {
 	return c
 }
 
-func (c *Core) Query(ctx context.Context, query string) ([]Contact, error) {
-	if query == "" {
-		c.mu.RLock()
-		defer c.mu.RUnlock()
-		return c.db, nil
-	}
+const pageSize = 10
 
-	c.log.Info(ctx, "searching", "query", query)
+func (c *Core) Query(ctx context.Context, query string, page int) ([]Contact, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	start := (page - 1) * pageSize
+	end := start + pageSize
 
 	var results []Contact
 
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	for i := range c.db {
-		if strings.Contains(c.db[i].FirstName, query) || strings.Contains(c.db[i].LastName, query) || strings.Contains(c.db[i].Email, query) || strings.Contains(c.db[i].Phone, query) {
-			results = append(results, c.db[i])
+	if query == "" {
+		results = c.db
+	} else {
+		c.log.Info(ctx, "searching", "query", query)
+
+		for i := range c.db {
+			if strings.Contains(c.db[i].FirstName, query) || strings.Contains(c.db[i].LastName, query) || strings.Contains(c.db[i].Email, query) || strings.Contains(c.db[i].Phone, query) {
+				results = append(results, c.db[i])
+			}
 		}
 	}
 
-	return results, nil
+	if start > len(c.db) {
+		return []Contact{}, nil
+	}
+	if end > len(results) {
+		end = len(results)
+	}
+
+	return results[start:end], nil
 }
 
 func (c *Core) QueryByID(ctx context.Context, id int) (Contact, error) {

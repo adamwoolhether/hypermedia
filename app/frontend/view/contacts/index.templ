@@ -6,7 +6,7 @@ import (
     "fmt"
 )
 
-templ Index(query string, contacts []contacts.Contact) {
+templ Index(query string, page int, contacts []contacts.Contact) {
     @layout.Layout() {
     <div class="form-container">
         <form action="/contacts" method="get" class="tool-bar">
@@ -14,7 +14,7 @@ templ Index(query string, contacts []contacts.Contact) {
             <input id="search" type="search" name="q" value={ query }/>
             <input type="submit" value="Search"/>
         </form>
-            @renderContacts(contacts)
+            @renderContacts(page, contacts)
         <p>
             <a href="/v1/contacts/new">Add Contact</a>
         </p>
@@ -22,7 +22,7 @@ templ Index(query string, contacts []contacts.Contact) {
     }
 }
 
-templ renderContacts(contacts []contacts.Contact) {
+templ renderContacts(page int, contacts []contacts.Contact) {
     <table>
         <thead>
         <tr>
@@ -46,6 +46,29 @@ templ renderContacts(contacts []contacts.Contact) {
                 </td>
                 </tr>
             }
+            if len(contacts) == 10 {
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 10px;">
+                        <button hx-target="closest tr"
+                                hx-swap="outerHTML"
+                                hx-select="tbody > tr"
+                                hx-get={ fmt.Sprintf("/v1/contacts?page=%d", page + 1) }>
+                            Load More
+                        </button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
+    // Example to do simple pagination, but forget the previously loaded page
+    //<div>
+    //    <span style="float: right">
+    //        if page > 1 {
+    //            <a href={ templ.URL(fmt.Sprintf("/v1/contacts?page=%d", page - 1)) }>Previous</a>
+    //        }
+    //        if len(contacts) == 10 {
+    //            <a href={ templ.URL(fmt.Sprintf("/v1/contacts?page=%d", page + 1)) }>Next</a>
+    //        }
+    //    </span>
+    //</div>
 }
