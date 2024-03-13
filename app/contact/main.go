@@ -3,6 +3,9 @@ package main
 /*
 - Why bulk delete is not sent as form data?
 - Better flash handling: how to get flashes from session directly in template?
+- Move the struct conversion funcs.
+- Smooth progress bar transition, needed to use JS.
+- Fix text above progress bar moving it downwards.
 */
 import (
 	"context"

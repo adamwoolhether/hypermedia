@@ -88,3 +88,11 @@ func (a *Archiver) Poll() ArchiveAPI {
 func (a *Archiver) File() string {
 	return "business/contacts/contacts.json"
 }
+
+func (a *Archiver) Reset() {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
+	a.Status = Waiting
+	a.Progress.Store(0)
+}

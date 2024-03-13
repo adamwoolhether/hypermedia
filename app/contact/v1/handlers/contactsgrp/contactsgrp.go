@@ -306,6 +306,12 @@ func (h *Handlers) Archive(ctx context.Context, w http.ResponseWriter, r *http.R
 	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
 }
 
+func (h *Handlers) ArchiveRm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	h.core.ArchiveRm(ctx)
+
+	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+}
+
 func (h *Handlers) ArchivePoll(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)

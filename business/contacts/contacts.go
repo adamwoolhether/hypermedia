@@ -167,6 +167,12 @@ func (c *Core) Archive(ctx context.Context) error {
 	return c.archiver.Run()
 }
 
+func (c *Core) ArchiveRm(ctx context.Context) {
+	c.log.Info(ctx, "removing archive file")
+
+	c.archiver.Reset()
+}
+
 func (c *Core) ArchivePoll(ctx context.Context) archiver.ArchiveAPI {
 	c.log.Info(ctx, "polling")
 
