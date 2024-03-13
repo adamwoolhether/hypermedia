@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"time"
 
@@ -104,7 +105,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index(query, page, contacts).Render(flashCtx, w)
+	return fe.Index(query, page, contacts, h.core.ArchivePoll(ctx)).Render(flashCtx, w)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -282,17 +283,46 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index("", 1, contacts).Render(flashCtx, w)
+	return fe.Index("", 1, contacts, h.core.ArchivePoll(ctx)).Render(flashCtx, w)
 }
 
 func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	// Pretend this is a slow req to demonstrate lazy loading.
 	time.Sleep(2000 * time.Millisecond)
-	count := h.core.Count(ctx)
+	count := h.core.Count()
 
 	retStr := fmt.Sprintf("( %d total Contacts )", count)
 
 	_, err := w.Write([]byte(retStr))
 
 	return err
+}
+
+func (h *Handlers) Archive(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	if err := h.core.Archive(ctx); err != nil {
+		return err
+	}
+
+	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+}
+
+func (h *Handlers) ArchivePoll(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+}
+
+func (h *Handlers) ArchiveDL(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	file := h.core.ArchiveFile(ctx)
+
+	f, err := os.Open(file)
+	if err != nil {
+		return err
+	}
+
+	_, err = io.Copy(w, f)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

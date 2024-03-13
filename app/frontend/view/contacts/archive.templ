@@ -1,0 +1,53 @@
+package contacts
+
+import (
+    "github.com/adamwoolhether/hypermedia/business/contacts/archiver"
+    "fmt"
+)
+
+templ Archive(arch archiver.ArchiveAPI) {
+    <div id="archive-ui"
+        hx-target="this"
+        hx-swap="outerHTML">
+
+        switch arch.Status {
+        case archiver.Waiting:
+            <button hx-post="/v1/contacts/archive" style="margin-bottom: 10px;">
+                Download Contact Archive
+            </button>
+        case archiver.Running:
+            <div hx-get="/v1/contacts/archive" hx-trigger="load delay:500ms">
+                Creating archive... { arch.Percent }%
+                <div class="progress">
+                    <div class={ loading(arch.Percent) }
+                        name="progress-bar"
+                        role="progress-bar"
+                        aria-valuenow={ arch.Percent }>
+                    </div>
+                </div>
+            </div>
+        case archiver.Complete:
+            // Note we must disable boost behavior, AJAX cannot DL
+            // a file directly.
+            <a hx-boost="false" href="/v1/contacts/archive/file">
+                Archive Ready! Click here to download &downarrow;
+            </a>
+        }
+    </div>
+}
+
+css loading(progress string) {
+    width: { fmt.Sprintf("%s%%", progress) };
+    float: left;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #337ab7;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}

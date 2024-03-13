@@ -1,6 +1,8 @@
 package contacts
 
-import "github.com/adamwoolhether/hypermedia/business/contacts"
+import (
+	"github.com/adamwoolhether/hypermedia/business/contacts"
+)
 
 type NewContact struct {
 	//ID     int    `json:"id"`

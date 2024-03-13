@@ -4,11 +4,13 @@ import (
     "github.com/adamwoolhether/hypermedia/business/contacts"
     "github.com/adamwoolhether/hypermedia/app/frontend/view/layout"
     "fmt"
+	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 )
 
-templ Index(query string, page int, contacts []contacts.Contact) {
+templ Index(query string, page int, contacts []contacts.Contact, arch archiver.ArchiveAPI) {
     @layout.Layout() {
     <div class="form-container">
+        @Archive(arch)
         <form action="/v1/contacts" method="get" class="tool-bar">
             <label for="search">Search Term</label>
             <input id="search" type="search" name="q" value={ query }

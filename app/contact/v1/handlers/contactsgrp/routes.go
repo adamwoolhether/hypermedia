@@ -25,4 +25,7 @@ func Routes(build string, log *logger.Logger, store *session.Store, app *web.App
 	app.Handle(http.MethodGet, version, "/contacts/{id}/edit", handlers.UpdateForm)
 	app.Handle(http.MethodPost, version, "/contacts/{id}/edit", handlers.Update)
 	app.Handle(http.MethodDelete, version, "/contacts/{id}", handlers.Delete)
+	app.Handle(http.MethodPost, version, "/contacts/archive", handlers.Archive)
+	app.Handle(http.MethodGet, version, "/contacts/archive", handlers.ArchivePoll)
+	app.Handle(http.MethodGet, version, "/contacts/archive/file", handlers.ArchiveDL)
 }

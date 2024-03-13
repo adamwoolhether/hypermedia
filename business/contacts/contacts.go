@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-json-experiment/json"
 
+	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 )
 
@@ -17,9 +18,10 @@ const fileDB = "business/contacts/contacts.json"
 
 // Core manages the set of API's for user access.
 type Core struct {
-	log *logger.Logger
-	db  []Contact
-	mu  sync.RWMutex
+	log      *logger.Logger
+	db       []Contact
+	archiver *archiver.Archiver
+	mu       sync.RWMutex
 }
 
 // NewCore constructs a core for the user api access.
@@ -35,8 +37,9 @@ func NewCore(log *logger.Logger) *Core {
 	}
 
 	c := &Core{
-		log: log,
-		db:  contacts,
+		log:      log,
+		db:       contacts,
+		archiver: archiver.New(),
 	}
 
 	return c
@@ -152,9 +155,26 @@ func (c *Core) Delete(ctx context.Context, id int) error {
 	return errors.New("contact not found")
 }
 
-func (c *Core) Count(ctx context.Context) int {
+func (c *Core) Count() int {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
 	return len(c.db)
+}
+
+func (c *Core) Archive(ctx context.Context) error {
+	c.log.Info(ctx, "archiving")
+	return c.archiver.Run()
+}
+
+func (c *Core) ArchivePoll(ctx context.Context) archiver.ArchiveAPI {
+	c.log.Info(ctx, "polling")
+
+	return c.archiver.Poll()
+}
+
+func (c *Core) ArchiveFile(ctx context.Context) string {
+	c.log.Info(ctx, "retrieving archive file")
+
+	return c.archiver.File()
 }

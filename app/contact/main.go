@@ -1,5 +1,9 @@
 package main
 
+/*
+- Why bulk delete is not sent as form data?
+- Better flash handling: how to get flashes from session directly in template?
+*/
 import (
 	"context"
 	"fmt"
