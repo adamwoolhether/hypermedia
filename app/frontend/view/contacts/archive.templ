@@ -2,7 +2,6 @@ package contacts
 
 import (
     "github.com/adamwoolhether/hypermedia/business/contacts/archiver"
-    "fmt"
 )
 
 templ Archive(arch archiver.ArchiveAPI) {
@@ -20,9 +19,11 @@ templ Archive(arch archiver.ArchiveAPI) {
                 Creating archive... { arch.Percent }%
                 <div class="progress">
                     <div id="archive-progress"
-                        class={ loading(arch.Percent) }
+                        class="progress-bar"
                         role="progressbar"
-                        aria-valuenow={ arch.Percent }>
+                        aria-valuenow={ arch.Percent }
+                        data-progress={ arch.Percent }>
+                        @updateProgressBar(arch.Percent)
                     </div>
                 </div>
             </div>
@@ -36,18 +37,11 @@ templ Archive(arch archiver.ArchiveAPI) {
     </div>
 }
 
-css loading(progress string) {
-    width: { fmt.Sprintf("%s%%", progress) };
-    float: left;
-    height: 100%;
-    font-size: 12px;
-    line-height: 20px;
-    color: #fff;
-    text-align: center;
-    background-color: #337ab7;
-    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
-    -webkit-transition: width .6s ease;
-    -o-transition: width .6s ease;
-    transition: width .6s ease;
+// updateProgressBar allows us to update the progress bar.
+// Templ doesn't allow us to dynamically set `style` attributes,
+// so we need to rely on a little bit of JS here.
+script updateProgressBar(percentage string) {
+    console.log(percentage);
+    const progressBar = document.getElementById('archive-progress');
+    progressBar.style.setProperty('width', `${percentage}%`);
 }
