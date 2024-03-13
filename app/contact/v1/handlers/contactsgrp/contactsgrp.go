@@ -325,6 +325,7 @@ func (h *Handlers) ArchiveDL(ctx context.Context, w http.ResponseWriter, r *http
 		return err
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Disposition", "attachment; filename=\"archive.json\"")
 
 	_, err = io.Copy(w, f)
