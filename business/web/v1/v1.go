@@ -41,7 +41,7 @@ func APIMux(cfg APIMuxConfig, routes RouteAdder, options ...func(opts *Options))
 	}
 
 	if opts.staticFS != nil {
-		app.Handle(http.MethodGet, "", "/static/*", opts.staticFS)
+		app.HandleNoMiddleware(http.MethodGet, "", "/static/*", opts.staticFS)
 	}
 
 	routes.Add(app, cfg)
