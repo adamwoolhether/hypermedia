@@ -31,7 +31,8 @@ templ Archive(arch archiver.ArchiveAPI) {
         case archiver.Complete:
             // Note we must disable boost behavior, AJAX cannot DL
             // a file directly.
-            <a hx-boost="false" href="/v1/contacts/archive/file">
+            <a hx-boost="false" href="/v1/contacts/archive/file"
+                _="on load click() me">
                 Archive Ready! Click here to download &downarrow;
             </a>
             <button hx-delete="/v1/contacts/archive">Clear Download</button>
