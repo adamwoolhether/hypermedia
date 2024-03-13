@@ -19,9 +19,9 @@ templ Archive(arch archiver.ArchiveAPI) {
             <div hx-get="/v1/contacts/archive" hx-trigger="load delay:500ms">
                 Creating archive... { arch.Percent }%
                 <div class="progress">
-                    <div class={ loading(arch.Percent) }
-                        name="progress-bar"
-                        role="progress-bar"
+                    <div id="archive-progress"
+                        class={ loading(arch.Percent) }
+                        role="progressbar"
                         aria-valuenow={ arch.Percent }>
                     </div>
                 </div>
