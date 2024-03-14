@@ -17,3 +17,4 @@ run: templ
 
 templ:
 	templ generate
+

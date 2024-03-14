@@ -31,6 +31,14 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                     hx-confirm="Are you sure you want to delete these contacts?"
                     hx-target="body">Delete Selected
             </button>
+            // We use this script to demonstrate use of calling an script
+            // via `hx-trigger`. See index.templ for the usage.
+            <script>
+              function superAdmin() {
+                  console.log("superAdmin called");
+                  return false;
+              }
+            </script>
             // This button demonstrates calling a JS function to use in `hx-trigger`
             // It will never work, cause our superAdmin() script always returns false.
             // See layout.templ for definition.

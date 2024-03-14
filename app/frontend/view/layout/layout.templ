@@ -15,15 +15,8 @@ templ Layout() {
         //<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
         //<script src="/static/js/rsjs-menu.js" type="module"></script>
         //<script defer src="https://unpkg.com/alpinejs@3/dist/cdn.min.js"></script>
-        //
-        // We use this script to demonstrate use of calling an script
-        // via `hx-trigger`. See index.templ for the usage.
-        <script>
-          function superAdmin() {
-              console.log("superAdmin called");
-              return false;
-          }
-        </script>
+        // Enable htmx logging:
+        //<script>htmx.logAll();</script>
     </head>
     <body hx-boost="true">
     <main>
@@ -41,3 +34,6 @@ templ Layout() {
     </body>
     </html>
 }
+
+// logging, done in chrome console:
+// monitorEvents(document.getElementById("some-element"));
