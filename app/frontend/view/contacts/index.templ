@@ -60,27 +60,32 @@ templ renderContacts(page int, contacts []contacts.Contact) {
             if len(contacts) == 10 {
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 10px;">
+                        // Demonstrate use of hx-sync with these two buttons.
+                        <div id="sync-req" hx-sync="this">
                         // To auto-scroll instead of loading more on click
-                        // change button to space and add a relvealed trigger.
+                        // change button to space and add a revealed trigger.
                         //<span   hx-trigger="revealed"
-                        <button hx-target="closest tr"
-                                hx-swap="outerHTML"
-                                hx-select="tbody > tr"
-                                hx-get={ fmt.Sprintf("/v1/contacts?page=%d", page + 1) }>
-                            Load More
-                        </button>
-                        <button id="slow-req-btn"
-                                hx-target="closest tr"
-                                hx-swap="outerHTML"
-                                hx-select="tbody > tr"
-                                hx-get={ fmt.Sprintf("/v1/contacts/slow?page=%d", page + 1) }>
-                            Load More Slowly
-                        </button>
-                        <button disabled _="on click send htmx:abort to #slow-req-btn
-                                            on htmx:beforeRequest from #slow-req-btn remove @disabled from me
-                                            on htmx:afterRequest from #slow-req-btn add @disabled to me">
-                            Cancel
-                        </button>
+                            <button hx-target="closest tr"
+                                    hx-swap="outerHTML"
+                                    hx-select="tbody > tr"
+                                    hx-get={ fmt.Sprintf("/v1/contacts?page=%d", page + 1) }>
+                                Load More
+                            </button>
+                            <button id="slow-req-btn"
+                                    hx-target="closest tr"
+                                    hx-swap="outerHTML"
+                                    hx-select="tbody > tr"
+                                    hx-get={ fmt.Sprintf("/v1/contacts/slow?page=%d", page + 1) }>
+                                Load More Slowly
+                            </button>
+                            // Demonstrate use of htmx:abort to cancel a slow request.
+                            // Note in this example we abort the div with id sync-req, not the button.
+                            <button disabled _="on click send htmx:abort to #sync-req
+                                                on htmx:beforeRequest from #slow-req-btn remove @disabled from me
+                                                on htmx:afterRequest from #slow-req-btn add @disabled to me">
+                                Cancel
+                            </button>
+                        </div>
                     </td>
                 </tr>
             }
