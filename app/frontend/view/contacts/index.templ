@@ -31,6 +31,12 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                     hx-confirm="Are you sure you want to delete these contacts?"
                     hx-target="body">Delete Selected
             </button>
+            // This button demonstrates calling a JS function to use in `hx-trigger`
+            // It will never work, cause our superAdmin() script always returns false.
+            // See layout.templ for definition.
+            <button hx-get="/v1/contacts/deleteall" hx-trigger="click[superAdmin()]">
+                Delete All Contacts
+            </button>
         </form>
         <p>
             <a href="/v1/contacts/new">Add Contact</a>
@@ -42,6 +48,8 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
     </div>
     }
 }
+
+
 
 templ renderContacts(page int, contacts []contacts.Contact) {
     <table>
