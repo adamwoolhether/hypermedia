@@ -29,4 +29,7 @@ func Routes(build string, log *logger.Logger, store *session.Store, app *web.App
 	app.Handle(http.MethodDelete, version, "/contacts/archive", handlers.ArchiveRm)
 	app.Handle(http.MethodGet, version, "/contacts/archive", handlers.ArchivePoll)
 	app.Handle(http.MethodGet, version, "/contacts/archive/file", handlers.ArchiveDL)
+
+	// To test very slow responses.
+	app.Handle(http.MethodGet, version, "/contacts/slow", handlers.Slow)
 }

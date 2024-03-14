@@ -336,3 +336,25 @@ func (h *Handlers) ArchiveDL(ctx context.Context, w http.ResponseWriter, r *http
 
 	return nil
 }
+
+func (h *Handlers) Slow(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	t := time.NewTicker(1 * time.Second)
+	defer t.Stop()
+
+	i := 0
+
+	for i < 10 {
+		select {
+		case <-t.C:
+			h.log.Info(ctx, "slow req tick", "i", i)
+			i++
+		case <-ctx.Done():
+			h.log.Info(ctx, "slow req canceled", "err", ctx.Err())
+			return nil
+		}
+	}
+
+	h.log.Info(ctx, "slow req done")
+
+	return h.Query(ctx, w, r)
+}

@@ -69,6 +69,18 @@ templ renderContacts(page int, contacts []contacts.Contact) {
                                 hx-get={ fmt.Sprintf("/v1/contacts?page=%d", page + 1) }>
                             Load More
                         </button>
+                        <button id="slow-req-btn"
+                                hx-target="closest tr"
+                                hx-swap="outerHTML"
+                                hx-select="tbody > tr"
+                                hx-get={ fmt.Sprintf("/v1/contacts/slow?page=%d", page + 1) }>
+                            Load More Slowly
+                        </button>
+                        <button disabled _="on click send htmx:abort to #slow-req-btn
+                                            on htmx:beforeRequest from #slow-req-btn remove @disabled from me
+                                            on htmx:afterRequest from #slow-req-btn add @disabled to me">
+                            Cancel
+                        </button>
                     </td>
                 </tr>
             }
