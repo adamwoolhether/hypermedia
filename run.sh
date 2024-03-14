@@ -1,6 +1,6 @@
 #!/bin/zsh
 #wgo -file=.js npx tailwindcss -i view/css/app.css -o public/styles.css :: \
-wgo -file=.go -file=.templ -file=.css -xfile=_templ.go go run app/contact/main.go &
+wgo -file=.go -file=.templ -file=.css -file=.js -xfile=_templ.go go run app/contact/main.go &
 PID1=$!
 printf "wgo\t\tPID: %s\n" $PID1
 
