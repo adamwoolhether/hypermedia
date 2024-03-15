@@ -1,7 +1,7 @@
 package contactsgrp
 
 import (
-	fe "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/contacts"
+	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/frontend/view/contacts"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 

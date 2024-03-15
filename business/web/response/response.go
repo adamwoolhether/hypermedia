@@ -1,9 +1,7 @@
 // Package response provides the error handling types and support.
 package response
 
-import (
-	"errors"
-)
+import "errors"
 
 // PageDocument is the form used for API responses from query API calls.
 type PageDocument[T any] struct {

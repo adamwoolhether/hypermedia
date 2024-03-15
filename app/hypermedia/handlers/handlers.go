@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/adamwoolhether/hypermedia/app/contact/hypermedia/handlers/contactsgrp"
-	v1 "github.com/adamwoolhether/hypermedia/business/web"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/handlers/contactsgrp"
+	"github.com/adamwoolhether/hypermedia/business/web/mux"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
@@ -20,7 +20,7 @@ func Routes() add {
 type add struct{}
 
 // Add implements the RouteAdder interface.
-func (add) Add(app *web.App, cfg v1.APIMuxConfig) {
+func (add) Add(app *web.App, cfg mux.WebAppConfig) {
 	app.Handle(http.MethodGet, prefix, "/", root)
 
 	contactsgrp.Routes(prefix, cfg.Log, cfg.Session, app)

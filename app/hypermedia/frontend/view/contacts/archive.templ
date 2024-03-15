@@ -4,7 +4,7 @@ import (
     "github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 )
 
-templ Archive(arch archiver.ArchiveAPI) {
+templ Archive(arch archiver.ArchiveView) {
     <div id="archive-ui"
         class="download-ui"
         hx-target="this"

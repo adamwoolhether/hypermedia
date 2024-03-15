@@ -173,7 +173,7 @@ func (c *Core) ArchiveRm(ctx context.Context) {
 	c.archiver.Reset()
 }
 
-func (c *Core) ArchivePoll(ctx context.Context) archiver.ArchiveAPI {
+func (c *Core) ArchivePoll(ctx context.Context) archiver.ArchiveView {
 	c.log.Info(ctx, "polling")
 
 	return c.archiver.Poll()

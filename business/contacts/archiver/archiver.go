@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-type ArchiveAPI struct {
+type ArchiveView struct {
 	Status  Status `json:"status"`
 	Percent string `json:"progress"`
 }
@@ -70,14 +70,14 @@ func (a *Archiver) Run() error {
 	return nil
 }
 
-func (a *Archiver) Poll() ArchiveAPI {
+func (a *Archiver) Poll() ArchiveView {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
 
 	status := a.Status
 	progress := a.Progress.Load()
 
-	apiResp := ArchiveAPI{
+	apiResp := ArchiveView{
 		Status:  status,
 		Percent: fmt.Sprintf("%d", progress),
 	}

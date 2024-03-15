@@ -16,9 +16,9 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend"
-	"github.com/adamwoolhether/hypermedia/app/contact/hypermedia/handlers"
-	web2 "github.com/adamwoolhether/hypermedia/business/web"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/frontend"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/handlers"
+	"github.com/adamwoolhether/hypermedia/business/web/mux"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
@@ -46,13 +46,13 @@ func run(ctx context.Context, log *logger.Logger) error {
 	signal.Notify(shutdown, os.Interrupt, os.Kill)
 
 	cookieStore := session.New("super-secret-key-for-now")
-	app := web2.APIMux(
-		web2.APIMuxConfig{
+	app := mux.WebApp(
+		mux.WebAppConfig{
 			Build:    build,
 			Shutdown: shutdown,
 			Log:      log,
 			Session:  cookieStore,
-		}, handlers.Routes(), web2.WithStaticFS(frontend.Static()))
+		}, handlers.Routes(), mux.WithStaticFS(frontend.Static()))
 
 	api := http.Server{
 		Addr:    "localhost:42069",

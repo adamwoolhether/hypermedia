@@ -2,11 +2,11 @@ package contacts
 
 import (
     "fmt"
-    "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/layout"
+    "github.com/adamwoolhether/hypermedia/app/hypermedia/frontend/view/layout"
 	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 )
 
-templ Index(query string, page int, contacts []ContactView, arch archiver.ArchiveAPI) {
+templ Index(query string, page int, contacts []ContactView, arch archiver.ArchiveView) {
     @layout.Layout() {
     <div class="form-container">
 

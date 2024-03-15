@@ -2,5 +2,5 @@
 .env
 bin
 vendor
-app/contact/hypermedia/frontend/view/**/*.txt
-app/contact/hypermedia/frontend/view/**/*_templ.go
+app/hypermedia/frontend/view/**/*.txt
+app/hypermedia/frontend/view/**/*_templ.go

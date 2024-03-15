@@ -1,4 +1,4 @@
-package web
+package mux
 
 import (
 	"net/http"
@@ -11,19 +11,19 @@ import (
 )
 
 type RouteAdder interface {
-	Add(app *web.App, cfg APIMuxConfig)
+	Add(app *web.App, cfg WebAppConfig)
 }
 
-// APIMuxConfig contains all the mandatory systems required by handlers.
-type APIMuxConfig struct {
+// WebAppConfig contains all the mandatory systems required by handlers.
+type WebAppConfig struct {
 	Build    string
 	Shutdown chan os.Signal
 	Log      *logger.Logger
 	Session  *session.Store
 }
 
-// APIMux constructs a http.Handler with all application routes defined.
-func APIMux(cfg APIMuxConfig, routes RouteAdder, options ...func(opts *Options)) http.Handler {
+// WebApp constructs a http.Handler with all application routes defined.
+func WebApp(cfg WebAppConfig, routes RouteAdder, options ...func(opts *Options)) http.Handler {
 	var opts Options
 	for _, option := range options {
 		option(&opts)
