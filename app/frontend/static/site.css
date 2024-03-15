@@ -106,3 +106,13 @@ tr:is(:hover, :focus-within) [data-overflow-menu] {
     text-align: left;
 }
 
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.counter {
+    display: flex;
+    gap: 10px;
+}

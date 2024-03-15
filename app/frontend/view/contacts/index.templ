@@ -10,7 +10,9 @@ import (
 templ Index(query string, page int, contacts []contacts.Contact, arch archiver.ArchiveAPI) {
     @layout.Layout() {
     <div class="form-container">
+
         @Archive(arch)
+
         <form action="/v1/contacts" method="get" class="tool-bar">
             <label for="search">Search Term</label>
             <input id="search" type="search" name="q" value={ query }
@@ -39,11 +41,19 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
             </button>
         </form>
         <p>
-            <a href="/v1/contacts/new">Add Contact</a>
-            // use hx-trigger="load" to load as soon as page laods, even if not in view.
-            <span hx-get="/v1/contacts/count" hx-trigger="revealed">
-                <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg"/>
-            </span>
+            <div class="bottom-row">
+                <div class="left-aligned-items">
+                    <a href="/v1/contacts/new">Add Contact</a>
+                    <span hx-get="/v1/contacts/count" hx-trigger="revealed">
+                        <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg"/>
+                    </span>
+                </div>
+
+                <div class="counter" x-data="{ count: 0 }">
+                    <output x-text="count"></output>
+                    <button x-on:click="count++">Increment</button>
+                </div>
+            </div>
         </p>
     </div>
     }
