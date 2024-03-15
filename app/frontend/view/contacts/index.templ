@@ -72,9 +72,15 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                     </span>
                 </div>
 
+                // Increment counter done with _hyperscript.
+                <div class="counter">
+                    <output>0</output>
+                    <button _="on click increment the textContent of the previous <output/>">Increment (_hyperscript)</button>
+                </div>
+                // Increment counter done with Alpine.
                 <div class="counter" x-data="{ count: 0 }">
                     <output x-text="count"></output>
-                    <button x-on:click="count++">Increment</button>
+                    <button x-on:click="count++">Increment (Alpine)</button>
                 </div>
             </div>
         </p>
@@ -97,7 +103,9 @@ templ renderContacts(page int, contacts []contacts.Contact) {
         </tr>
         </thead>
         <tbody>
+
             @Rows(contacts)
+
             if len(contacts) == 10 {
                 <tr>
                     <td colspan="5" style="text-align: center; padding: 10px;">

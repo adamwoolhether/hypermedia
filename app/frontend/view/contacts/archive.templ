@@ -29,6 +29,7 @@ templ Archive(arch archiver.ArchiveAPI) {
                 </div>
             </div>
         case archiver.Complete:
+            // User _hyperscript to auto-download the file.
             // Note we must disable boost behavior, AJAX cannot DL
             // a file directly.
             <a hx-boost="false" href="/v1/contacts/archive/file"
