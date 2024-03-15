@@ -25,7 +25,30 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
             <input type="submit" value="Search"/>
             <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
         </form>
-        <form>
+        // Use `x-data` to hold state determining if the toolbar is visible or not.
+        <form x-data="{ selected: [] }">
+            // template typically not rendered by default. By using `x-if` attribute,
+            // we can tell Alpine to render HTML within template if condition is true.
+            // We bind to this state in rows.templ using `x-model` attribute.
+            <template x-if="selected.length > 0">
+                // The class here reference missing.css
+                <div class="box info tool-bar">
+                    <slot x-text="selected.length"></slot>
+                    contacts selected
+
+                    // We short-circuit the htmx.ajax call if the user clicks cancel.
+                    // `$root` in Alpine will be the element that has the `x-data` attribute
+                    // declared on it - the form with our contacts in this case.
+                    // We're delegating the AJAX request to htmx's JS API.
+                    <button type="button" class="bad bg color border"
+                        @click="confirm(`Delete ${selected.length} contacts?`) &&
+                        htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })"
+                        >Delete
+                    </button>
+                    <hr aria-orientation="vertical"/>
+                    <button type="button" @click="selected = []">Cancel</button>
+                </div>
+            </template>
 
             @renderContacts(page, contacts)
 

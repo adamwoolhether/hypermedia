@@ -8,7 +8,7 @@ import (
 templ Rows(contacts []contacts.Contact) {
     for _, contact := range contacts {
         <tr>
-        <td><input type="checkbox" name="selected_contact_ids" value={ fmt.Sprintf("%d", contact.ID) } /></td>
+        <td><input type="checkbox" name="selected_contact_ids" value={ fmt.Sprintf("%d", contact.ID) } x-model="selected" /></td>
         <td>{ contact.FirstName }</td>
         <td>{ contact.LastName }</td>
         <td>{ contact.Phone }</td>
