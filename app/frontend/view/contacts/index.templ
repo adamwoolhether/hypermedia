@@ -44,9 +44,23 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                     // `$root` in Alpine will be the element that has the `x-data` attribute
                     // declared on it - the form with our contacts in this case.
                     // We're delegating the AJAX request to htmx's JS API.
+                    //<button type="button" class="bad bg color border"
+                    //    @click="confirm(`Delete ${selected.length} contacts?`) &&
+                    //    htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })"
+                    //    >Delete
+                    //</button>
+                    //
+                    // More stylized delete button with SweetAlert2 library.
                     <button type="button" class="bad bg color border"
-                        @click="confirm(`Delete ${selected.length} contacts?`) &&
-                        htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })"
+                        @click="Swal.fire({
+                                title: 'Delete these contacts?',
+                                showCancelButton: true,
+                                confirmButtonText: 'Delete'
+                            }).then(result => {
+                                if (result.isConfirmed) {
+                                    htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })
+                                }
+                            });"
                         >Delete
                     </button>
                     <hr aria-orientation="vertical"/>
