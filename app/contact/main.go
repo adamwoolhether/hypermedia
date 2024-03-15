@@ -6,6 +6,7 @@ package main
 - Move the struct conversion funcs.
 - Smooth progress bar transition, needed to use JS.
 - Fix text above progress bar moving it downwards.
+// How to prevent default in hyperscript?? Alt-S
 */
 import (
 	"context"

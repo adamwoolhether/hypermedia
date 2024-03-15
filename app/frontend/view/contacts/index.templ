@@ -14,15 +14,19 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
         @Archive(arch)
 
         <form action="/v1/contacts" method="get" class="tool-bar">
-            <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value={ query }
-                   hx-get="/v1/contacts"
-                   hx-trigger="change, keyup delay:200ms changed"
-                   hx-target="tbody"
-                   hx-push-url="true"
-                   hx-indicator="#spinner"/>
+            <label for="search">Search</label>
+            // Use _hyperscript to focus on the search input elemtent.
+            // Note we need to prevent the keystroke from actually
+            // being entered, which is done with `event.preventDefault()`.
+            <input id="search" type="search" name="q" placeholder="Search Contacts" value={ query }
+                _="on keydown[altKey and code is 'KeyS'] from the window me.focus() then event.preventDefault()"
+                hx-get="/v1/contacts"
+                hx-trigger="change, keyup delay:200ms changed"
+                hx-target="tbody"
+                hx-push-url="true"
+                hx-indicator="#spinner"/>
             // htmx-indicator is a CSS class that is automatically injected into the page by htmx.
-            <input type="submit" value="Search"/>
+            <input type="submit" value="&rightarrow;" style="font-weight: bold;"/>
             <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
         </form>
         // Use `x-data` to hold state determining if the toolbar is visible or not.
