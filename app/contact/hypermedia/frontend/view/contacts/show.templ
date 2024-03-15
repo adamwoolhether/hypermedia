@@ -13,7 +13,7 @@ templ ShowByID(contact contacts.Contact) {
     </div>
 
     <p>
-        <a href={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) }>Edit</a>
-        <a href="/v1/contacts">Back</a>
+        <a href={ templ.URL(fmt.Sprintf("/contacts/%d/edit", contact.ID)) }>Edit</a>
+        <a href="/contacts">Back</a>
     </p>
 }

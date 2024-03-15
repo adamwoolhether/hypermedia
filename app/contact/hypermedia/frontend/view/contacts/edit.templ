@@ -2,21 +2,21 @@ package contacts
 
 import (
     "fmt"
-    "github.com/adamwoolhether/hypermedia/app/frontend/view/layout"
+    "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/layout"
 )
 
 templ EditByID(contact UpdateContact) {
     @layout.Layout() {
         <form
             class="form-container"
-            action={ templ.URL(fmt.Sprintf("/v1/contacts/%d/edit", contact.ID)) } method="POST">
+            action={ templ.URL(fmt.Sprintf("/contacts/%d/edit", contact.ID)) } method="POST">
         <fieldset>
             <legend>Contact Values</legend>
             <p class="inline-field">
                 <label for="email">Email</label>
                 <input
                     name="email" id="email" type="email"
-                    hx-get={ fmt.Sprintf("/v1/contacts/%d/email", contact.ID) }
+                    hx-get={ fmt.Sprintf("/contacts/%d/email", contact.ID) }
                     hx-target="next .error"
                     hx-trigger="change, keyup delay:1000ms changed"
                     placeholder="Email" value={ contact.Email }/>
@@ -39,7 +39,7 @@ templ EditByID(contact UpdateContact) {
             </p>
             <button>Save</button>
             <button id="delete-btn"
-                    hx-delete={ fmt.Sprintf("/v1/contacts/%d", contact.ID) }
+                    hx-delete={ fmt.Sprintf("/contacts/%d", contact.ID) }
                     hx-push-url="true"
                     hx-confirm="Are you sure you want to delete this contact?"
                     hx-target="body"
@@ -48,7 +48,7 @@ templ EditByID(contact UpdateContact) {
             </button>
         </fieldset>
         <p>
-            <a href="/v1/contacts">Back</a>
+            <a href="/contacts">Back</a>
         </p>
         </form>
 

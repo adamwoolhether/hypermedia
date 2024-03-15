@@ -1,4 +1,4 @@
-package v1
+package web
 
 import (
 	"context"

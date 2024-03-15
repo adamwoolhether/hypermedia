@@ -10,12 +10,11 @@ import (
 	"strconv"
 	"time"
 
-	fe "github.com/adamwoolhether/hypermedia/app/frontend/view/contacts"
-	"github.com/adamwoolhether/hypermedia/foundation/session"
-	"github.com/adamwoolhether/hypermedia/foundation/validate"
-
+	fe "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/contacts"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/session"
+	"github.com/adamwoolhether/hypermedia/foundation/validate"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
@@ -26,7 +25,7 @@ type Handlers struct {
 	sessions *session.Store
 }
 
-func New(build string, log *logger.Logger, core *contacts.Core, store *session.Store) *Handlers {
+func New(log *logger.Logger, core *contacts.Core, store *session.Store) *Handlers {
 	return &Handlers{
 		log:      log,
 		core:     core,
@@ -71,7 +70,7 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
 
-	web.Redirect(w, r, "/v1/contacts")
+	web.Redirect(w, r, "/contacts")
 
 	return nil
 }
@@ -101,11 +100,11 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	// we know we only need to update a very specific
 	// part of the page, so we just return the rows.
 	if r.Header.Get("HX-Trigger") == "search" {
-		return fe.Rows(contacts).Render(ctx, w)
+		return fe.Rows(contactsToView(contacts)).Render(ctx, w)
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index(query, page, contacts, h.core.ArchivePoll(ctx)).Render(flashCtx, w)
+	return fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx)).Render(flashCtx, w)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -217,7 +216,7 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
 
-	web.Redirect(w, r, "/v1/contacts"+userID)
+	web.Redirect(w, r, "/contacts"+userID)
 
 	return nil
 }
@@ -244,7 +243,7 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
 
-	web.Redirect(w, r, "/v1/contacts")
+	web.Redirect(w, r, "/contacts")
 	return nil
 }
 
@@ -283,7 +282,7 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index("", 1, contacts, h.core.ArchivePoll(ctx)).Render(flashCtx, w)
+	return fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx)).Render(flashCtx, w)
 }
 
 func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {

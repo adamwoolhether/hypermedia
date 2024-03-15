@@ -1,10 +1,10 @@
-package v1
+package web
 
 import (
 	"net/http"
 	"os"
 
-	mid "github.com/adamwoolhether/hypermedia/business/web/v1/middleware"
+	middleware "github.com/adamwoolhether/hypermedia/business/web/middleware"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
@@ -28,16 +28,15 @@ func APIMux(cfg APIMuxConfig, routes RouteAdder, options ...func(opts *Options))
 	for _, option := range options {
 		option(&opts)
 	}
-
 	app := web.NewApp(
 		cfg.Shutdown,
-		mid.Logger(cfg.Log),
-		mid.Errors(cfg.Log),
-		mid.Panics(),
+		middleware.Logger(cfg.Log),
+		middleware.Errors(cfg.Log),
+		middleware.Panics(),
 	)
 
 	if opts.corsOrigin != "" {
-		app.EnableCORS(mid.Cors(opts.corsOrigin))
+		app.EnableCORS(middleware.Cors(opts.corsOrigin))
 	}
 
 	if opts.staticFS != nil {

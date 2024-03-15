@@ -1,12 +1,12 @@
 package contacts
 
 import (
-    "github.com/adamwoolhether/hypermedia/app/frontend/view/layout"
+    "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/layout"
 )
 
 templ NewForm(new NewContact) {
     @layout.Layout() {
-        <form class="form-container" action="/v1/contacts/new" method="POST">
+        <form class="form-container" action="/contacts/new" method="POST">
             <fieldset>
                 <legend>Contact Values</legend>
                 <p class="inline-field">
@@ -32,7 +32,7 @@ templ NewForm(new NewContact) {
                 <button>Save</button>
             </fieldset>
         <p>
-            <a href="/v1/contacts">Back</a>
+            <a href="/contacts">Back</a>
         </p>
         </form>
 

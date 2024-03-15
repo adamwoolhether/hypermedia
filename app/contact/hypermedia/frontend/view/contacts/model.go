@@ -4,6 +4,14 @@ import (
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
+type ContactView struct {
+	ID        int    `json:"id"`
+	FirstName string `json:"first"`
+	LastName  string `json:"last"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email"`
+}
+
 type NewContact struct {
 	//ID     int    `json:"id"`
 	FirstName      string        `json:"first_name" validate:"required"`

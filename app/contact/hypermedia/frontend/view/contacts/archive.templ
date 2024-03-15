@@ -12,12 +12,12 @@ templ Archive(arch archiver.ArchiveAPI) {
 
         switch arch.Status {
         case archiver.Waiting:
-            <button hx-post="/v1/contacts/archive">
+            <button hx-post="/contacts/archive">
                 Download Contact Archive
             </button>
         case archiver.Running:
             <div style="position: absolute; color: black;">Creating archive... { arch.Percent }%</div>
-            <div hx-get="/v1/contacts/archive" hx-trigger="load delay:500ms">
+            <div hx-get="/contacts/archive" hx-trigger="load delay:500ms">
                 <div class="progress">
                     <div id="archive-progress"
                         class="progress-bar"
@@ -32,11 +32,11 @@ templ Archive(arch archiver.ArchiveAPI) {
             // User _hyperscript to auto-download the file.
             // Note we must disable boost behavior, AJAX cannot DL
             // a file directly.
-            <a hx-boost="false" href="/v1/contacts/archive/file"
+            <a hx-boost="false" href="/contacts/archive/file"
                 _="on load click() me">
                 Archive Ready! Click here to download &downarrow;
             </a>
-            <button hx-delete="/v1/contacts/archive">Clear Download</button>
+            <button hx-delete="/contacts/archive">Clear Download</button>
         }
     </div>
 }

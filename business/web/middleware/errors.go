@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/adamwoolhether/hypermedia/business/web/v1/response"
+	"github.com/adamwoolhether/hypermedia/business/web/response"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/validate"
 	"github.com/adamwoolhether/hypermedia/foundation/web"

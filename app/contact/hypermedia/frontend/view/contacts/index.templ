@@ -1,26 +1,25 @@
 package contacts
 
 import (
-    "github.com/adamwoolhether/hypermedia/business/contacts"
-    "github.com/adamwoolhether/hypermedia/app/frontend/view/layout"
     "fmt"
+    "github.com/adamwoolhether/hypermedia/app/contact/hypermedia/frontend/view/layout"
 	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 )
 
-templ Index(query string, page int, contacts []contacts.Contact, arch archiver.ArchiveAPI) {
+templ Index(query string, page int, contacts []ContactView, arch archiver.ArchiveAPI) {
     @layout.Layout() {
     <div class="form-container">
 
         @Archive(arch)
 
-        <form action="/v1/contacts" method="get" class="tool-bar">
+        <form action="/contacts" method="get" class="tool-bar">
             <label for="search">Search</label>
             // Use _hyperscript to focus on the search input elemtent.
             // Note we need to prevent the keystroke from actually being entered
             // which is done with `event.preventDefault()` or just `halt`.
             <input id="search" type="search" name="q" placeholder="Search Contacts" value={ query }
                 _="on keydown[altKey and code is 'KeyS'] from the window me.focus() then halt"
-                hx-get="/v1/contacts"
+                hx-get="/contacts"
                 hx-trigger="change, keyup delay:200ms changed"
                 hx-target="tbody"
                 hx-push-url="true"
@@ -46,7 +45,7 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                     // We're delegating the AJAX request to htmx's JS API.
                     //<button type="button" class="bad bg color border"
                     //    @click="confirm(`Delete ${selected.length} contacts?`) &&
-                    //    htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })"
+                    //    htmx.ajax('DELETE', '/contacts', { source: $root, target: document.body })"
                     //    >Delete
                     //</button>
                     //
@@ -58,7 +57,7 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
                                 confirmButtonText: 'Delete'
                             }).then(result => {
                                 if (result.isConfirmed) {
-                                    htmx.ajax('DELETE', '/v1/contacts', { source: $root, target: document.body })
+                                    htmx.ajax('DELETE', '/contacts', { source: $root, target: document.body })
                                 }
                             });"
                         >Delete
@@ -70,22 +69,22 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
 
             @renderContacts(page, contacts)
 
-            <button hx-delete="/v1/contacts"
+            <button hx-delete="/contacts"
                     hx-confirm="Are you sure you want to delete these contacts?"
                     hx-target="body">Delete Selected
             </button>
             // This button demonstrates calling a JS function to use in `hx-trigger`
             // It will never work, cause our superAdmin() script always returns false.
             // See layout.templ for definition.
-            <button hx-get="/v1/contacts/deleteall" hx-trigger="click[superAdmin()]">
+            <button hx-get="/contacts/deleteall" hx-trigger="click[superAdmin()]">
                 Delete All Contacts
             </button>
         </form>
         <p>
             <div class="bottom-row">
                 <div class="left-aligned-items">
-                    <a href="/v1/contacts/new">Add Contact</a>
-                    <span hx-get="/v1/contacts/count" hx-trigger="revealed">
+                    <a href="/contacts/new">Add Contact</a>
+                    <span hx-get="/contacts/count" hx-trigger="revealed">
                         <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg"/>
                     </span>
                 </div>
@@ -108,7 +107,7 @@ templ Index(query string, page int, contacts []contacts.Contact, arch archiver.A
 
 
 
-templ renderContacts(page int, contacts []contacts.Contact) {
+templ renderContacts(page int, contacts []ContactView) {
     <table>
         <thead>
         <tr>
@@ -135,14 +134,14 @@ templ renderContacts(page int, contacts []contacts.Contact) {
                             <button hx-target="closest tr"
                                     hx-swap="outerHTML"
                                     hx-select="tbody > tr"
-                                    hx-get={ fmt.Sprintf("/v1/contacts?page=%d", page + 1) }>
+                                    hx-get={ fmt.Sprintf("/contacts?page=%d", page + 1) }>
                                 Load More
                             </button>
                             <button id="slow-req-btn"
                                     hx-target="closest tr"
                                     hx-swap="outerHTML"
                                     hx-select="tbody > tr"
-                                    hx-get={ fmt.Sprintf("/v1/contacts/slow?page=%d", page + 1) }>
+                                    hx-get={ fmt.Sprintf("/contacts/slow?page=%d", page + 1) }>
                                 Load More Slowly
                             </button>
                             // Demonstrate use of htmx:abort to cancel a slow request.
@@ -163,10 +162,10 @@ templ renderContacts(page int, contacts []contacts.Contact) {
     //<div>
     //    <span style="float: right">
     //        if page > 1 {
-    //            <a href={ templ.URL(fmt.Sprintf("/v1/contacts?page=%d", page - 1)) }>Previous</a>
+    //            <a href={ templ.URL(fmt.Sprintf("/contacts?page=%d", page - 1)) }>Previous</a>
     //        }
     //        if len(contacts) == 10 {
-    //            <a href={ templ.URL(fmt.Sprintf("/v1/contacts?page=%d", page + 1)) }>Next</a>
+    //            <a href={ templ.URL(fmt.Sprintf("/contacts?page=%d", page + 1)) }>Next</a>
     //        }
     //    </span>
     //</div>
