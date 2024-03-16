@@ -20,4 +20,5 @@ func Routes(app *web.App, cfg Config) {
 	handlers := contactsgrp.New(cfg.Log, cfg.Contacts)
 	app.Handle(http.MethodGet, v1, "/contacts", handlers.Query)
 	app.Handle(http.MethodPost, v1, "/contacts", handlers.Create)
+	app.Handle(http.MethodGet, v1, "/contacts/{id}", handlers.QueryByID)
 }

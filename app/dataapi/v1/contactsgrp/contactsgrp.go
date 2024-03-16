@@ -66,3 +66,18 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 	return web.Respond(ctx, w, newContact, http.StatusCreated)
 }
+
+func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return response.NewError(err, http.StatusBadRequest)
+	}
+
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return response.NewError(err, http.StatusInternalServerError)
+	}
+
+	return web.Respond(ctx, w, contactToAPI(contact), http.StatusOK)
+}
