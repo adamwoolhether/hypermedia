@@ -252,24 +252,12 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	// Go doesn't allow us to use `r.ParseForm()` on DELETE requests, so we manually parse the form data from body.
 	// We could also just set this as a POST handler, but that seems weird.
-	bodyBytes, err := io.ReadAll(r.Body)
-	if err != nil {
-		return err
-	}
-	bodyString := string(bodyBytes)
-
-	data, err := url.ParseQuery(bodyString)
+	ids, err := parseDeleteForm(r)
 	if err != nil {
 		return err
 	}
 
-	toDelete := data["selected_contact_ids"]
-	for _, id := range toDelete {
-		id, err := strconv.Atoi(id)
-		if err != nil {
-			return err
-		}
-
+	for _, id := range ids {
 		if err := h.core.Delete(ctx, id); err != nil {
 			h.log.Error(ctx, "deleting contact", "id", id, "err", err)
 		}
@@ -359,4 +347,40 @@ func (h *Handlers) Slow(ctx context.Context, w http.ResponseWriter, r *http.Requ
 	h.log.Info(ctx, "slow req done")
 
 	return h.Query(ctx, w, r)
+}
+
+// /////////////////////////////////////////////////////////////////
+
+func parseDeleteForm(r *http.Request) ([]int, error) {
+	maxFormSize := int64(10 << 20)
+	bodyBytes, err := io.ReadAll(io.LimitReader(r.Body, maxFormSize))
+	if err != nil {
+		return nil, err
+	}
+	defer r.Body.Close()
+
+	if n, _ := io.ReadFull(r.Body, make([]byte, 1)); n == 1 {
+		return nil, fmt.Errorf("request body too large")
+	}
+
+	bodyString := string(bodyBytes)
+
+	data, err := url.ParseQuery(bodyString)
+	if err != nil {
+		return nil, err
+	}
+
+	toDelete := data["selected_contact_ids"]
+	ids := make([]int, len(toDelete))
+
+	for i, id := range toDelete {
+		id, err := strconv.Atoi(id)
+		if err != nil {
+			return nil, err
+		}
+
+		ids[i] = id
+	}
+
+	return ids, nil
 }
