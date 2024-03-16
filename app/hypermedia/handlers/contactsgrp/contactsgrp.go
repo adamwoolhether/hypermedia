@@ -250,7 +250,8 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 }
 
 func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-	// Not sure why the req isn't settings the form... Should investigate later.
+	// Go doesn't allow us to use `r.ParseForm()` on DELETE requests, so we manually parse the form data from body.
+	// We could also just set this as a POST handler, but that seems weird.
 	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		return err
