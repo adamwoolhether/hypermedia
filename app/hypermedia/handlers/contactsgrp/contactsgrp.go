@@ -18,6 +18,8 @@ import (
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
+const defaultRows = 10
+
 // Handlers manages the set of check points.
 type Handlers struct {
 	log      *logger.Logger
@@ -91,7 +93,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		time.Sleep(500 * time.Millisecond)
 	}
 
-	contacts, err := h.core.Query(ctx, query, page)
+	contacts, err := h.core.Query(ctx, query, page, defaultRows)
 	if err != nil {
 		return err
 	}
@@ -276,7 +278,7 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 		h.log.Error(ctx, "adding flash", "err", err)
 	}
 
-	contacts, err := h.core.Query(ctx, "", 1)
+	contacts, err := h.core.Query(ctx, "", 1, defaultRows)
 	if err != nil {
 		return err
 	}

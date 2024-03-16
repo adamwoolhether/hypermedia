@@ -45,14 +45,12 @@ func NewCore(log *logger.Logger) *Core {
 	return c
 }
 
-const pageSize = 10
-
-func (c *Core) Query(ctx context.Context, query string, page int) ([]Contact, error) {
+func (c *Core) Query(ctx context.Context, query string, page, rows int) ([]Contact, error) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
-	start := (page - 1) * pageSize
-	end := start + pageSize
+	start := (page - 1) * rows
+	end := start + rows
 
 	var results []Contact
 
