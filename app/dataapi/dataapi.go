@@ -17,8 +17,10 @@ type Config struct {
 func Routes(app *web.App, cfg Config) {
 	// V1
 	const v1 = "api/v1"
-	handlers := contactsgrp.New(cfg.Log, cfg.Contacts)
-	app.Handle(http.MethodGet, v1, "/contacts", handlers.Query)
-	app.Handle(http.MethodPost, v1, "/contacts", handlers.Create)
-	app.Handle(http.MethodGet, v1, "/contacts/{id}", handlers.QueryByID)
+	contactsGrp := contactsgrp.New(cfg.Log, cfg.Contacts)
+	app.Handle(http.MethodGet, v1, "/contacts", contactsGrp.Query)
+	app.Handle(http.MethodPost, v1, "/contacts", contactsGrp.Create)
+	app.Handle(http.MethodGet, v1, "/contacts/{id}", contactsGrp.QueryByID)
+	app.Handle(http.MethodPut, v1, "/contacts/{id}", contactsGrp.Update)
+	app.Handle(http.MethodDelete, v1, "/contacts/{id}", contactsGrp.Delete)
 }

@@ -55,12 +55,12 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 }
 
 func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-	var newContact NewContact
+	var newContact newContact
 	if err := web.Decode(r, &newContact); err != nil {
 		return response.NewError(err, http.StatusBadRequest)
 	}
 
-	if err := h.core.Create(ctx, newContact.ToDB()); err != nil {
+	if err := h.core.Create(ctx, newContact.toDB()); err != nil {
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
@@ -80,4 +80,55 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 	}
 
 	return web.Respond(ctx, w, contactToAPI(contact), http.StatusOK)
+}
+
+func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	var uc updateContact
+	if err := web.Decode(r, &uc); err != nil {
+		return response.NewError(err, http.StatusBadRequest)
+	}
+
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if uc.FirstName != nil {
+		contact.FirstName = *uc.FirstName
+	}
+	if uc.LastName != nil {
+		contact.LastName = *uc.LastName
+	}
+	if uc.Email != nil {
+		contact.Email = *uc.Email
+	}
+	if uc.Phone != nil {
+		contact.Phone = *uc.Phone
+	}
+
+	if err := h.core.Update(ctx, contact); err != nil {
+		return response.NewError(err, http.StatusInternalServerError)
+	}
+
+	return web.Respond(ctx, w, contactToAPI(contact), http.StatusOK)
+}
+
+func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	if err := h.core.Delete(ctx, id); err != nil {
+		return response.NewError(err, http.StatusInternalServerError)
+	}
+
+	return web.Respond(ctx, w, nil, http.StatusNoContent)
 }
