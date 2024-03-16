@@ -1,19 +1,28 @@
-package contactsgrp
+package hypermedia
 
 import (
+	"context"
 	"net/http"
 
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/handlers/contactsgrp"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
-// Routes adds specific routes for this group.
-func Routes(prefix string, log *logger.Logger, store *session.Store, app *web.App) {
+const prefix = ""
 
-	core := contacts.NewCore(log)
-	handlers := New(log, core, store)
+type Config struct {
+	Log      *logger.Logger
+	Session  *session.Store
+	Contacts *contacts.Core
+}
+
+func Routes(app *web.App, cfg Config) {
+	app.Handle(http.MethodGet, prefix, "/", root)
+
+	handlers := contactsgrp.New(cfg.Log, cfg.Contacts, cfg.Session)
 	app.Handle(http.MethodGet, prefix, "/contacts", handlers.Query)
 	app.Handle(http.MethodDelete, prefix, "/contacts", handlers.DeleteBatch)
 	app.Handle(http.MethodGet, prefix, "/contacts/count", handlers.Count)
@@ -28,7 +37,13 @@ func Routes(prefix string, log *logger.Logger, store *session.Store, app *web.Ap
 	app.Handle(http.MethodDelete, prefix, "/contacts/archive", handlers.ArchiveRm)
 	app.Handle(http.MethodGet, prefix, "/contacts/archive", handlers.ArchivePoll)
 	app.Handle(http.MethodGet, prefix, "/contacts/archive/file", handlers.ArchiveDL)
-
 	// To test very slow responses.
 	app.Handle(http.MethodGet, prefix, "/contacts/slow", handlers.Slow)
+}
+
+func root(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	web.Redirect(w, r, "/contacts")
+
+	return nil
 }

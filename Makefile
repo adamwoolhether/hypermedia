@@ -13,7 +13,7 @@ dev:
 run: templ
 	@trap 'osascript -e "tell application \"Google Chrome\" to close (tabs of window 1 whose URL contains \"http://localhost:42069/\")"' INT TERM EXIT && \
 	open -a "Google Chrome" http://localhost:42069/ && \
-	go run app/main.go | go run app/tooling/main.go
+	go run main.go | go run app/tooling/main.go
 
 templ:
 	templ generate
