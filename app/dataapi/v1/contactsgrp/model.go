@@ -2,7 +2,34 @@ package contactsgrp
 
 import (
 	"github.com/adamwoolhether/hypermedia/business/contacts"
+	"github.com/adamwoolhether/hypermedia/foundation/validate"
 )
+
+type NewContact struct {
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Phone     string `json:"phone" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+}
+
+func (nc NewContact) ToDB() contacts.Contact {
+	c := contacts.Contact{
+		FirstName: nc.FirstName,
+		LastName:  nc.LastName,
+		Phone:     nc.Phone,
+		Email:     nc.Email,
+	}
+
+	return c
+}
+
+func (nc NewContact) Validate() error {
+	if err := validate.Check(nc); err != nil {
+		return err
+	}
+
+	return nil
+}
 
 type ContactAPI struct {
 	ID        int    `json:"id"`

@@ -53,3 +53,16 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 
 	return web.Respond(ctx, w, resp, http.StatusOK)
 }
+
+func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	var newContact NewContact
+	if err := web.Decode(r, &newContact); err != nil {
+		return response.NewError(err, http.StatusBadRequest)
+	}
+
+	if err := h.core.Create(ctx, newContact.ToDB()); err != nil {
+		return response.NewError(err, http.StatusInternalServerError)
+	}
+
+	return web.Respond(ctx, w, newContact, http.StatusCreated)
+}

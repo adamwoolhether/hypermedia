@@ -18,3 +18,4 @@ run: templ
 templ:
 	templ generate
 
+# curl -i -X POST http://localhost:42069/api/v1/contacts -d '{"first_name":"adam","last_name":"woo","phone":"1234567489","email":"email@example.com"}'

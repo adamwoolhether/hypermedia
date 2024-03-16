@@ -13,7 +13,6 @@ type ContactView struct {
 }
 
 type NewContact struct {
-	//ID     int    `json:"id"`
 	FirstName      string        `json:"first_name" validate:"required"`
 	LastName       string        `json:"last_name" validate:"required"`
 	Phone          string        `json:"phone" validate:"required"`
