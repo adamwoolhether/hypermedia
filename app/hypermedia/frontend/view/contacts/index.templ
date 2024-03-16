@@ -29,7 +29,9 @@ templ Index(query string, page int, contacts []ContactView, arch archiver.Archiv
             <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
         </form>
         // Use `x-data` to hold state determining if the toolbar is visible or not.
-        <form x-data="{ selected: [] }">
+        // We use `x-effect` to run a function when the state changes. when we're calling
+        // sweetConfirm() from the sweetconfirm.js file.
+        <form x-data="{selected: []}" x-effect="if (selected.length) htmx.process($el)">
             // template typically not rendered by default. By using `x-if` attribute,
             // we can tell Alpine to render HTML within template if condition is true.
             // We bind to this state in rows.templ using `x-model` attribute.
@@ -51,16 +53,12 @@ templ Index(query string, page int, contacts []ContactView, arch archiver.Archiv
                     //
                     // More stylized delete button with SweetAlert2 library.
                     <button type="button" class="bad bg color border"
-                        @click="Swal.fire({
-                                title: 'Delete these contacts?',
-                                showCancelButton: true,
-                                confirmButtonText: 'Delete'
-                            }).then(result => {
-                                if (result.isConfirmed) {
-                                    htmx.ajax('DELETE', '/contacts', { source: $root, target: document.body })
-                                }
-                            });"
-                        >Delete
+                            hx-delete="/contacts" hx-target="body" hx-trigger="confirmed"
+                            @click="sweetConfirm($el,
+                                    { title: 'Delete these contacts?',
+                                      showCancelButton: true,
+                                      confirmButtonText: 'Delete'})">
+                                      Delete
                     </button>
                     <hr aria-orientation="vertical"/>
                     <button type="button" @click="selected = []">Cancel</button>
