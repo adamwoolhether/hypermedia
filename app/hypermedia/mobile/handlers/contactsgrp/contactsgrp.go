@@ -64,7 +64,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	var toRender any
 
 	if rowsOnly {
-		toRender = view.RowsTemplate(contacts)
+		toRender = view.RowsTemplate(contacts, page)
 
 		//bytes, err := xml.MarshalIndent(rows, "", "  ")
 		//if err != nil {
@@ -77,7 +77,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		//}
 
 	} else {
-		toRender = view.Layout(contacts)
+		toRender = view.Layout(contacts, page)
 	}
 
 	//bytes, err := xml.Marshal(toRender)

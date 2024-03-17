@@ -79,14 +79,6 @@ type TextField struct {
 	Behavior    *Behavior `xml:"behavior,omitempty"`
 }
 
-type Behavior struct {
-	Trigger string `xml:"trigger,attr,omitempty"`
-	Action  string `xml:"action,attr,omitempty"`
-	Target  string `xml:"target,attr,omitempty"`
-	Href    string `xml:"href,attr,omitempty"`
-	Verb    string `xml:"verb,attr,omitempty"`
-}
-
 type List struct {
 	ID    string `xml:"id,attr"`
 	Items Items  `xml:"items"`
@@ -100,9 +92,12 @@ type Items struct {
 }
 
 type Item struct {
-	Key   string `xml:"key,attr"`
-	Style string `xml:"style,attr"`
-	Text  Text   `xml:"text"`
+	ID       string    `xml:"id,attr,omitempty"`
+	Key      string    `xml:"key,attr,omitempty"`
+	Style    string    `xml:"style,attr,omitempty"`
+	Text     *Text     `xml:"text,omitempty"`
+	Behavior *Behavior `xml:"behavior,omitempty"`
+	Spinner  *Spinner  `xml:"spinner,omitempty"`
 }
 
 type Text struct {
@@ -110,7 +105,20 @@ type Text struct {
 	Content string `xml:",chardata"`
 }
 
-func Layout(contacts []contacts.Contact) Doc {
+// ///////////////////
+type Behavior struct {
+	Trigger string `xml:"trigger,attr,omitempty"`
+	Action  string `xml:"action,attr,omitempty"`
+	Target  string `xml:"target,attr,omitempty"`
+	Href    string `xml:"href,attr,omitempty"`
+	Verb    string `xml:"verb,attr,omitempty"`
+}
+
+type Spinner struct {
+	XMLName xml.Name `xml:"spinner"`
+}
+
+func Layout(contacts []contacts.Contact, page int) Doc {
 	doc := Doc{
 		Xmlns: "https://hyperview.org/hyperview",
 		Screen: Screen{
@@ -142,7 +150,7 @@ func Layout(contacts []contacts.Contact) Doc {
 						},
 						List: List{
 							ID:    "contacts-list",
-							Items: RowsTemplate(contacts),
+							Items: RowsTemplate(contacts, page),
 						},
 					},
 				},
@@ -194,8 +202,12 @@ func stylesTemplate() []Style {
 	return styles
 }
 
-func RowsTemplate(contacts []contacts.Contact) Items {
-	contactItems := make([]Item, len(contacts))
+func RowsTemplate(contacts []contacts.Contact, page int) Items {
+	if len(contacts) == 0 {
+		return Items{}
+	}
+
+	contactItems := make([]Item, len(contacts)+1)
 
 	for i, contact := range contacts {
 		var itemTextContent string
@@ -211,11 +223,25 @@ func RowsTemplate(contacts []contacts.Contact) Items {
 		contactItems[i] = Item{
 			Key:   strconv.Itoa(contact.ID),
 			Style: "contact-item",
-			Text: Text{
+			Text: &Text{
 				Style:   "contact-item-label",
 				Content: itemTextContent,
 			},
 		}
+	}
+
+	contactItems[len(contacts)] = Item{
+		ID:    "load-more",
+		Key:   "load-more",
+		Style: "load-more-item",
+		Behavior: &Behavior{
+			Trigger: "visible",
+			Action:  "replace",
+			Target:  "load-more",
+			Href:    fmt.Sprintf("/mobile/contacts?rows_only=true&page=%d", page+1),
+			Verb:    "get",
+		},
+		Spinner: &Spinner{},
 	}
 
 	items := Items{
