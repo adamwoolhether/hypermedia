@@ -82,6 +82,12 @@ type TextField struct {
 type List struct {
 	ID    string `xml:"id,attr"`
 	Items Items  `xml:"items"`
+	// Behavior is embedded here, adding the behavior attributes directly
+	// to the list element, rather than adding the element to the list.
+	// This is a convenient shorthand. We do this when  because of the use
+	// of `replace-inner`. This replaces all child elements of the target
+	// with the new content.
+	*Behavior
 }
 
 // ROWS /////////////////////////////////////////
@@ -134,7 +140,7 @@ func Layout(contacts []contacts.Contact, page int) Doc {
 				},
 				View: View{
 					Style: "main",
-					Form:  FormTemplate(contacts, page),
+					Form:  IndexTemplate(contacts, page),
 				},
 			},
 		},
@@ -143,7 +149,7 @@ func Layout(contacts []contacts.Contact, page int) Doc {
 	return doc
 }
 
-func FormTemplate(contacts []contacts.Contact, page int) Form {
+func IndexTemplate(contacts []contacts.Contact, page int) Form {
 	form := Form{
 		TextField: TextField{
 			Name:        "q",
@@ -159,7 +165,14 @@ func FormTemplate(contacts []contacts.Contact, page int) Form {
 			},
 		},
 		List: List{
-			ID:    "contacts-list",
+			ID: "contacts-list",
+			Behavior: &Behavior{
+				Trigger: "refresh",
+				Action:  "replace-inner",
+				Target:  "contacts-list",
+				Href:    "/mobile/contacts?rows_only=true",
+				Verb:    "get",
+			},
 			Items: RowsTemplate(contacts, page),
 		},
 	}
@@ -195,18 +208,20 @@ func RowsTemplate(contacts []contacts.Contact, page int) Items {
 		}
 	}
 
-	contactItems[len(contacts)] = Item{
-		ID:    "load-more",
-		Key:   "load-more",
-		Style: "load-more-item",
-		Behavior: &Behavior{
-			Trigger: "visible",
-			Action:  "replace",
-			Target:  "load-more",
-			Href:    fmt.Sprintf("/mobile/contacts?rows_only=true&page=%d", page+1),
-			Verb:    "get",
-		},
-		Spinner: &Spinner{},
+	if len(contacts) == 10 {
+		contactItems[len(contacts)] = Item{
+			ID:    "load-more",
+			Key:   "load-more",
+			Style: "load-more-item",
+			Behavior: &Behavior{
+				Trigger: "visible",
+				Action:  "replace",
+				Target:  "load-more",
+				Href:    fmt.Sprintf("/mobile/contacts?rows_only=true&page=%d", page+1),
+				Verb:    "get",
+			},
+			Spinner: &Spinner{},
+		}
 	}
 
 	items := Items{
