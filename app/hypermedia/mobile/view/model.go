@@ -134,25 +134,7 @@ func Layout(contacts []contacts.Contact, page int) Doc {
 				},
 				View: View{
 					Style: "main",
-					Form: Form{
-						TextField: TextField{
-							Name:        "q",
-							Value:       "",
-							Placeholder: "Search...",
-							Style:       "search-field",
-							Behavior: &Behavior{
-								Trigger: "change",
-								Action:  "replace-inner",
-								Target:  "contacts-list",
-								Href:    "/mobile/contacts?rows_only=true",
-								Verb:    "get",
-							},
-						},
-						List: List{
-							ID:    "contacts-list",
-							Items: RowsTemplate(contacts, page),
-						},
-					},
+					Form:  FormTemplate(contacts, page),
 				},
 			},
 		},
@@ -161,45 +143,28 @@ func Layout(contacts []contacts.Contact, page int) Doc {
 	return doc
 }
 
-func stylesTemplate() []Style {
-	styles := []Style{
-		{
-			ID:                "header-title",
-			AlignItems:        "center",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			Display:           "flex",
-			FontSize:          "24",
-			JustifyContent:    "space-between",
-			PaddingTop:        "10",
-			PaddingBottom:     "10",
+func FormTemplate(contacts []contacts.Contact, page int) Form {
+	form := Form{
+		TextField: TextField{
+			Name:        "q",
+			Value:       "",
+			Placeholder: "Search...",
+			Style:       "search-field",
+			Behavior: &Behavior{
+				Trigger: "change",
+				Action:  "replace-inner",
+				Target:  "contacts-list",
+				Href:    "/mobile/contacts?rows_only=true",
+				Verb:    "get",
+			},
 		},
-		{
-			ID:                "search-field",
-			BackgroundColor:   "#E0E0E0",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			BorderTopColor:    "#ccc",
-			BorderTopWidth:    "1",
-			FontSize:          "16",
-			Padding:           "10",
-			Width:             "100%",
-		},
-		{
-			ID:                "contact-item",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			Padding:           "0",
-			Margin:            "0",
-		},
-		{
-			ID:       "contact-item-label",
-			FontSize: "18",
-			Padding:  "10",
+		List: List{
+			ID:    "contacts-list",
+			Items: RowsTemplate(contacts, page),
 		},
 	}
 
-	return styles
+	return form
 }
 
 func RowsTemplate(contacts []contacts.Contact, page int) Items {
@@ -250,4 +215,45 @@ func RowsTemplate(contacts []contacts.Contact, page int) Items {
 	}
 
 	return items
+}
+
+func stylesTemplate() []Style {
+	styles := []Style{
+		{
+			ID:                "header-title",
+			AlignItems:        "center",
+			BorderBottomWidth: "1",
+			BorderBottomColor: "#ccc",
+			Display:           "flex",
+			FontSize:          "24",
+			JustifyContent:    "space-between",
+			PaddingTop:        "10",
+			PaddingBottom:     "10",
+		},
+		{
+			ID:                "search-field",
+			BackgroundColor:   "#E0E0E0",
+			BorderBottomWidth: "1",
+			BorderBottomColor: "#ccc",
+			BorderTopColor:    "#ccc",
+			BorderTopWidth:    "1",
+			FontSize:          "16",
+			Padding:           "10",
+			Width:             "100%",
+		},
+		{
+			ID:                "contact-item",
+			BorderBottomWidth: "1",
+			BorderBottomColor: "#ccc",
+			Padding:           "0",
+			Margin:            "0",
+		},
+		{
+			ID:       "contact-item-label",
+			FontSize: "18",
+			Padding:  "10",
+		},
+	}
+
+	return styles
 }
