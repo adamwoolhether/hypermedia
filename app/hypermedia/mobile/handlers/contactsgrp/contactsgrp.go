@@ -76,7 +76,6 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		//	return err
 		//}
 
-		return nil
 	} else {
 		toRender = view.Layout(contacts)
 	}

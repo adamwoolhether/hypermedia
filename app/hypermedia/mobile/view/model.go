@@ -72,10 +72,19 @@ type Form struct {
 }
 
 type TextField struct {
-	Name        string `xml:"name,attr"`
-	Value       string `xml:"value,attr"`
-	Placeholder string `xml:"placeholder,attr"`
-	Style       string `xml:"style,attr"`
+	Name        string    `xml:"name,attr"`
+	Value       string    `xml:"value,attr"`
+	Placeholder string    `xml:"placeholder,attr"`
+	Style       string    `xml:"style,attr"`
+	Behavior    *Behavior `xml:"behavior,omitempty"`
+}
+
+type Behavior struct {
+	Trigger string `xml:"trigger,attr,omitempty"`
+	Action  string `xml:"action,attr,omitempty"`
+	Target  string `xml:"target,attr,omitempty"`
+	Href    string `xml:"href,attr,omitempty"`
+	Verb    string `xml:"verb,attr,omitempty"`
 }
 
 type List struct {
@@ -123,6 +132,13 @@ func Layout(contacts []contacts.Contact) Doc {
 							Value:       "",
 							Placeholder: "Search...",
 							Style:       "search-field",
+							Behavior: &Behavior{
+								Trigger: "change",
+								Action:  "replace-inner",
+								Target:  "contacts-list",
+								Href:    "/mobile/contacts?rows_only=true",
+								Verb:    "get",
+							},
 						},
 						List: List{
 							ID:    "contacts-list",
