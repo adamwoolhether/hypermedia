@@ -2,13 +2,10 @@ package view
 
 import (
 	"encoding/xml"
-	"fmt"
-	"strconv"
-
-	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-// LAYOUT /////////////////////////////////////////
+// LAYOUT //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 type Doc struct {
 	XMLName xml.Name `xml:"doc"`
 	Xmlns   string   `xml:"xmlns,attr"`
@@ -20,7 +17,6 @@ type Screen struct {
 	Body   Body   `xml:"body"`
 }
 
-// Styles struct is left empty since the styles are omitted for brevity in the template.
 type Styles struct {
 	XMLName xml.Name `xml:"styles"`
 	Style   []Style  `xml:"style"`
@@ -65,7 +61,8 @@ type View struct {
 	Form  Form   `xml:"form"`
 }
 
-// INDEX /////////////////////////////////////////
+// INDEX ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 type Form struct {
 	TextField TextField `xml:"text-field"`
 	List      List      `xml:"list"`
@@ -90,7 +87,8 @@ type List struct {
 	*Behavior
 }
 
-// ROWS /////////////////////////////////////////
+// ROWS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 type Items struct {
 	XMLName xml.Name `xml:"items"`
 	Xmlns   string   `xml:"xmlns,attr"`
@@ -106,12 +104,13 @@ type Item struct {
 	Spinner  *Spinner  `xml:"spinner,omitempty"`
 }
 
+// SHARED //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 type Text struct {
 	Style   string `xml:"style,attr"`
 	Content string `xml:",chardata"`
 }
 
-// ///////////////////
 type Behavior struct {
 	Trigger string `xml:"trigger,attr,omitempty"`
 	Action  string `xml:"action,attr,omitempty"`
@@ -122,153 +121,4 @@ type Behavior struct {
 
 type Spinner struct {
 	XMLName xml.Name `xml:"spinner"`
-}
-
-func Layout(contacts []contacts.Contact, page int) Doc {
-	doc := Doc{
-		Xmlns: "https://hyperview.org/hyperview",
-		Screen: Screen{
-			Styles: Styles{
-				Style: stylesTemplate(),
-			},
-
-			Body: Body{
-				Style:    "body",
-				SafeArea: true,
-				Header: Header{
-					Text: Text{Style: "header-title", Content: "Contact.app"},
-				},
-				View: View{
-					Style: "main",
-					Form:  IndexTemplate(contacts, page),
-				},
-			},
-		},
-	}
-
-	return doc
-}
-
-func IndexTemplate(contacts []contacts.Contact, page int) Form {
-	form := Form{
-		TextField: TextField{
-			Name:        "q",
-			Value:       "",
-			Placeholder: "Search...",
-			Style:       "search-field",
-			Behavior: &Behavior{
-				Trigger: "change",
-				Action:  "replace-inner",
-				Target:  "contacts-list",
-				Href:    "/mobile/contacts?rows_only=true",
-				Verb:    "get",
-			},
-		},
-		List: List{
-			ID: "contacts-list",
-			Behavior: &Behavior{
-				Trigger: "refresh",
-				Action:  "replace-inner",
-				Target:  "contacts-list",
-				Href:    "/mobile/contacts?rows_only=true",
-				Verb:    "get",
-			},
-			Items: RowsTemplate(contacts, page),
-		},
-	}
-
-	return form
-}
-
-func RowsTemplate(contacts []contacts.Contact, page int) Items {
-	if len(contacts) == 0 {
-		return Items{}
-	}
-
-	contactItems := make([]Item, len(contacts)+1)
-
-	for i, contact := range contacts {
-		var itemTextContent string
-		switch {
-		case len(contact.FirstName) > 0:
-			itemTextContent = fmt.Sprintf("%s %s", contact.FirstName, contact.LastName)
-		case len(contact.Phone) > 0:
-			itemTextContent = contact.Phone
-		case len(contact.Email) > 0:
-			itemTextContent = contact.Email
-		}
-
-		contactItems[i] = Item{
-			Key:   strconv.Itoa(contact.ID),
-			Style: "contact-item",
-			Text: &Text{
-				Style:   "contact-item-label",
-				Content: itemTextContent,
-			},
-		}
-	}
-
-	if len(contacts) == 10 {
-		contactItems[len(contacts)] = Item{
-			ID:    "load-more",
-			Key:   "load-more",
-			Style: "load-more-item",
-			Behavior: &Behavior{
-				Trigger: "visible",
-				Action:  "replace",
-				Target:  "load-more",
-				Href:    fmt.Sprintf("/mobile/contacts?rows_only=true&page=%d", page+1),
-				Verb:    "get",
-			},
-			Spinner: &Spinner{},
-		}
-	}
-
-	items := Items{
-		Xmlns: "https://hyperview.org/hyperview",
-		Item:  contactItems,
-	}
-
-	return items
-}
-
-func stylesTemplate() []Style {
-	styles := []Style{
-		{
-			ID:                "header-title",
-			AlignItems:        "center",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			Display:           "flex",
-			FontSize:          "24",
-			JustifyContent:    "space-between",
-			PaddingTop:        "10",
-			PaddingBottom:     "10",
-		},
-		{
-			ID:                "search-field",
-			BackgroundColor:   "#E0E0E0",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			BorderTopColor:    "#ccc",
-			BorderTopWidth:    "1",
-			FontSize:          "16",
-			Padding:           "10",
-			Width:             "100%",
-		},
-		{
-			ID:                "contact-item",
-			BorderBottomWidth: "1",
-			BorderBottomColor: "#ccc",
-			Padding:           "0",
-			Margin:            "0",
-		},
-		{
-			ID:       "contact-item-label",
-			FontSize: "18",
-			Padding:  "10",
-		},
-	}
-
-	return styles
 }
