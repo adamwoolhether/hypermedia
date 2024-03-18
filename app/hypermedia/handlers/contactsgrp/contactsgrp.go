@@ -212,7 +212,7 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return web.RenderHTML(ctx, w, fe.EditByID(uc), http.StatusBadRequest)
+		return web.RenderHTML(ctx, w, fe.EditByID(uc), http.StatusOK)
 	}
 
 	err = h.core.Update(ctx, uc.ToDB())
