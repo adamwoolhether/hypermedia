@@ -69,17 +69,6 @@ type View struct {
 	Show  *ShowContact `xml:"view,omitempty"`
 }
 
-type ShowContact struct {
-	Style string           `xml:"style,attr,omitempty"`
-	Text  Text             `xml:"text,omitempty"`
-	Sub   []SubShowContact `xml:"view,omitempty"`
-}
-
-type SubShowContact struct {
-	Style string `xml:"style,attr,omitempty"`
-	Text  []Text `xml:"text,omitempty"`
-}
-
 // INDEX ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Form struct {
@@ -104,6 +93,19 @@ type List struct {
 	// of `replace-inner`. This replaces all child elements of the target
 	// with the new content.
 	*Behavior
+}
+
+// SHOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+type ShowContact struct {
+	Style string           `xml:"style,attr,omitempty"`
+	Text  Text             `xml:"text,omitempty"`
+	Sub   []SubShowContact `xml:"view,omitempty"`
+}
+
+type SubShowContact struct {
+	Style string `xml:"style,attr,omitempty"`
+	Text  []Text `xml:"text,omitempty"`
 }
 
 // ROWS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
