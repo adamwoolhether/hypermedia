@@ -1,11 +1,10 @@
 package contacts
 
 import (
-    "github.com/adamwoolhether/hypermedia/business/contacts"
     "fmt"
 )
 
-templ ShowByID(contact contacts.Contact) {
+templ ShowByID(contact ContactWeb) {
     <h1>{ contact.FirstName } { contact.LastName }</h1>
     <div>
         <div>Phone: { contact.Phone } </div>

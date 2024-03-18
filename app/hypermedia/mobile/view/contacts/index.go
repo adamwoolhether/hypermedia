@@ -3,12 +3,11 @@ package contacts
 import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
-	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-func Index(contacts []contacts.Contact, page int) xmlmodel.Doc {
+func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 	form := xmlmodel.Form{
-		TextField: xmlmodel.TextField{
+		TextField: &xmlmodel.TextField{
 			Name:        "q",
 			Placeholder: "Search...",
 			Style:       "search-field",
@@ -20,7 +19,7 @@ func Index(contacts []contacts.Contact, page int) xmlmodel.Doc {
 				Verb:    "get",
 			},
 		},
-		List: xmlmodel.List{
+		List: &xmlmodel.List{
 			ID: "contacts-list",
 			Behavior: &xmlmodel.Behavior{
 				Trigger: "refresh",
@@ -33,7 +32,8 @@ func Index(contacts []contacts.Contact, page int) xmlmodel.Doc {
 		},
 	}
 
-	doc := layout.Layout(layout.WithIndex(form))
+	doc := layout.Layout()
+	doc.Screen.Body.View.Form = &form
 
 	return doc
 }

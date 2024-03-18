@@ -5,17 +5,39 @@ import (
 
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
-	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-func Show(contact contacts.Contact) xmlmodel.Doc {
-	contactView := xmlmodel.ShowContact{
+func Show(contact ContactMobile) xmlmodel.Doc {
+	overrideHeader := xmlmodel.Header{
+		Text: []xmlmodel.Text{
+			{
+				Style:   "header-button",
+				Content: "Back",
+				Behavior: &xmlmodel.Behavior{
+					Trigger: "press",
+					Action:  "back",
+				},
+			},
+			{
+				Style:   "header-button",
+				Content: "Edit",
+				Behavior: &xmlmodel.Behavior{
+					Trigger: "press",
+					Action:  "reload",
+					Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
+				},
+			},
+		},
+	}
+
+	showContact := xmlmodel.View{
 		Style: "details",
-		Text: xmlmodel.Text{
+		Text: []xmlmodel.Text{{
 			Style:   "contact-name",
 			Content: fmt.Sprintf("%s %s", contact.FirstName, contact.LastName),
 		},
-		Sub: []xmlmodel.SubShowContact{
+		},
+		View: []xmlmodel.View{
 			{
 				Style: "contact-section",
 				Text: []xmlmodel.Text{
@@ -33,7 +55,9 @@ func Show(contact contacts.Contact) xmlmodel.Doc {
 		},
 	}
 
-	doc := layout.Layout(layout.WithShowContact(contactView))
+	doc := layout.Layout()
+	doc.Screen.Body.Header = overrideHeader
+	doc.Screen.Body.View.View = []xmlmodel.View{showContact}
 
 	return doc
 }

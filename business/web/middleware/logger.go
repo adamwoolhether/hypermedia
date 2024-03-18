@@ -31,7 +31,7 @@ func Logger(log *logger.Logger) web.Middleware {
 			// Call the next handler.
 			err := handler(ctx, w, r)
 
-			log.Info(ctx, "request completed", "method", r.Method, "path", path, "remoteaddr", r.RemoteAddr, "statusCode", v.StatusCode, "since", time.Since(v.Now))
+			log.Info(ctx, "request completed", "method", r.Method, "path", path, "remoteaddr", r.RemoteAddr, "statusCode", v.StatusCode, "since", time.Since(v.Now).String())
 
 			// Return the error, so it can be handled further up the chain.
 			return err

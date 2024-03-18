@@ -14,16 +14,16 @@ type Doc struct {
 
 type Screen struct {
 	Styles Styles `xml:"styles"`
-	Body   Body   `xml:"body"`
+	Body   Body   `xml:"body,omitempty"`
 }
 
 type Styles struct {
 	XMLName xml.Name `xml:"styles"`
-	Style   []Style  `xml:"style"`
+	Style   []Style  `xml:"style,omitempty"`
 }
 
 type Style struct {
-	ID                string `xml:"id,attr"`
+	ID                string `xml:"id,attr,omitempty"`
 	AlignItems        string `xml:"alignItems,attr,omitempty"`
 	BackgroundColor   string `xml:"backgroundColor,attr,omitempty"`
 	BorderBottom      string `xml:"borderBottom,attr,omitempty"`
@@ -52,35 +52,42 @@ type Style struct {
 }
 
 type Body struct {
-	Style    string `xml:"style,attr"`
+	Style    string `xml:"style,attr,omitempty"`
 	SafeArea bool   `xml:"safe-area,attr"`
-	Header   Header `xml:"header"`
-	View     View   `xml:"view"`
+	Header   Header `xml:"header,omitempty"`
+	View     View   `xml:"view,omitempty"`
 }
 
 type Header struct {
-	Text     Text      `xml:"text"`
+	Text     []Text    `xml:"text,omitempty"`
 	Behavior *Behavior `xml:"behavior,omitempty"`
 }
 
 type View struct {
-	Style string       `xml:"style,attr"`
-	Index *Form        `xml:"form,omitempty"`
-	Show  *ShowContact `xml:"view,omitempty"`
+	XMLName   xml.Name   `xml:"view"`
+	Xmlns     string     `xml:"xmlns,attr,omitempty"` /////////
+	ID        string     `xml:"id,attr,omitempty"`
+	Style     string     `xml:"style,attr,omitempty"`
+	Form      *Form      `xml:"form,omitempty"`
+	Behavior  *Behavior  `xml:"behavior,omitempty"`
+	TextField *TextField `xml:"text-field,omitempty"`
+	Text      []Text     `xml:"text,omitempty"`
+	View      []View     `xml:"view,omitempty"`
 }
 
 // INDEX ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Form struct {
-	TextField TextField `xml:"text-field"`
-	List      List      `xml:"list"`
+	TextField *TextField `xml:"text-field,omitempty"`
+	List      *List      `xml:"list,omitempty"`
+	View      []View     `xml:"view,omitempty"`
 }
 
 type TextField struct {
-	Name        string    `xml:"name,attr"`
-	Value       string    `xml:"value,attr"`
-	Placeholder string    `xml:"placeholder,attr"`
-	Style       string    `xml:"style,attr"`
+	Name        string    `xml:"name,attr,omitempty"`
+	Value       string    `xml:"value,attr,omitempty"`
+	Placeholder string    `xml:"placeholder,attr,omitempty"`
+	Style       string    `xml:"style,attr,omitempty"`
 	Behavior    *Behavior `xml:"behavior,omitempty"`
 }
 
@@ -97,23 +104,23 @@ type List struct {
 
 // SHOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-type ShowContact struct {
-	Style string           `xml:"style,attr,omitempty"`
-	Text  Text             `xml:"text,omitempty"`
-	Sub   []SubShowContact `xml:"view,omitempty"`
-}
+//type ShowContact struct {
+//	Style string           `xml:"style,attr,omitempty"`
+//	Text  Text             `xml:"text,omitempty"`
+//	Sub   []SubShowContact `xml:"view,omitempty"`
+//}
 
-type SubShowContact struct {
-	Style string `xml:"style,attr,omitempty"`
-	Text  []Text `xml:"text,omitempty"`
-}
+//type SubShowContact struct {
+//	Style string `xml:"style,attr,omitempty"`
+//	Text  []Text `xml:"text,omitempty"`
+//}
 
 // ROWS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Items struct {
 	XMLName xml.Name `xml:"items"`
-	Xmlns   string   `xml:"xmlns,attr"`
-	Item    []Item   `xml:"item"`
+	Xmlns   string   `xml:"xmlns,attr,omitempty"`
+	Item    []Item   `xml:"item,omitempty"`
 }
 
 type Item struct {
@@ -128,8 +135,9 @@ type Item struct {
 // SHARED //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Text struct {
-	Style   string `xml:"style,attr"`
-	Content string `xml:",chardata"`
+	Style    string    `xml:"style,attr,omitempty"`
+	Content  string    `xml:",chardata"`
+	Behavior *Behavior `xml:"behavior,omitempty"`
 }
 
 type Behavior struct {

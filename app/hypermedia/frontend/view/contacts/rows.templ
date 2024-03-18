@@ -4,7 +4,7 @@ import (
     "fmt"
 )
 
-templ Rows(contacts []ContactView) {
+templ Rows(contacts []ContactWeb) {
     for _, contact := range contacts {
         <tr>
         <td><input type="checkbox" name="selected_contact_ids" value={ fmt.Sprintf("%d", contact.ID) } x-model="selected" /></td>

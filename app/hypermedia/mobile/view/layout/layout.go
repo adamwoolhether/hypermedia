@@ -4,32 +4,7 @@ import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 )
 
-// Options represents optional parameters.
-type Options struct {
-	index *xmlmodel.Form
-	show  *xmlmodel.ShowContact
-}
-
-func WithIndex(indexDoc xmlmodel.Form) func(opts *Options) {
-	return func(opts *Options) {
-		opts.index = &indexDoc
-	}
-}
-
-func WithShowContact(contact xmlmodel.ShowContact) func(opts *Options) {
-	return func(opts *Options) {
-		opts.show = &contact
-	}
-}
-
-type LayoutOpts func(opts *Options)
-
-func Layout(opts ...LayoutOpts) xmlmodel.Doc {
-	var options Options
-	for _, opt := range opts {
-		opt(&options)
-	}
-
+func Layout() xmlmodel.Doc {
 	doc := xmlmodel.Doc{
 		Xmlns: "https://hyperview.org/hyperview",
 		Screen: xmlmodel.Screen{
@@ -41,30 +16,15 @@ func Layout(opts ...LayoutOpts) xmlmodel.Doc {
 				Style:    "body",
 				SafeArea: true,
 				Header: xmlmodel.Header{
-					Text: xmlmodel.Text{Style: "header-title", Content: "Contact.app"},
+					Text: []xmlmodel.Text{
+						{Style: "header-title", Content: "Contact.app"},
+					},
 				},
 				View: xmlmodel.View{
 					Style: "main",
 				},
 			},
 		},
-	}
-
-	if options.index != nil {
-		doc.Screen.Body.View.Index = options.index
-	}
-
-	if options.show != nil {
-		header := xmlmodel.Header{
-			Text: xmlmodel.Text{Style: "header-button", Content: "Back"},
-			Behavior: &xmlmodel.Behavior{
-				Trigger: "press",
-				Action:  "back",
-			},
-		}
-
-		doc.Screen.Body.Header = header
-		doc.Screen.Body.View.Show = options.show
 	}
 
 	return doc

@@ -3,6 +3,7 @@ package web
 import (
 	"context"
 	"encoding/xml"
+	"fmt"
 	"net/http"
 
 	"github.com/a-h/templ"
@@ -26,6 +27,9 @@ func RenderXML(ctx context.Context, w http.ResponseWriter, data any, statusCode 
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("***************************************")
+	fmt.Println(string(bytes))
 
 	_, err = w.Write(bytes)
 	if err != nil {

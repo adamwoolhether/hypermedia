@@ -5,17 +5,17 @@ import (
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-func contactsToView(contacts []contacts.Contact) []fe.ContactView {
-	views := make([]fe.ContactView, len(contacts))
+func contactsToWeb(contacts []contacts.Contact) []fe.ContactWeb {
+	views := make([]fe.ContactWeb, len(contacts))
 	for i := range contacts {
-		views[i] = contactToView(contacts[i])
+		views[i] = contactToWeb(contacts[i])
 	}
 
 	return views
 }
 
-func contactToView(contact contacts.Contact) fe.ContactView {
-	contactView := fe.ContactView{
+func contactToWeb(contact contacts.Contact) fe.ContactWeb {
+	contactView := fe.ContactWeb{
 		ID:        contact.ID,
 		FirstName: contact.FirstName,
 		LastName:  contact.LastName,

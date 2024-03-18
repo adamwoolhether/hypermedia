@@ -110,12 +110,12 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	// we know we only need to update a very specific
 	// part of the page, so we just return the rows.
 	if r.Header.Get("HX-Trigger") == "search" {
-		return web.RenderHTML(ctx, w, fe.Rows(contactsToView(contacts)), http.StatusOK)
+		return web.RenderHTML(ctx, w, fe.Rows(contactsToWeb(contacts)), http.StatusOK)
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
 
-	templComponent := fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx))
+	templComponent := fe.Index(query, page, contactsToWeb(contacts), h.core.ArchivePoll(ctx))
 	return web.RenderHTML(flashCtx, w, templComponent, http.StatusOK)
 }
 
@@ -132,7 +132,7 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 		return err
 	}
 
-	return web.RenderHTML(ctx, w, fe.ShowByID(contact), http.StatusOK)
+	return web.RenderHTML(ctx, w, fe.ShowByID(contactToWeb(contact)), http.StatusOK)
 }
 
 func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -169,7 +169,7 @@ func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *htt
 	}
 
 	// embed the db contact into this to access the fields.
-	c := fe.UpdateContact{
+	uc := fe.UpdateContact{
 		ID:        contact.ID,
 		FirstName: contact.FirstName,
 		LastName:  contact.LastName,
@@ -179,7 +179,7 @@ func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *htt
 		//InternalErrors: "",
 	}
 
-	return web.RenderHTML(ctx, w, fe.EditByID(c), http.StatusOK)
+	return web.RenderHTML(ctx, w, fe.EditByID(uc), http.StatusOK)
 }
 
 func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -284,7 +284,7 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
 
-	templComponent := fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx))
+	templComponent := fe.Index("", 1, contactsToWeb(contacts), h.core.ArchivePoll(ctx))
 	return web.RenderHTML(flashCtx, w, templComponent, http.StatusOK)
 }
 

@@ -6,7 +6,7 @@ import (
 	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
 )
 
-templ Index(query string, page int, contacts []ContactView, arch archiver.ArchiveView) {
+templ Index(query string, page int, contacts []ContactWeb, arch archiver.ArchiveView) {
     @layout.Layout() {
     <div class="form-container">
 
@@ -105,7 +105,7 @@ templ Index(query string, page int, contacts []ContactView, arch archiver.Archiv
 
 
 
-templ renderContacts(page int, contacts []ContactView) {
+templ renderContacts(page int, contacts []ContactWeb) {
     <table>
         <thead>
         <tr>

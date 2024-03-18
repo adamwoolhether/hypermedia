@@ -8,6 +8,7 @@ import (
 	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/contacts"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
+	"github.com/adamwoolhether/hypermedia/foundation/validate"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
@@ -61,10 +62,10 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	if rowsOnly {
-		return web.RenderXML(ctx, w, fe.Rows(contacts, page), http.StatusOK)
+		return web.RenderXML(ctx, w, fe.Rows(contactsToMobile(contacts), page), http.StatusOK)
 	}
 
-	return web.RenderXML(ctx, w, fe.Index(contacts, page), http.StatusOK)
+	return web.RenderXML(ctx, w, fe.Index(contactsToMobile(contacts), page), http.StatusOK)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -79,5 +80,78 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 		return err
 	}
 
-	return web.RenderXML(ctx, w, fe.Show(contact), http.StatusOK)
+	return web.RenderXML(ctx, w, fe.Show(contactToMobile(contact)), http.StatusOK)
+}
+
+func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		// better err handling
+		return err
+	}
+
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	uc := fe.UpdateContact{
+		ID:        contact.ID,
+		FirstName: contact.FirstName,
+		LastName:  contact.LastName,
+		Phone:     contact.Phone,
+		Email:     contact.Email,
+	}
+
+	return web.RenderXML(ctx, w, fe.Edit(uc), http.StatusOK)
+}
+
+func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	uc := fe.UpdateContact{
+		ID:        contact.ID,
+		FirstName: r.FormValue("first_name"),
+		LastName:  r.FormValue("last_name"),
+		Phone:     r.FormValue("phone"),
+		Email:     r.FormValue("email"),
+		//FieldErrs:      fe.ContactErrors{},
+		//InternalErrors: "",
+	}
+
+	if err := validate.Check(uc); err != nil {
+		fieldErrs := validate.GetFieldErrors(err)
+
+		uc.FieldErrs = fe.ContactErrors{
+			FirstName: fieldErrs.Fields()["first_name"],
+			LastName:  fieldErrs.Fields()["last_name"],
+			Phone:     fieldErrs.Fields()["phone"],
+			Email:     fieldErrs.Fields()["email"],
+		}
+
+		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusBadRequest)
+	}
+
+	err = h.core.Update(ctx, uc.ToDB())
+	if err != nil {
+		// Or do failure flash here?
+		uc.InternalErrors = err.Error()
+		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusInternalServerError)
+	}
+
+	//if err := h.sessions.AddFlash(w, r, "Updated contact!"); err != nil {
+	//	h.log.Error(ctx, "adding flash", "err", err)
+	//}
+
+	return web.RenderXML(ctx, w, fe.EditFields(uc, true), http.StatusOK)
 }

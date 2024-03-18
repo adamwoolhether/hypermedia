@@ -5,10 +5,9 @@ import (
 	"strconv"
 
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
-	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-func Rows(contacts []contacts.Contact, page int) xmlmodel.Items {
+func Rows(contacts []ContactMobile, page int) xmlmodel.Items {
 	if len(contacts) == 0 {
 		return xmlmodel.Items{}
 	}
