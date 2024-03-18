@@ -8,6 +8,7 @@ templ Layout() {
         <link rel="stylesheet" href="https://unpkg.com/missing.css@1.1.1"/>
         <link rel="stylesheet" href="/static/site.css"/>
         <script src="/static/js/htmx-1.9.10.min.js"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/response-targets.js"></script>
         <script src="/static/js/hyperscript-0.9.12.min.js"></script>
         <script src="/static/js/rsjs-menu.js" type="module"></script>
         <script src="/static/js/superadmin.js"></script>
@@ -17,7 +18,7 @@ templ Layout() {
         // Enable htmx logging:
         //<script>htmx.logAll();</script>
     </head>
-    <body hx-boost="true">
+    <body hx-boost="true" hx-ext="response-targets">
     <main>
         <header>
             <h1>

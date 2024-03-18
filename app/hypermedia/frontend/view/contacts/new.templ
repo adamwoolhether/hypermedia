@@ -6,36 +6,41 @@ import (
 
 templ NewForm(new NewContact) {
     @layout.Layout() {
-        <form class="form-container" action="/contacts/new" method="POST">
-            <fieldset>
-                <legend>Contact Values</legend>
-                <p class="inline-field">
-                    <label for="email">Email</label>
-                    <input name="email" id="email" type="email" placeholder="Email" value={ new.Email }/>
-                    <span class="error">{ new.FieldErrs.Email }</span>
-                </p>
-                <p class="inline-field">
-                    <label for="first_name">First Name</label>
-                    <input name="first_name" id="first_name" type="text" placeholder="First Name" value={ new.FirstName }/>
-                    <span class="error">{ new.FieldErrs.FirstName }</span>
-                </p>
-                <p class="inline-field">
-                    <label for="last_name">Last Name</label>
-                    <input name="last_name" id="last_name" type="text" placeholder="Last Name" value={ new.LastName }/>
-                    <span class="error">{ new.FieldErrs.LastName }</span>
-                </p>
-                <p class="inline-field">
-                    <label for="phone">Phone</label>
-                    <input name="phone" id="phone" type="text" placeholder="Phone" value={ new.Phone }/>
-                    <span class="error">{ new.FieldErrs.Phone }</span>
-                </p>
-                <button>Save</button>
-            </fieldset>
-        <p>
-            <a href="/contacts">Back</a>
-        </p>
+        <form class="form-container" action="/contacts/new" method="POST"
+            hx-target-400="#contact-values" hx-swap="outerHTML">
+            @FormFields(new)
+            <p>
+                <a href="/contacts">Back</a>
+            </p>
         </form>
 
         <p><span class="error">{ new.InternalErrors }</span></p>
     }
+}
+
+templ FormFields(new NewContact) {
+    <fieldset id="contact-values" class="form-container">
+        <legend>Contact Values</legend>
+        <p class="inline-field">
+            <label for="email">Email</label>
+            <input name="email" id="email" type="email" placeholder="Email" value={ new.Email }/>
+            <span class="error">{ new.FieldErrs.Email }</span>
+        </p>
+        <p class="inline-field">
+            <label for="first_name">First Name</label>
+            <input name="first_name" id="first_name" type="text" placeholder="First Name" value={ new.FirstName }/>
+            <span class="error">{ new.FieldErrs.FirstName }</span>
+        </p>
+        <p class="inline-field">
+            <label for="last_name">Last Name</label>
+            <input name="last_name" id="last_name" type="text" placeholder="Last Name" value={ new.LastName }/>
+            <span class="error">{ new.FieldErrs.LastName }</span>
+        </p>
+        <p class="inline-field">
+            <label for="phone">Phone</label>
+            <input name="phone" id="phone" type="text" placeholder="Phone" value={ new.Phone }/>
+            <span class="error">{ new.FieldErrs.Phone }</span>
+        </p>
+        <button>Save</button>
+    </fieldset>
 }

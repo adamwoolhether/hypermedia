@@ -66,7 +66,7 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return web.RenderHTML(ctx, w, fe.NewForm(newContact), http.StatusOK)
+		return web.RenderHTML(ctx, w, fe.FormFields(newContact), http.StatusBadRequest)
 	}
 
 	err := h.core.Create(ctx, newContact.ToDB())
