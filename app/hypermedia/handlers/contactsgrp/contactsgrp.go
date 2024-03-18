@@ -44,7 +44,7 @@ func (h *Handlers) RootRedirect(ctx context.Context, w http.ResponseWriter, r *h
 
 func (h *Handlers) CreateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-	return fe.NewForm(fe.NewContact{}).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.NewForm(fe.NewContact{}), http.StatusOK)
 }
 
 func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -66,13 +66,14 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return fe.NewForm(newContact).Render(ctx, w)
+		return web.RenderHTML(ctx, w, fe.NewForm(newContact), http.StatusOK)
 	}
 
 	err := h.core.Create(ctx, newContact.ToDB())
 	if err != nil {
 		newContact.InternalErrors = err.Error()
-		return fe.NewForm(newContact).Render(ctx, w)
+
+		return web.RenderHTML(ctx, w, fe.NewForm(newContact), http.StatusInternalServerError)
 	}
 
 	if err := h.sessions.AddFlash(w, r, "Created contact!"); err != nil {
@@ -109,11 +110,11 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	// we know we only need to update a very specific
 	// part of the page, so we just return the rows.
 	if r.Header.Get("HX-Trigger") == "search" {
-		return fe.Rows(contactsToView(contacts)).Render(ctx, w)
+		return web.RenderHTML(ctx, w, fe.Rows(contactsToView(contacts)), http.StatusOK)
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx)).Render(flashCtx, w)
+	return web.RenderHTML(flashCtx, w, fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx)), http.StatusOK)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -129,7 +130,7 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 		return err
 	}
 
-	return fe.ShowByID(contact).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.ShowByID(contact), http.StatusOK)
 }
 
 func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -176,7 +177,7 @@ func (h *Handlers) UpdateForm(ctx context.Context, w http.ResponseWriter, r *htt
 		//InternalErrors: "",
 	}
 
-	return fe.EditByID(c).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.EditByID(c), http.StatusOK)
 }
 
 func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -211,14 +212,14 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return fe.EditByID(uc).Render(ctx, w)
+		return web.RenderHTML(ctx, w, fe.EditByID(uc), http.StatusBadRequest)
 	}
 
 	err = h.core.Update(ctx, uc.ToDB())
 	if err != nil {
 		// Or do failure flash here?
 		uc.InternalErrors = err.Error()
-		return fe.EditByID(uc).Render(ctx, w)
+		return web.RenderHTML(ctx, w, fe.EditByID(uc), http.StatusInternalServerError)
 	}
 
 	if err := h.sessions.AddFlash(w, r, "Updated contact!"); err != nil {
@@ -280,7 +281,7 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx)).Render(flashCtx, w)
+	return web.RenderHTML(flashCtx, w, fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx)), http.StatusOK)
 }
 
 func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -300,18 +301,18 @@ func (h *Handlers) Archive(ctx context.Context, w http.ResponseWriter, r *http.R
 		return err
 	}
 
-	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.Archive(h.core.ArchivePoll(ctx)), http.StatusOK)
 }
 
 func (h *Handlers) ArchiveRm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	h.core.ArchiveRm(ctx)
 
-	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.Archive(h.core.ArchivePoll(ctx)), http.StatusNoContent)
 }
 
 func (h *Handlers) ArchivePoll(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-	return fe.Archive(h.core.ArchivePoll(ctx)).Render(ctx, w)
+	return web.RenderHTML(ctx, w, fe.Archive(h.core.ArchivePoll(ctx)), http.StatusOK)
 }
 
 func (h *Handlers) ArchiveDL(ctx context.Context, w http.ResponseWriter, r *http.Request) error {

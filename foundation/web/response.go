@@ -5,8 +5,35 @@ import (
 	"encoding/xml"
 	"net/http"
 
+	"github.com/a-h/templ"
 	"github.com/go-json-experiment/json"
 )
+
+func RenderHTML(ctx context.Context, w http.ResponseWriter, component templ.Component, statusCode int) error {
+	setStatusCode(ctx, statusCode)
+	w.WriteHeader(statusCode)
+
+	return component.Render(ctx, w)
+}
+
+func RenderXML(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
+	setStatusCode(ctx, statusCode)
+
+	w.Header().Set("Content-Type", "application/vnd.hyperview+xml")
+
+	bytes, err := xml.MarshalIndent(data, "", "  ")
+	//bytes, err := xml.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(bytes)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // RespondJSON converts a Go value to JSON and sends it to the client.
 func RespondJSON(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
@@ -26,25 +53,6 @@ func RespondJSON(ctx context.Context, w http.ResponseWriter, data any, statusCod
 	w.WriteHeader(statusCode)
 
 	if _, err := w.Write(jsonData); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func RenderXML(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
-	setStatusCode(ctx, statusCode)
-
-	w.Header().Set("Content-Type", "application/vnd.hyperview+xml")
-
-	bytes, err := xml.MarshalIndent(data, "", "  ")
-	//bytes, err := xml.Marshal(data)
-	if err != nil {
-		return err
-	}
-
-	_, err = w.Write(bytes)
-	if err != nil {
 		return err
 	}
 
