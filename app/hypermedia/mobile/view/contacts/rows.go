@@ -1,4 +1,4 @@
-package view
+package contacts
 
 import (
 	"fmt"
@@ -31,6 +31,11 @@ func Rows(contacts []contacts.Contact, page int) Items {
 			Text: &Text{
 				Style:   "contact-item-label",
 				Content: itemTextContent,
+			},
+			Behavior: &Behavior{
+				Trigger: "press",
+				Action:  "push",
+				Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
 			},
 		}
 	}

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view"
+	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/contacts"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
@@ -61,36 +61,36 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 		return err
 	}
 
-	var toRender any
-
 	if rowsOnly {
-		toRender = view.Rows(contacts, page)
-
-		//bytes, err := xml.MarshalIndent(rows, "", "  ")
-		//if err != nil {
-		//	return err
-		//}
-		//
-		//_, err = w.Write(bytes)
-		//if err != nil {
-		//	return err
-		//}
-
-	} else {
-		toRender = view.Layout(contacts, page)
+		return render(ctx, w, r, fe.Rows(contacts, page))
 	}
 
-	//bytes, err := xml.Marshal(toRender)
-	//if err != nil {
-	//	return err
-	//}
+	return render(ctx, w, r, fe.Index(contacts, page))
+}
 
-	bytes, err := xml.MarshalIndent(toRender, "", "  ")
+func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
 	if err != nil {
 		return err
 	}
 
+	contact, err := h.core.QueryByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return render(ctx, w, r, fe.Show(contact))
+}
+
+func render(ctx context.Context, w http.ResponseWriter, r *http.Request, toRender any) error {
 	w.Header().Set("Content-Type", "application/vnd.hyperview+xml")
+
+	bytes, err := xml.MarshalIndent(toRender, "", "  ")
+	//bytes, err := xml.Marshal(toRender)
+	if err != nil {
+		return err
+	}
 
 	_, err = w.Write(bytes)
 	if err != nil {

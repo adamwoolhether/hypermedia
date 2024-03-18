@@ -1,4 +1,4 @@
-package view
+package contacts
 
 import (
 	"encoding/xml"
@@ -28,6 +28,7 @@ type Style struct {
 	BackgroundColor   string `xml:"backgroundColor,attr,omitempty"`
 	BorderBottom      string `xml:"borderBottom,attr,omitempty"`
 	BorderBottomWidth string `xml:"borderBottomWidth,attr,omitempty"`
+	BorderRadius      string `xml:"borderRadius,attr,omitempty"`
 	BorderTopColor    string `xml:"borderTopColor,attr,omitempty"`
 	BorderTopWidth    string `xml:"borderTopWidth,attr,omitempty"`
 	BorderBottomColor string `xml:"borderBottomColor,attr,omitempty"`
@@ -39,9 +40,14 @@ type Style struct {
 	FontWeight        string `xml:"fontWeight,attr,omitempty"`
 	JustifyContent    string `xml:"justifyContent,attr,omitempty"`
 	Margin            string `xml:"margin,attr,omitempty"`
+	MarginTop         string `xml:"marginTop,attr,omitempty"`
 	Padding           string `xml:"padding,attr,omitempty"`
 	PaddingTop        string `xml:"paddingTop,attr,omitempty"`
 	PaddingBottom     string `xml:"paddingBottom,attr,omitempty"`
+	PaddingVertical   string `xml:"paddingVertical,attr,omitempty"`
+	PaddingHorizontal string `xml:"paddingHorizontal,attr,omitempty"`
+	MarginVertical    string `xml:"marginVertical,attr,omitempty"`
+	TextAlign         string `xml:"textAlign,attr,omitempty"`
 	Width             string `xml:"width,attr,omitempty"`
 }
 
@@ -53,12 +59,25 @@ type Body struct {
 }
 
 type Header struct {
-	Text Text `xml:"text"`
+	Text     Text      `xml:"text"`
+	Behavior *Behavior `xml:"behavior,omitempty"`
 }
 
 type View struct {
-	Style string `xml:"style,attr"`
-	Form  Form   `xml:"form"`
+	Style string       `xml:"style,attr"`
+	Index *Form        `xml:"form,omitempty"`
+	Show  *ShowContact `xml:"view,omitempty"`
+}
+
+type ShowContact struct {
+	Style string           `xml:"style,attr,omitempty"`
+	Text  Text             `xml:"text,omitempty"`
+	Sub   []SubShowContact `xml:"view,omitempty"`
+}
+
+type SubShowContact struct {
+	Style string `xml:"style,attr,omitempty"`
+	Text  []Text `xml:"text,omitempty"`
 }
 
 // INDEX ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -51,4 +51,5 @@ func mobileRoutes(app *web.App, cfg Config) {
 	mobileContactsGrp := mobileHandlers.New(cfg.Log, cfg.Contacts)
 	app.Handle(http.MethodGet, mobile, "/", mobileContactsGrp.RootRedirect)
 	app.Handle(http.MethodGet, mobile, "/contacts", mobileContactsGrp.Query)
+	app.Handle(http.MethodGet, mobile, "/contacts/{id}", mobileContactsGrp.QueryByID)
 }

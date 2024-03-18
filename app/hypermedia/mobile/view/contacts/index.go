@@ -1,8 +1,8 @@
-package view
+package contacts
 
 import "github.com/adamwoolhether/hypermedia/business/contacts"
 
-func Index(contacts []contacts.Contact, page int) Form {
+func Index(contacts []contacts.Contact, page int) Doc {
 	form := Form{
 		TextField: TextField{
 			Name:        "q",
@@ -29,5 +29,7 @@ func Index(contacts []contacts.Contact, page int) Form {
 		},
 	}
 
-	return form
+	doc := Layout(WithIndex(form))
+
+	return doc
 }
