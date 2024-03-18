@@ -2,7 +2,6 @@ package contactsgrp
 
 import (
 	"context"
-	"encoding/xml"
 	"net/http"
 	"strconv"
 
@@ -62,10 +61,10 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	if rowsOnly {
-		return render(ctx, w, r, fe.Rows(contacts, page))
+		return web.RenderXML(ctx, w, fe.Rows(contacts, page), http.StatusOK)
 	}
 
-	return render(ctx, w, r, fe.Index(contacts, page))
+	return web.RenderXML(ctx, w, fe.Index(contacts, page), http.StatusOK)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -80,22 +79,5 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 		return err
 	}
 
-	return render(ctx, w, r, fe.Show(contact))
-}
-
-func render(ctx context.Context, w http.ResponseWriter, r *http.Request, toRender any) error {
-	w.Header().Set("Content-Type", "application/vnd.hyperview+xml")
-
-	bytes, err := xml.MarshalIndent(toRender, "", "  ")
-	//bytes, err := xml.Marshal(toRender)
-	if err != nil {
-		return err
-	}
-
-	_, err = w.Write(bytes)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return web.RenderXML(ctx, w, fe.Show(contact), http.StatusOK)
 }

@@ -3,27 +3,29 @@ package contacts
 import (
 	"fmt"
 
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 )
 
-func Show(contact contacts.Contact) Doc {
-	contactView := ShowContact{
+func Show(contact contacts.Contact) xmlmodel.Doc {
+	contactView := xmlmodel.ShowContact{
 		Style: "details",
-		Text: Text{
+		Text: xmlmodel.Text{
 			Style:   "contact-name",
 			Content: fmt.Sprintf("%s %s", contact.FirstName, contact.LastName),
 		},
-		Sub: []SubShowContact{
+		Sub: []xmlmodel.SubShowContact{
 			{
 				Style: "contact-section",
-				Text: []Text{
+				Text: []xmlmodel.Text{
 					{Style: "contact-section-label", Content: "Phone"},
 					{Style: "contact-section-info", Content: contact.Phone},
 				},
 			},
 			{
 				Style: "contact-section",
-				Text: []Text{
+				Text: []xmlmodel.Text{
 					{Style: "contact-section-label", Content: "Email"},
 					{Style: "contact-section-info", Content: contact.Email},
 				},
@@ -31,7 +33,7 @@ func Show(contact contacts.Contact) Doc {
 		},
 	}
 
-	doc := Layout(WithShowContact(contactView))
+	doc := layout.Layout(layout.WithShowContact(contactView))
 
 	return doc
 }

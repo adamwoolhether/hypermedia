@@ -59,7 +59,7 @@ func Errors(log *logger.Logger) web.Middleware {
 				}
 
 				// Response with the error back to the client.
-				if err = web.Respond(ctx, w, er, status); err != nil {
+				if err = web.RespondJSON(ctx, w, er, status); err != nil {
 					return err
 				}
 

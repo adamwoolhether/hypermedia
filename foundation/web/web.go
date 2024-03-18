@@ -66,7 +66,7 @@ func (a *App) EnableCORS(mw Middleware) {
 	a.mw = append(a.mw, mw)
 
 	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-		return Respond(ctx, w, "OK", http.StatusOK)
+		return RespondJSON(ctx, w, "OK", http.StatusOK)
 	}
 	handler = wrapMiddleware(a.mw, handler)
 

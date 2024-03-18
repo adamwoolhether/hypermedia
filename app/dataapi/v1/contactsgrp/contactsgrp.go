@@ -51,7 +51,7 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 
 	resp := newResponse(contacts, h.core.Count(), page, rows)
 
-	return web.Respond(ctx, w, resp, http.StatusOK)
+	return web.RespondJSON(ctx, w, resp, http.StatusOK)
 }
 
 func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -64,7 +64,7 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
-	return web.Respond(ctx, w, newContact, http.StatusCreated)
+	return web.RespondJSON(ctx, w, newContact, http.StatusCreated)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -79,7 +79,7 @@ func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
-	return web.Respond(ctx, w, contactToAPI(contact), http.StatusOK)
+	return web.RespondJSON(ctx, w, contactToAPI(contact), http.StatusOK)
 }
 
 func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -116,7 +116,7 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
-	return web.Respond(ctx, w, contactToAPI(contact), http.StatusOK)
+	return web.RespondJSON(ctx, w, contactToAPI(contact), http.StatusOK)
 }
 
 func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -130,5 +130,5 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
-	return web.Respond(ctx, w, nil, http.StatusNoContent)
+	return web.RespondJSON(ctx, w, nil, http.StatusNoContent)
 }

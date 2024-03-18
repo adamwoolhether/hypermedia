@@ -2,13 +2,14 @@ package web
 
 import (
 	"context"
+	"encoding/xml"
 	"net/http"
 
 	"github.com/go-json-experiment/json"
 )
 
-// Respond converts a Go value to JSON and sends it to the client.
-func Respond(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
+// RespondJSON converts a Go value to JSON and sends it to the client.
+func RespondJSON(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
 	setStatusCode(ctx, statusCode)
 
 	if statusCode == http.StatusNoContent {
@@ -25,6 +26,25 @@ func Respond(ctx context.Context, w http.ResponseWriter, data any, statusCode in
 	w.WriteHeader(statusCode)
 
 	if _, err := w.Write(jsonData); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func RenderXML(ctx context.Context, w http.ResponseWriter, data any, statusCode int) error {
+	setStatusCode(ctx, statusCode)
+
+	w.Header().Set("Content-Type", "application/vnd.hyperview+xml")
+
+	bytes, err := xml.MarshalIndent(data, "", "  ")
+	//bytes, err := xml.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(bytes)
+	if err != nil {
 		return err
 	}
 

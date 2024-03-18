@@ -1,18 +1,22 @@
-package contacts
+package layout
+
+import (
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+)
 
 // Options represents optional parameters.
 type Options struct {
-	index *Form
-	show  *ShowContact
+	index *xmlmodel.Form
+	show  *xmlmodel.ShowContact
 }
 
-func WithIndex(indexDoc Form) func(opts *Options) {
+func WithIndex(indexDoc xmlmodel.Form) func(opts *Options) {
 	return func(opts *Options) {
 		opts.index = &indexDoc
 	}
 }
 
-func WithShowContact(contact ShowContact) func(opts *Options) {
+func WithShowContact(contact xmlmodel.ShowContact) func(opts *Options) {
 	return func(opts *Options) {
 		opts.show = &contact
 	}
@@ -20,26 +24,26 @@ func WithShowContact(contact ShowContact) func(opts *Options) {
 
 type LayoutOpts func(opts *Options)
 
-func Layout(opts ...LayoutOpts) Doc {
+func Layout(opts ...LayoutOpts) xmlmodel.Doc {
 	var options Options
 	for _, opt := range opts {
 		opt(&options)
 	}
 
-	doc := Doc{
+	doc := xmlmodel.Doc{
 		Xmlns: "https://hyperview.org/hyperview",
-		Screen: Screen{
-			Styles: Styles{
+		Screen: xmlmodel.Screen{
+			Styles: xmlmodel.Styles{
 				Style: styles(),
 			},
 
-			Body: Body{
+			Body: xmlmodel.Body{
 				Style:    "body",
 				SafeArea: true,
-				Header: Header{
-					Text: Text{Style: "header-title", Content: "Contact.app"},
+				Header: xmlmodel.Header{
+					Text: xmlmodel.Text{Style: "header-title", Content: "Contact.app"},
 				},
-				View: View{
+				View: xmlmodel.View{
 					Style: "main",
 				},
 			},
@@ -51,9 +55,9 @@ func Layout(opts ...LayoutOpts) Doc {
 	}
 
 	if options.show != nil {
-		header := Header{
-			Text: Text{Style: "header-button", Content: "Back"},
-			Behavior: &Behavior{
+		header := xmlmodel.Header{
+			Text: xmlmodel.Text{Style: "header-button", Content: "Back"},
+			Behavior: &xmlmodel.Behavior{
 				Trigger: "press",
 				Action:  "back",
 			},
@@ -66,8 +70,8 @@ func Layout(opts ...LayoutOpts) Doc {
 	return doc
 }
 
-func styles() []Style {
-	styles := []Style{
+func styles() []xmlmodel.Style {
+	styles := []xmlmodel.Style{
 		{
 			ID:                "header-title",
 			AlignItems:        "center",

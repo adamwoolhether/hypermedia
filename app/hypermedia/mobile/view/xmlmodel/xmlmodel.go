@@ -1,4 +1,4 @@
-package contacts
+package xmlmodel
 
 import (
 	"encoding/xml"
