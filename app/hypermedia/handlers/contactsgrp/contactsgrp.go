@@ -114,7 +114,9 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return web.RenderHTML(flashCtx, w, fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx)), http.StatusOK)
+
+	templComponent := fe.Index(query, page, contactsToView(contacts), h.core.ArchivePoll(ctx))
+	return web.RenderHTML(flashCtx, w, templComponent, http.StatusOK)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -281,7 +283,9 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 	}
 
 	flashCtx := h.sessions.GetFlashCtx(w, r)
-	return web.RenderHTML(flashCtx, w, fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx)), http.StatusOK)
+
+	templComponent := fe.Index("", 1, contactsToView(contacts), h.core.ArchivePoll(ctx))
+	return web.RenderHTML(flashCtx, w, templComponent, http.StatusOK)
 }
 
 func (h *Handlers) Count(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
