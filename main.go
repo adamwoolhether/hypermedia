@@ -3,6 +3,8 @@ package main
 /*
 - Better flash handling: how to get flashes from session directly in template?
 - Smooth progress bar transition, needed to use JS.
+- debounce for mobile hyperview not working
+- how to check email validation as user typing in mobile app?
 */
 import (
 	"context"

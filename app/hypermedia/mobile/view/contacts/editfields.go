@@ -44,6 +44,13 @@ func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
 					Name:        "email",
 					Placeholder: "Email",
 					Value:       contact.Email,
+					//Behavior: &xmlmodel.Behavior{
+					//	Trigger: "change",
+					//	Action:  "replace-inner",
+					//	Target:  "edit-field-error",
+					//	Href:    fmt.Sprintf("/contacts/%d/email", contact.ID),
+					//	Verb:    "get",
+					//},
 				},
 				Text: []xmlmodel.Text{
 					{

@@ -12,11 +12,12 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 			Placeholder: "Search...",
 			Style:       "search-field",
 			Behavior: &xmlmodel.Behavior{
-				Trigger: "change",
-				Action:  "replace-inner",
-				Target:  "contacts-list",
-				Href:    "/mobile/contacts?rows_only=true",
-				Verb:    "get",
+				Trigger:  "change",
+				Debounce: "500", // not working
+				Action:   "replace-inner",
+				Target:   "contacts-list",
+				Href:     "/mobile/contacts?rows_only=true",
+				Verb:     "get",
 			},
 		},
 		List: &xmlmodel.List{

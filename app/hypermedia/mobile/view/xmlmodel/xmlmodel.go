@@ -141,11 +141,12 @@ type Text struct {
 }
 
 type Behavior struct {
-	Trigger string `xml:"trigger,attr,omitempty"`
-	Action  string `xml:"action,attr,omitempty"`
-	Target  string `xml:"target,attr,omitempty"`
-	Href    string `xml:"href,attr,omitempty"`
-	Verb    string `xml:"verb,attr,omitempty"`
+	Trigger  string `xml:"trigger,attr,omitempty"`
+	Debounce string `xml:"debounce,attr,omitempty"`
+	Action   string `xml:"action,attr,omitempty"`
+	Target   string `xml:"target,attr,omitempty"`
+	Href     string `xml:"href,attr,omitempty"`
+	Verb     string `xml:"verb,attr,omitempty"`
 }
 
 type Spinner struct {
