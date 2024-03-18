@@ -8,7 +8,7 @@ templ NewForm(new NewContact) {
     @layout.Layout() {
         <form class="form-container" action="/contacts/new" method="POST"
             hx-target-400="#contact-values" hx-swap="outerHTML">
-            @FormFields(new)
+                @FormFields(new)
             <p>
                 <a href="/contacts">Back</a>
             </p>
