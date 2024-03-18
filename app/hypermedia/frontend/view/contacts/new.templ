@@ -19,11 +19,18 @@ templ NewForm(new NewContact) {
 }
 
 templ FormFields(new NewContact) {
-    <fieldset id="contact-values" class="form-container">
+    <fieldset id="contact-values">
         <legend>Contact Values</legend>
         <p class="inline-field">
             <label for="email">Email</label>
-            <input name="email" id="email" type="email" placeholder="Email" value={ new.Email }/>
+            // need to add hx-swap="innerHTML", as the parent changes default. (I think, at least)
+            <input
+                name="email" id="email" type="email"
+                hx-get="/contacts/0/email"
+                hx-target="next .error"
+                hx-trigger="change, keyup delay:1000ms changed"
+                hx-swap="innerHTML"
+                placeholder="Email" value={ new.Email }/>
             <span class="error">{ new.FieldErrs.Email }</span>
         </p>
         <p class="inline-field">

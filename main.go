@@ -3,7 +3,6 @@ package main
 /*
 - Better flash handling: how to get flashes from session directly in template?
 - Smooth progress bar transition, needed to use JS.
-- Validate email on new contact creation
 - Handle 400 for edit form
 */
 import (
