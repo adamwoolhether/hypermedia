@@ -4,3 +4,4 @@ bin
 vendor
 app/hypermedia/frontend/view/**/*.txt
 app/hypermedia/frontend/view/**/*_templ.go
+hyperview
