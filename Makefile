@@ -18,7 +18,7 @@ dev:
 	@#wgo -file=.go -file=.templ -file=.js -file=.css -xfile=_templ.go templ generate :: go run app/contact/main.go
 
 mobile:
-	cd hyperview/demo && yarn ios
+	cd ../hyperview/demo && yarn ios
 
 run: templ
 	@trap 'osascript -e "tell application \"Google Chrome\" to close (tabs of window 1 whose URL contains \"http://localhost:42069/\")"' INT TERM EXIT && \
