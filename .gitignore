@@ -2,6 +2,7 @@
 .env
 bin
 vendor
-app/hypermedia/frontend/view/**/*.txt
-app/hypermedia/frontend/view/**/*_templ.go
+app/hypermedia/web/view/**/*_templ.go
+app/hypermedia/web/view/**/*.txt
 hyperview
+.DS_Store

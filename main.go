@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/adamwoolhether/hypermedia/app"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/frontend"
+	web2 "github.com/adamwoolhether/hypermedia/app/hypermedia/web"
 	"github.com/adamwoolhether/hypermedia/business/web/mux"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
@@ -50,7 +50,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 			Shutdown: shutdown,
 			Log:      log,
 			Session:  cookieStore,
-		}, app.Routes(), mux.WithStaticFS(frontend.Static()))
+		}, app.Routes(), mux.WithStaticFS(web2.Static()))
 
 	api := http.Server{
 		Addr:    "localhost:42069",

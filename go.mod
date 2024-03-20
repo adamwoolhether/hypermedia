@@ -3,7 +3,7 @@ module github.com/adamwoolhether/hypermedia
 go 1.22
 
 require (
-	github.com/a-h/templ v0.2.598
+	github.com/a-h/templ v0.2.639
 	github.com/go-json-experiment/json v0.0.0-20231102232822-2e55bd4e08b0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1

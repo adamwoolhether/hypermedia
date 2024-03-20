@@ -3,8 +3,8 @@ package hypermedia
 import (
 	"net/http"
 
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/handlers/contactsgrp"
-	mobileHandlers "github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/handlers/contactsgrp"
+	mobilehandlers "github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/handlers/contactsgrp"
+	webhandlers "github.com/adamwoolhether/hypermedia/app/hypermedia/web/handlers/contactsgrp"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
@@ -25,7 +25,7 @@ func Routes(app *web.App, cfg Config) {
 func webRoutes(app *web.App, cfg Config) {
 	const root = ""
 
-	contactsGrp := contactsgrp.New(cfg.Log, cfg.Contacts, cfg.Session)
+	contactsGrp := webhandlers.New(cfg.Log, cfg.Contacts, cfg.Session)
 	app.Handle(http.MethodGet, root, "/", contactsGrp.RootRedirect)
 	app.Handle(http.MethodGet, root, "/contacts", contactsGrp.Query)
 	app.Handle(http.MethodDelete, root, "/contacts", contactsGrp.DeleteBatch)
@@ -48,7 +48,7 @@ func webRoutes(app *web.App, cfg Config) {
 func mobileRoutes(app *web.App, cfg Config) {
 	const mobile = "mobile"
 
-	mobileContactsGrp := mobileHandlers.New(cfg.Log, cfg.Contacts)
+	mobileContactsGrp := mobilehandlers.New(cfg.Log, cfg.Contacts)
 	app.Handle(http.MethodGet, mobile, "/", mobileContactsGrp.RootRedirect)
 	app.Handle(http.MethodGet, mobile, "/contacts", mobileContactsGrp.Query)
 	app.Handle(http.MethodGet, mobile, "/contacts/{id}", mobileContactsGrp.QueryByID)
