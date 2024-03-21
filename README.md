@@ -1,3 +1,3 @@
 https://hypermedia.systems/
 
-Building hypermedia HTMX apps with Go and Templ
+Building hypermedia apps with HTMX, HXML, Go and Templ
