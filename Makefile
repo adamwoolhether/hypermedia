@@ -18,12 +18,12 @@ dev:
 	@#wgo -file=.go -file=.templ -file=.js -file=.css -xfile=_templ.go templ generate :: go run app/contact/main.go
 
 mobile:
-	cd ../hyperview/demo && yarn ios
+	cd hyperview/demo && yarn ios
 
 run: templ
 	@trap 'osascript -e "tell application \"Google Chrome\" to close (tabs of window 1 whose URL contains \"http://localhost:42069/\")"' INT TERM EXIT && \
 	open -a "Google Chrome" http://localhost:42069/ && \
-	go run main.go | go run app/tooling/main.go
+	wgo run -xdir=hyperview -xdir=vendor -file=.go -file=.templ -file=.css -file=.js -xfile=_templ.go -verbose app/main.go | go run app/tooling/main.go
 
 tidy:
 	go mod tidy

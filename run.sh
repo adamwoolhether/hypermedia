@@ -1,6 +1,6 @@
 #!/bin/zsh
 #wgo -file=.js npx tailwindcss -i view/css/app.css -o public/styles.css :: \
-wgo run -xdir=hyperview -xdir=vendor -file=.go -file=.templ -file=.css -file=.js -xfile=_templ.go -verbose main.go | go run app/tooling/main.go &
+wgo run -xdir=hyperview -xdir=vendor -file=.go -file=.templ -file=.css -file=.js -xfile=_templ.go -verbose app/main.go | go run app/tooling/main.go &
 PID1=$!
 printf "wgo\t\tPID: %s\n" $PID1
 

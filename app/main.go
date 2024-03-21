@@ -14,8 +14,10 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/adamwoolhether/hypermedia/app"
-	web2 "github.com/adamwoolhether/hypermedia/app/hypermedia/web"
+	"github.com/adamwoolhether/hypermedia/app/dataapi"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia"
+	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/web"
+	"github.com/adamwoolhether/hypermedia/business/contacts"
 	"github.com/adamwoolhether/hypermedia/business/web/mux"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
 	"github.com/adamwoolhether/hypermedia/foundation/session"
@@ -50,7 +52,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 			Shutdown: shutdown,
 			Log:      log,
 			Session:  cookieStore,
-		}, app.Routes(), mux.WithStaticFS(web2.Static()))
+		}, Routes(), mux.WithStaticFS(fe.Static()))
 
 	api := http.Server{
 		Addr:    "localhost:42069",
@@ -87,4 +89,26 @@ func run(ctx context.Context, log *logger.Logger) error {
 	}
 
 	return nil
+}
+
+func Routes() add {
+	return add{}
+}
+
+type add struct{}
+
+// Add implements the RouteAdder interface.
+func (add) Add(app *web.App, cfg mux.WebAppConfig) {
+	contactsCore := contacts.NewCore(cfg.Log)
+
+	hypermedia.Routes(app, hypermedia.Config{
+		Log:      cfg.Log,
+		Session:  cfg.Session,
+		Contacts: contactsCore,
+	})
+
+	dataapi.Routes(app, dataapi.Config{
+		Log:      cfg.Log,
+		Contacts: contactsCore,
+	})
 }
