@@ -89,6 +89,7 @@ type TextField struct {
 	Placeholder string    `xml:"placeholder,attr,omitempty"`
 	Style       string    `xml:"style,attr,omitempty"`
 	Behavior    *Behavior `xml:"behavior,omitempty"`
+	Debounce    string    `xml:"debounce,attr,omitempty"`
 }
 
 type List struct {
@@ -135,18 +136,20 @@ type Item struct {
 // SHARED //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Text struct {
+	XMLName  xml.Name  `xml:"text"`
+	Xmlns    string    `xml:"xmlns,attr,omitempty"`
+	ID       string    `xml:"id,attr,omitempty"`
 	Style    string    `xml:"style,attr,omitempty"`
 	Content  string    `xml:",chardata"`
 	Behavior *Behavior `xml:"behavior,omitempty"`
 }
 
 type Behavior struct {
-	Trigger  string `xml:"trigger,attr,omitempty"`
-	Debounce string `xml:"debounce,attr,omitempty"`
-	Action   string `xml:"action,attr,omitempty"`
-	Target   string `xml:"target,attr,omitempty"`
-	Href     string `xml:"href,attr,omitempty"`
-	Verb     string `xml:"verb,attr,omitempty"`
+	Trigger string `xml:"trigger,attr,omitempty"`
+	Action  string `xml:"action,attr,omitempty"`
+	Target  string `xml:"target,attr,omitempty"`
+	Href    string `xml:"href,attr,omitempty"`
+	Verb    string `xml:"verb,attr,omitempty"`
 }
 
 type Spinner struct {

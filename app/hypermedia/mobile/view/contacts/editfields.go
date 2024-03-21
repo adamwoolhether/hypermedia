@@ -8,6 +8,7 @@ import (
 
 func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
 	view := xmlmodel.View{
+		Xmlns: "https://hyperview.org/hyperview",
 		Style: "edit-group",
 		View: []xmlmodel.View{
 			{
@@ -44,18 +45,20 @@ func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
 					Name:        "email",
 					Placeholder: "Email",
 					Value:       contact.Email,
-					//Behavior: &xmlmodel.Behavior{
-					//	Trigger: "change",
-					//	Action:  "replace-inner",
-					//	Target:  "edit-field-error",
-					//	Href:    fmt.Sprintf("/contacts/%d/email", contact.ID),
-					//	Verb:    "get",
-					//},
+					Debounce:    "250",
+					Behavior: &xmlmodel.Behavior{
+						Trigger: "change",
+						Action:  "replace-inner",
+						Target:  "edit-email-error",
+						Href:    fmt.Sprintf("/mobile/contacts/%d/email", contact.ID),
+						Verb:    "get",
+					},
 				},
 				Text: []xmlmodel.Text{
 					{
+						ID:      "edit-email-error",
 						Style:   "edit-field-error",
-						Content: contact.FieldErrs.LastName,
+						Content: contact.FieldErrs.Email,
 					},
 				},
 			},
@@ -69,7 +72,7 @@ func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
 				Text: []xmlmodel.Text{
 					{
 						Style:   "edit-field-error",
-						Content: contact.FieldErrs.LastName,
+						Content: contact.FieldErrs.Phone,
 					},
 				},
 			},
@@ -87,4 +90,13 @@ func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
 	}
 
 	return view
+}
+
+func EmailValidationError(err string) xmlmodel.Text {
+	return xmlmodel.Text{
+		Xmlns:   "https://hyperview.org/hyperview",
+		ID:      "edit-email-error",
+		Style:   "edit-field-error",
+		Content: err,
+	}
 }

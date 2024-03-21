@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/web/view/contacts"
@@ -139,11 +140,10 @@ func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *
 	userID := web.Param(r, "id")
 	id, err := strconv.Atoi(userID)
 	if err != nil {
-		// better err handling
 		return err
 	}
 
-	email := r.FormValue("email")
+	email := strings.ToLower(r.FormValue("email"))
 
 	if !h.core.UniqueEmail(ctx, id, email) {
 		_, err := w.Write([]byte("This email is taken"))

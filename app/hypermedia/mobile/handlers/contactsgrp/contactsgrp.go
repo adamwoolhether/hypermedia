@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"strings"
 
 	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/contacts"
 	"github.com/adamwoolhether/hypermedia/business/contacts"
@@ -12,7 +13,7 @@ import (
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
-const defaultRows = 10
+const defaultRows = 20
 
 // Handlers manages the set of check points.
 type Handlers struct {
@@ -139,7 +140,7 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusBadRequest)
+		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusOK)
 	}
 
 	err = h.core.Update(ctx, uc.ToDB())
@@ -154,4 +155,21 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 	//}
 
 	return web.RenderXML(ctx, w, fe.EditFields(uc, true), http.StatusOK)
+}
+
+func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	email := strings.ToLower(r.FormValue("email"))
+
+	if !h.core.UniqueEmail(ctx, id, email) {
+		return web.RenderXML(ctx, w, fe.EmailValidationError("This email is taken"), http.StatusBadRequest)
+	}
+
+	// We need to return the `text` element with empty error.
+	return web.RenderXML(ctx, w, fe.EmailValidationError(""), http.StatusBadRequest)
 }
