@@ -140,21 +140,21 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 			Email:     fieldErrs.Fields()["email"],
 		}
 
-		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusOK)
+		return web.RenderXML(ctx, w, fe.FormFields(uc, false), http.StatusOK)
 	}
 
 	err = h.core.Update(ctx, uc.ToDB())
 	if err != nil {
 		// Or do failure flash here?
 		uc.InternalErrors = err.Error()
-		return web.RenderXML(ctx, w, fe.EditFields(uc, false), http.StatusInternalServerError)
+		return web.RenderXML(ctx, w, fe.FormFields(uc, false), http.StatusInternalServerError)
 	}
 
 	//if err := h.sessions.AddFlash(w, r, "Updated contact!"); err != nil {
 	//	h.log.Error(ctx, "adding flash", "err", err)
 	//}
 
-	return web.RenderXML(ctx, w, fe.EditFields(uc, true), http.StatusOK)
+	return web.RenderXML(ctx, w, fe.FormFields(uc, true), http.StatusOK)
 }
 
 func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {

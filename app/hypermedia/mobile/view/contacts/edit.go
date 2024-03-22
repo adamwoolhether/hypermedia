@@ -9,6 +9,7 @@ import (
 
 func Edit(contact UpdateContact) xmlmodel.Doc {
 	overrideHeader := xmlmodel.Header{
+		Style: "header-buttons",
 		Text: []xmlmodel.Text{
 			{
 				Style:   "header-button",
@@ -26,7 +27,7 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 		View: []xmlmodel.View{
 			{
 				ID:   "form-fields",
-				View: []xmlmodel.View{EditFields(contact, false)},
+				View: []xmlmodel.View{FormFields(contact, false)},
 			},
 			{
 				Style: "button",

@@ -6,7 +6,7 @@ import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 )
 
-func EditFields(contact UpdateContact, saved bool) xmlmodel.View {
+func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	view := xmlmodel.View{
 		Xmlns: "https://hyperview.org/hyperview",
 		Style: "edit-group",
