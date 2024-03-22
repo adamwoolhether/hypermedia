@@ -13,11 +13,10 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 		Text: []xmlmodel.Text{
 			{
 				Style:   "header-button",
-				Content: "Back",
+				Content: "Home",
 				Behavior: &xmlmodel.Behavior{
 					Trigger: "press",
 					Action:  "back",
-					Href:    "#",
 				},
 			},
 		},
@@ -30,7 +29,7 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 				View: []xmlmodel.View{FormFields(contact, false)},
 			},
 			{
-				Style: "button",
+				Style: "bottom-button",
 				Behavior: &xmlmodel.Behavior{
 					Trigger: "press",
 					Action:  "replace-inner",
@@ -40,20 +39,20 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 				},
 				Text: []xmlmodel.Text{
 					{
-						Style:   "button-label",
+						Style:   "bottom-button-label",
 						Content: "Save",
 					},
 				},
 			},
 			{
-				Style: "button",
+				Style: "bottom-button",
 				Behavior: &xmlmodel.Behavior{
 					Trigger: "press",
 					Action:  "reload",
 					Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
 				},
 				Text: []xmlmodel.Text{
-					{Style: "button-label", Content: "Cancel"},
+					{Style: "bottom-button-label", Content: "Cancel"},
 				},
 			},
 		},

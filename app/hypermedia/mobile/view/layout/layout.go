@@ -116,9 +116,53 @@ func styles() []xmlmodel.Style {
 			BorderRadius:      "8",
 			Color:             "blue",
 			FontSize:          "18",
-			FontWeight:        "bold",
+			FontWeight:        "500",
 			PaddingHorizontal: "12",
 			PaddingVertical:   "8",
+		},
+		{
+			ID:            "edit-group",
+			Display:       "flex",
+			FlexDirection: "column",
+			PaddingBottom: "85%", // NEED BETTER WAY TO GET BOTTOM-BUTTONS TO END OF SCREEN
+		},
+		{
+			ID:                "edit-field",
+			BackgroundColor:   "#FFFFFF",
+			BorderBottomColor: "#ccc",
+			BorderBottomWidth: "1",
+			Height:            "70",
+		},
+		{
+			ID:                "edit-field-text",
+			FontSize:          "18",
+			PaddingHorizontal: "36",
+			PaddingTop:        "25", // HOW TO CENTER WITHOUT THE PADDING?!?!?!
+		},
+		{
+			ID:                "edit-field-error",
+			FontSize:          "12",
+			Color:             "red",
+			FontWeight:        "500",
+			PaddingHorizontal: "36",
+			Padding:           "4",
+			//PaddingTop:        "25", // HOW TO CENTER WITHOUT THE PADDING?!?!?!
+		},
+		{
+			ID:                "bottom-button",
+			AlignItems:        "left",
+			BackgroundColor:   "#FFFFFF",
+			BorderBottomColor: "#ccc",
+			BorderBottomWidth: "1",
+			Display:           "flex",
+			PaddingHorizontal: "36",
+			PaddingVertical:   "20",
+		},
+		{
+			ID:         "bottom-button-label",
+			Color:      "blue",
+			FontSize:   "18",
+			FontWeight: "600",
 		},
 	}
 

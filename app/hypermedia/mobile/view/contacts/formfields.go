@@ -14,6 +14,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
+					Style:       "edit-field-text",
 					Name:        "first_name",
 					Placeholder: "First name",
 					Value:       contact.FirstName,
@@ -28,6 +29,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
+					Style:       "edit-field-text",
 					Name:        "last_name",
 					Placeholder: "Last name",
 					Value:       contact.LastName,
@@ -42,6 +44,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
+					Style:       "edit-field-text",
 					Name:        "email",
 					Placeholder: "Email",
 					Value:       contact.Email,
@@ -65,6 +68,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
+					Style:       "edit-field-text",
 					Name:        "phone",
 					Placeholder: "Phone",
 					Value:       contact.Phone,

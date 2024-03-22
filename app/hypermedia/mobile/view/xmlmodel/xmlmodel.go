@@ -26,6 +26,7 @@ type Style struct {
 	ID                string `xml:"id,attr,omitempty"`
 	AlignItems        string `xml:"alignItems,attr,omitempty"`
 	BackgroundColor   string `xml:"backgroundColor,attr,omitempty"`
+	Bottom            string `xml:"bottom,attr,omitempty"`
 	BorderBottom      string `xml:"borderBottom,attr,omitempty"`
 	BorderBottomWidth string `xml:"borderBottomWidth,attr,omitempty"`
 	BorderRadius      string `xml:"borderRadius,attr,omitempty"`

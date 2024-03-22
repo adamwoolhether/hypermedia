@@ -76,7 +76,7 @@ func Check(val any) error {
 func customErrForTag(tag string, verror validator.FieldError) string {
 	switch tag {
 	case "required":
-		return "This field is required."
+		return "This field is required"
 	default:
 		return verror.Translate(translator)
 	}
