@@ -38,15 +38,20 @@ type Style struct {
 	FlexDirection     string `xml:"flexDirection,attr,omitempty"`
 	FontSize          string `xml:"fontSize,attr,omitempty"`
 	FontWeight        string `xml:"fontWeight,attr,omitempty"`
+	Height            string `xml:"height,attr,omitempty"`
 	JustifyContent    string `xml:"justifyContent,attr,omitempty"`
+	Left              string `xml:"left,attr,omitempty"`
 	Margin            string `xml:"margin,attr,omitempty"`
 	MarginTop         string `xml:"marginTop,attr,omitempty"`
+	MarginHorizontal  string `xml:"marginHorizontal,attr,omitempty"`
+	MarginVertical    string `xml:"marginVertical,attr,omitempty"`
 	Padding           string `xml:"padding,attr,omitempty"`
 	PaddingTop        string `xml:"paddingTop,attr,omitempty"`
 	PaddingBottom     string `xml:"paddingBottom,attr,omitempty"`
 	PaddingVertical   string `xml:"paddingVertical,attr,omitempty"`
 	PaddingHorizontal string `xml:"paddingHorizontal,attr,omitempty"`
-	MarginVertical    string `xml:"marginVertical,attr,omitempty"`
+	Position          string `xml:"position,attr,omitempty"`
+	Right             string `xml:"right,attr,omitempty"`
 	TextAlign         string `xml:"textAlign,attr,omitempty"`
 	Width             string `xml:"width,attr,omitempty"`
 }
@@ -59,6 +64,7 @@ type Body struct {
 }
 
 type Header struct {
+	Style    string    `xml:"style,attr,omitempty"`
 	Text     []Text    `xml:"text,omitempty"`
 	Behavior *Behavior `xml:"behavior,omitempty"`
 }
