@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 )
 
@@ -57,7 +58,7 @@ func Rows(contacts []ContactMobile, page int) xmlmodel.Items {
 	}
 
 	items := xmlmodel.Items{
-		Xmlns: "https://hyperview.org/hyperview",
+		Xmlns: layout.Namespace,
 		Item:  contactItems,
 	}
 

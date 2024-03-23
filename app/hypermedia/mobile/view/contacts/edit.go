@@ -58,6 +58,20 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 							{Style: "bottom-button-label", Content: "Cancel"},
 						},
 					},
+					{
+						Behavior: []xmlmodel.Behavior{
+							{
+								Trigger: "press",
+								Action:  "append",
+								Target:  "form-fields",
+								Href:    fmt.Sprintf("/mobile/contacts/%d/delete", contact.ID),
+								Verb:    "post",
+							},
+						},
+						Text: []xmlmodel.Text{
+							{Style: "bottom-button-label button-delete", Content: "Delete"},
+						},
+					},
 				},
 			},
 		},

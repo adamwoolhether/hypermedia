@@ -3,12 +3,13 @@ package contacts
 import (
 	"fmt"
 
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 )
 
 func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	view := xmlmodel.View{
-		Xmlns: "https://hyperview.org/hyperview",
+		Xmlns: layout.Namespace,
 		Style: "edit-group",
 		View: []xmlmodel.View{ // Maybe map is better to add errors by name instead of index.
 			{
@@ -100,7 +101,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 
 func EmailView(contact UpdateContact) xmlmodel.View {
 	emailField := xmlmodel.View{
-		Xmlns: "https://hyperview.org/hyperview",
+		Xmlns: layout.Namespace,
 		ID:    "email",
 		Style: "edit-field",
 		TextField: &xmlmodel.TextField{

@@ -4,9 +4,11 @@ import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
 )
 
+const Namespace = "https://hyperview.org/hyperview"
+
 func Layout() xmlmodel.Doc {
 	doc := xmlmodel.Doc{
-		Xmlns: "https://hyperview.org/hyperview",
+		Xmlns: Namespace,
 		Screen: xmlmodel.Screen{
 			Styles: xmlmodel.Styles{
 				Style: styles(),
@@ -169,6 +171,11 @@ func styles() []xmlmodel.Style {
 		{
 			ID:         "bottom-button-label",
 			Color:      "blue",
+			FontWeight: "500",
+		},
+		{
+			ID:         "button-delete",
+			Color:      "red",
 			FontWeight: "500",
 		},
 	}

@@ -54,5 +54,6 @@ func mobileRoutes(app *web.App, cfg Config) {
 	app.Handle(http.MethodGet, mobile, "/contacts/{id}", mobileContactsGrp.QueryByID)
 	app.Handle(http.MethodGet, mobile, "/contacts/{id}/edit", mobileContactsGrp.UpdateForm)
 	app.Handle(http.MethodPost, mobile, "/contacts/{id}/edit", mobileContactsGrp.Update)
+	app.Handle(http.MethodPost, mobile, "/contacts/{id}/delete", mobileContactsGrp.Delete) // hyperview currently doesn't support DELETE
 	app.Handle(http.MethodGet, mobile, "/contacts/{id}/email", mobileContactsGrp.ValidateEmail)
 }

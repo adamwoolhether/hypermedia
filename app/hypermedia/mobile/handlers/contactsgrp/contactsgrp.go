@@ -179,3 +179,16 @@ func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *
 	// We need to return the `text` element with empty error.
 	return web.RenderXML(ctx, w, fe.EmailView(uc), http.StatusBadRequest)
 }
+
+func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	userID := web.Param(r, "id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return err
+	}
+
+	if err := h.core.Delete(ctx, id); err != nil {
+		return err
+	}
+	return web.RenderXML(ctx, w, fe.Deleted(), http.StatusNoContent)
+}
