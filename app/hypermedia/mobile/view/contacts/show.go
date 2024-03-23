@@ -9,7 +9,7 @@ import (
 
 func Show(contact ContactMobile) xmlmodel.Doc {
 	overrideHeader := xmlmodel.Header{
-		Style: "header-buttons",
+		Style: "buttons-row",
 		Text: []xmlmodel.Text{
 			{
 				Style:   "header-button",

@@ -10,7 +10,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	view := xmlmodel.View{
 		Xmlns: "https://hyperview.org/hyperview",
 		Style: "edit-group",
-		View: []xmlmodel.View{
+		View: []xmlmodel.View{ // Maybe map is better to add errors by name instead of index.
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
@@ -18,12 +18,6 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 					Name:        "first_name",
 					Placeholder: "First name",
 					Value:       contact.FirstName,
-				},
-				Text: []xmlmodel.Text{
-					{
-						Style:   "edit-field-error",
-						Content: contact.FieldErrs.FirstName,
-					},
 				},
 			},
 			{
@@ -34,37 +28,10 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 					Placeholder: "Last name",
 					Value:       contact.LastName,
 				},
-				Text: []xmlmodel.Text{
-					{
-						Style:   "edit-field-error",
-						Content: contact.FieldErrs.LastName,
-					},
-				},
 			},
-			{
-				Style: "edit-field",
-				TextField: &xmlmodel.TextField{
-					Style:       "edit-field-text",
-					Name:        "email",
-					Placeholder: "Email",
-					Value:       contact.Email,
-					Debounce:    "250",
-					Behavior: &xmlmodel.Behavior{
-						Trigger: "change",
-						Action:  "replace-inner",
-						Target:  "edit-email-error",
-						Href:    fmt.Sprintf("/mobile/contacts/%d/email", contact.ID),
-						Verb:    "get",
-					},
-				},
-				Text: []xmlmodel.Text{
-					{
-						ID:      "edit-email-error",
-						Style:   "edit-field-error",
-						Content: contact.FieldErrs.Email,
-					},
-				},
-			},
+			// We need to put email in its own view, to allow dynamic
+			// updating of the error-field and replace the entire view.
+			EmailView(contact),
 			{
 				Style: "edit-field",
 				TextField: &xmlmodel.TextField{
@@ -73,14 +40,42 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 					Placeholder: "Phone",
 					Value:       contact.Phone,
 				},
-				Text: []xmlmodel.Text{
-					{
-						Style:   "edit-field-error",
-						Content: contact.FieldErrs.Phone,
-					},
-				},
 			},
 		},
+	}
+
+	if contact.FieldErrs.FirstName != "" {
+		fNameErr := xmlmodel.Text{
+			Style:   "edit-field-error",
+			Content: contact.FieldErrs.FirstName,
+		}
+		view.View[0].Text = append(view.View[0].Text, fNameErr)
+	}
+
+	if contact.FieldErrs.LastName != "" {
+		lNameErr := xmlmodel.Text{
+			Style:   "edit-field-error",
+			Content: contact.FieldErrs.LastName,
+		}
+		view.View[1].Text = append(view.View[1].Text, lNameErr)
+	}
+
+	if contact.FieldErrs.Email != "" {
+		emailErr := xmlmodel.Text{
+			ID:      "edit-email-error",
+			Style:   "edit-field-error",
+			Content: contact.FieldErrs.Email,
+		}
+		view.View[2].Text = append(view.View[2].Text, emailErr)
+	}
+
+	if contact.FieldErrs.Phone != "" {
+		phoneErr := xmlmodel.Text{
+			ID:      "edit-email-error",
+			Style:   "edit-field-error",
+			Content: contact.FieldErrs.Phone,
+		}
+		view.View[3].Text = append(view.View[3].Text, phoneErr)
 	}
 
 	// Hyperview can't handle server-directed redirects.
@@ -96,11 +91,35 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	return view
 }
 
-func EmailValidationError(err string) xmlmodel.Text {
-	return xmlmodel.Text{
-		Xmlns:   "https://hyperview.org/hyperview",
-		ID:      "edit-email-error",
-		Style:   "edit-field-error",
-		Content: err,
+func EmailView(contact UpdateContact) xmlmodel.View {
+	emailField := xmlmodel.View{
+		Xmlns: "https://hyperview.org/hyperview",
+		ID:    "email",
+		Style: "edit-field",
+		TextField: &xmlmodel.TextField{
+			Style:       "edit-field-text",
+			Name:        "email",
+			Placeholder: "Email",
+			Value:       contact.Email,
+			Debounce:    "250",
+			Behavior: &xmlmodel.Behavior{
+				Trigger: "change",
+				Action:  "replace",
+				Target:  "email",
+				Href:    fmt.Sprintf("/mobile/contacts/%d/email", contact.ID),
+				Verb:    "get",
+			},
+		},
 	}
+
+	if contact.FieldErrs.Email != "" {
+		emailErr := xmlmodel.Text{
+			ID:      "edit-email-error",
+			Style:   "edit-field-error",
+			Content: contact.FieldErrs.Email,
+		}
+		emailField.Text = append(emailField.Text, emailErr)
+	}
+
+	return emailField
 }

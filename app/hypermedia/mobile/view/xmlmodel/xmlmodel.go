@@ -30,6 +30,7 @@ type Style struct {
 	BorderBottom      string `xml:"borderBottom,attr,omitempty"`
 	BorderBottomWidth string `xml:"borderBottomWidth,attr,omitempty"`
 	BorderRadius      string `xml:"borderRadius,attr,omitempty"`
+	BorderColor       string `xml:"borderColor,attr,omitempty"`
 	BorderTopColor    string `xml:"borderTopColor,attr,omitempty"`
 	BorderTopWidth    string `xml:"borderTopWidth,attr,omitempty"`
 	BorderBottomColor string `xml:"borderBottomColor,attr,omitempty"`
@@ -44,13 +45,16 @@ type Style struct {
 	Left              string `xml:"left,attr,omitempty"`
 	Margin            string `xml:"margin,attr,omitempty"`
 	MarginTop         string `xml:"marginTop,attr,omitempty"`
+	MarginBottom      string `xml:"marginBottom,attr,omitempty"`
 	MarginHorizontal  string `xml:"marginHorizontal,attr,omitempty"`
 	MarginVertical    string `xml:"marginVertical,attr,omitempty"`
 	Padding           string `xml:"padding,attr,omitempty"`
 	PaddingTop        string `xml:"paddingTop,attr,omitempty"`
 	PaddingBottom     string `xml:"paddingBottom,attr,omitempty"`
-	PaddingVertical   string `xml:"paddingVertical,attr,omitempty"`
+	PaddingLeft       string `xml:"paddingLeft,attr,omitempty"`
+	PaddingRight      string `xml:"paddingRight,attr,omitempty"`
 	PaddingHorizontal string `xml:"paddingHorizontal,attr,omitempty"`
+	PaddingVertical   string `xml:"paddingVertical,attr,omitempty"`
 	Position          string `xml:"position,attr,omitempty"`
 	Right             string `xml:"right,attr,omitempty"`
 	TextAlign         string `xml:"textAlign,attr,omitempty"`

@@ -9,11 +9,11 @@ import (
 
 func Edit(contact UpdateContact) xmlmodel.Doc {
 	overrideHeader := xmlmodel.Header{
-		Style: "header-buttons",
+		Style: "buttons-row",
 		Text: []xmlmodel.Text{
 			{
 				Style:   "header-button",
-				Content: "Home",
+				Content: "Back",
 				Behavior: &xmlmodel.Behavior{
 					Trigger: "press",
 					Action:  "back",
@@ -29,30 +29,34 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 				View: []xmlmodel.View{FormFields(contact, false)},
 			},
 			{
-				Style: "bottom-button",
-				Behavior: &xmlmodel.Behavior{
-					Trigger: "press",
-					Action:  "replace-inner",
-					Target:  "form-fields",
-					Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
-					Verb:    "post",
-				},
-				Text: []xmlmodel.Text{
+				// HOW TO MAKE THIS SHOW AT THE BOTTOM OF THE SCREEN?
+				Style: "buttons-row-bottom",
+				View: []xmlmodel.View{
 					{
-						Style:   "bottom-button-label",
-						Content: "Save",
+						Behavior: &xmlmodel.Behavior{
+							Trigger: "press",
+							Action:  "replace-inner",
+							Target:  "form-fields",
+							Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
+							Verb:    "post",
+						},
+						Text: []xmlmodel.Text{
+							{
+								Style:   "bottom-button-label",
+								Content: "Save",
+							},
+						},
 					},
-				},
-			},
-			{
-				Style: "bottom-button",
-				Behavior: &xmlmodel.Behavior{
-					Trigger: "press",
-					Action:  "reload",
-					Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
-				},
-				Text: []xmlmodel.Text{
-					{Style: "bottom-button-label", Content: "Cancel"},
+					{
+						Behavior: &xmlmodel.Behavior{
+							Trigger: "press",
+							Action:  "reload",
+							Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+						},
+						Text: []xmlmodel.Text{
+							{Style: "bottom-button-label", Content: "Cancel"},
+						},
+					},
 				},
 			},
 		},
