@@ -80,7 +80,7 @@ type View struct {
 	ID        string     `xml:"id,attr,omitempty"`
 	Style     string     `xml:"style,attr,omitempty"`
 	Form      *Form      `xml:"form,omitempty"`
-	Behavior  *Behavior  `xml:"behavior,omitempty"`
+	Behavior  []Behavior `xml:"behavior,omitempty"`
 	TextField *TextField `xml:"text-field,omitempty"`
 	Text      []Text     `xml:"text,omitempty"`
 	View      []View     `xml:"view,omitempty"`
@@ -92,6 +92,7 @@ type Form struct {
 	TextField *TextField `xml:"text-field,omitempty"`
 	List      *List      `xml:"list,omitempty"`
 	View      []View     `xml:"view,omitempty"`
+	Behavior  []Behavior `xml:"behavior,omitempty"`
 }
 
 type TextField struct {
@@ -156,11 +157,12 @@ type Text struct {
 }
 
 type Behavior struct {
-	Trigger string `xml:"trigger,attr,omitempty"`
-	Action  string `xml:"action,attr,omitempty"`
-	Target  string `xml:"target,attr,omitempty"`
-	Href    string `xml:"href,attr,omitempty"`
-	Verb    string `xml:"verb,attr,omitempty"`
+	Trigger   string `xml:"trigger,attr,omitempty"`
+	Action    string `xml:"action,attr,omitempty"`
+	Target    string `xml:"target,attr,omitempty"`
+	Href      string `xml:"href,attr,omitempty"`
+	Verb      string `xml:"verb,attr,omitempty"`
+	EventName string `xml:"event-name,attr,omitempty"`
 }
 
 type Spinner struct {

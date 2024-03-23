@@ -33,22 +33,26 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 				Style: "buttons-row-bottom",
 				View: []xmlmodel.View{
 					{
-						Behavior: &xmlmodel.Behavior{
-							Trigger: "press",
-							Action:  "replace-inner",
-							Target:  "form-fields",
-							Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
-							Verb:    "post",
+						Behavior: []xmlmodel.Behavior{
+							{
+								Trigger: "press",
+								Action:  "replace-inner",
+								Target:  "form-fields",
+								Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
+								Verb:    "post",
+							},
 						},
 						Text: []xmlmodel.Text{
 							{Style: "bottom-button-label", Content: "Save"},
 						},
 					},
 					{
-						Behavior: &xmlmodel.Behavior{
-							Trigger: "press",
-							Action:  "reload",
-							Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+						Behavior: []xmlmodel.Behavior{
+							{
+								Trigger: "press",
+								Action:  "reload",
+								Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+							},
 						},
 						Text: []xmlmodel.Text{
 							{Style: "bottom-button-label", Content: "Cancel"},

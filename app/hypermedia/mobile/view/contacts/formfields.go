@@ -81,10 +81,17 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	// Hyperview can't handle server-directed redirects.
 	if saved {
 		//view.Xmlns = "http://hyperview.org/hyperview"
-		view.Behavior = &xmlmodel.Behavior{
-			Trigger: "load",
-			Action:  "reload",
-			Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+		view.Behavior = []xmlmodel.Behavior{
+			{
+				Trigger:   "load",
+				Action:    "dispatch-event",
+				EventName: "contact-updated",
+			},
+			{
+				Trigger: "load",
+				Action:  "reload",
+				Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+			},
 		}
 	}
 

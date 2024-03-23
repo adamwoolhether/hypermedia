@@ -7,6 +7,16 @@ import (
 
 func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 	form := xmlmodel.Form{
+		Behavior: []xmlmodel.Behavior{
+			{
+				Trigger:   "on-event",
+				EventName: "contact-updated",
+				Action:    "replace-inner",
+				Target:    "contacts-list",
+				Href:      "/mobile/contacts?rows_only=true",
+				Verb:      "get",
+			},
+		},
 		TextField: &xmlmodel.TextField{
 			Name:        "q",
 			Placeholder: "Search...",
