@@ -69,6 +69,44 @@ func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return web.RenderXML(ctx, w, fe.Index(contactsToMobile(contacts), page), http.StatusOK)
 }
 
+func (h *Handlers) CreateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	return web.RenderXML(ctx, w, fe.New(fe.UpdateContact{}), http.StatusOK)
+}
+
+func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	newContact := fe.UpdateContact{
+		FirstName: r.FormValue("first_name"),
+		LastName:  r.FormValue("last_name"),
+		Phone:     r.FormValue("phone"),
+		Email:     r.FormValue("email"),
+	}
+
+	if err := validate.Check(newContact); err != nil {
+		fieldErrs := validate.GetFieldErrors(err)
+
+		newContact.FieldErrs = fe.ContactErrors{
+			FirstName: fieldErrs.Fields()["first_name"],
+			LastName:  fieldErrs.Fields()["last_name"],
+			Phone:     fieldErrs.Fields()["phone"],
+			Email:     fieldErrs.Fields()["email"],
+		}
+
+		return web.RenderXML(ctx, w, fe.FormFields(newContact, false), http.StatusBadRequest)
+	}
+
+	created, err := h.core.Create(ctx, newContact.ToDB())
+	if err != nil {
+		newContact.InternalErrors = err.Error()
+
+		return web.RenderXML(ctx, w, fe.FormFields(newContact, false), http.StatusInternalServerError)
+	}
+
+	newContact.ID = created.ID
+
+	return web.RenderXML(ctx, w, fe.FormFields(newContact, true), http.StatusCreated)
+}
+
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	userID := web.Param(r, "id")
 	id, err := strconv.Atoi(userID)

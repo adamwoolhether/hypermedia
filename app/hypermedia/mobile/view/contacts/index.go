@@ -6,6 +6,25 @@ import (
 )
 
 func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
+	header := xmlmodel.Header{
+		Style: "buttons-row",
+		Text: []xmlmodel.Text{
+			{
+				Style:   "header-title",
+				Content: "Contacts.app",
+			},
+			{
+				Style:   "header-button",
+				Content: "Add",
+				Behavior: &xmlmodel.Behavior{
+					Trigger: "press",
+					Action:  "new",
+					Href:    "/mobile/contacts/new",
+				},
+			},
+		},
+	}
+
 	form := xmlmodel.Form{
 		Behavior: []xmlmodel.Behavior{
 			{
@@ -44,6 +63,7 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 	}
 
 	doc := layout.Layout()
+	doc.Screen.Body.Header = header
 	doc.Screen.Body.View.Form = &form
 
 	return doc

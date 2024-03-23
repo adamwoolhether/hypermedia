@@ -70,7 +70,7 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return web.RenderHTML(ctx, w, fe.FormFields(newContact), http.StatusBadRequest)
 	}
 
-	err := h.core.Create(ctx, newContact.ToDB())
+	_, err := h.core.Create(ctx, newContact.ToDB())
 	if err != nil {
 		newContact.InternalErrors = err.Error()
 

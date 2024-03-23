@@ -106,7 +106,7 @@ func (c *Core) UniqueEmail(ctx context.Context, id int, email string) bool {
 	return true
 }
 
-func (c *Core) Create(ctx context.Context, newContact Contact) error {
+func (c *Core) Create(ctx context.Context, newContact Contact) (Contact, error) {
 	c.log.Info(ctx, "creating", "newContact", newContact)
 
 	c.mu.Lock()
@@ -117,7 +117,7 @@ func (c *Core) Create(ctx context.Context, newContact Contact) error {
 
 	c.db = append(c.db, newContact)
 
-	return nil
+	return newContact, nil
 }
 
 func (c *Core) Update(ctx context.Context, contact Contact) error {

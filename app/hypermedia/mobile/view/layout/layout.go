@@ -17,11 +17,6 @@ func Layout() xmlmodel.Doc {
 			Body: xmlmodel.Body{
 				Style:    "body",
 				SafeArea: true,
-				Header: xmlmodel.Header{
-					Text: []xmlmodel.Text{
-						{Style: "header-title", Content: "Contacts.app"},
-					},
-				},
 				View: xmlmodel.View{
 					Style: "main",
 				},
@@ -45,11 +40,11 @@ func styles() []xmlmodel.Style {
 			BackgroundColor: "#eee",
 		},
 		{
-			ID:                "header-title",
-			FontSize:          "16",
-			Color:             "black",
-			FontWeight:        "500",
-			PaddingHorizontal: "22", // To align with `contact-section`: MarginHorizontal+Padding
+			ID:         "header-title",
+			FontSize:   "16",
+			Color:      "black",
+			FontWeight: "500",
+			//PaddingHorizontal: "22", // To align with `contact-section`: MarginHorizontal+Padding
 		},
 		{
 			ID:                "buttons-row",

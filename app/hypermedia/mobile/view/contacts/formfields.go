@@ -61,15 +61,6 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 		view.View[1].Text = append(view.View[1].Text, lNameErr)
 	}
 
-	if contact.FieldErrs.Email != "" {
-		emailErr := xmlmodel.Text{
-			ID:      "edit-email-error",
-			Style:   "edit-field-error",
-			Content: contact.FieldErrs.Email,
-		}
-		view.View[2].Text = append(view.View[2].Text, emailErr)
-	}
-
 	if contact.FieldErrs.Phone != "" {
 		phoneErr := xmlmodel.Text{
 			ID:      "edit-email-error",

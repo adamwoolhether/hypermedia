@@ -60,11 +60,12 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 		return response.NewError(err, http.StatusBadRequest)
 	}
 
-	if err := h.core.Create(ctx, newContact.toDB()); err != nil {
+	created, err := h.core.Create(ctx, newContact.toDB())
+	if err != nil {
 		return response.NewError(err, http.StatusInternalServerError)
 	}
 
-	return web.RespondJSON(ctx, w, newContact, http.StatusCreated)
+	return web.RespondJSON(ctx, w, created, http.StatusCreated)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
