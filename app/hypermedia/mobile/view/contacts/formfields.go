@@ -109,7 +109,7 @@ func EmailView(contact UpdateContact) xmlmodel.View {
 			Name:        "email",
 			Placeholder: "Email",
 			Value:       contact.Email,
-			Debounce:    "250",
+			Debounce:    "500",
 			Behavior: &xmlmodel.Behavior{
 				Trigger: "change",
 				Action:  "replace",

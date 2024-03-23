@@ -21,7 +21,7 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 			Name:        "q",
 			Placeholder: "Search...",
 			Style:       "search-field",
-			Debounce:    "250",
+			Debounce:    "500",
 			Behavior: &xmlmodel.Behavior{
 				Trigger: "change",
 				Action:  "replace-inner",

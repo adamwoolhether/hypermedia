@@ -59,13 +59,28 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 						},
 					},
 					{
-						Behavior: []xmlmodel.Behavior{
-							{
-								Trigger: "press",
-								Action:  "append",
-								Target:  "form-fields",
-								Href:    fmt.Sprintf("/mobile/contacts/%d/delete", contact.ID),
-								Verb:    "post",
+						BehaviorWithAlertOpts: &xmlmodel.BehaviorAlertOpts{
+							Behavior: xmlmodel.Behavior{
+								XmlnsAlert:   "https://hyperview.org/hyperview-alert",
+								Trigger:      "press",
+								Action:       "alert",
+								AlertTitle:   "Confirm delete",
+								AlertMessage: fmt.Sprintf("Are you sure you want to delete %s?", contact.FirstName),
+							},
+							AlertOptions: []xmlmodel.AlertOption{
+								{
+									Label: "Confirm",
+									Behavior: &xmlmodel.Behavior{
+										Trigger: "press",
+										Action:  "append",
+										Target:  "form-fields",
+										Href:    fmt.Sprintf("/mobile/contacts/%d/delete", contact.ID),
+										Verb:    "post",
+									},
+								},
+								{
+									Label: "Cancel",
+								},
 							},
 						},
 						Text: []xmlmodel.Text{

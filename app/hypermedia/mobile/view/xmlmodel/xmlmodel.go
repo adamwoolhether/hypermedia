@@ -71,19 +71,20 @@ type Body struct {
 type Header struct {
 	Style    string    `xml:"style,attr,omitempty"`
 	Text     []Text    `xml:"text,omitempty"`
-	Behavior *Behavior `xml:"behavior,omitempty"`
+	Behavior *Behavior `xml:",omitempty"`
 }
 
 type View struct {
-	XMLName   xml.Name   `xml:"view"`
-	Xmlns     string     `xml:"xmlns,attr,omitempty"` /////////
-	ID        string     `xml:"id,attr,omitempty"`
-	Style     string     `xml:"style,attr,omitempty"`
-	Form      *Form      `xml:"form,omitempty"`
-	Behavior  []Behavior `xml:"behavior,omitempty"`
-	TextField *TextField `xml:"text-field,omitempty"`
-	Text      []Text     `xml:"text,omitempty"`
-	View      []View     `xml:"view,omitempty"`
+	XMLName               xml.Name           `xml:"view"`
+	Xmlns                 string             `xml:"xmlns,attr,omitempty"` /////////
+	ID                    string             `xml:"id,attr,omitempty"`
+	Style                 string             `xml:"style,attr,omitempty"`
+	Form                  *Form              `xml:"form,omitempty"`
+	Behavior              []Behavior         `xml:",omitempty"`
+	BehaviorWithAlertOpts *BehaviorAlertOpts `xml:",omitempty"`
+	TextField             *TextField         `xml:"text-field,omitempty"`
+	Text                  []Text             `xml:"text,omitempty"`
+	View                  []View             `xml:"view,omitempty"`
 }
 
 // INDEX ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ type Form struct {
 	TextField *TextField `xml:"text-field,omitempty"`
 	List      *List      `xml:"list,omitempty"`
 	View      []View     `xml:"view,omitempty"`
-	Behavior  []Behavior `xml:"behavior,omitempty"`
+	Behavior  []Behavior `xml:",omitempty"`
 }
 
 type TextField struct {
@@ -100,13 +101,14 @@ type TextField struct {
 	Value       string    `xml:"value,attr,omitempty"`
 	Placeholder string    `xml:"placeholder,attr,omitempty"`
 	Style       string    `xml:"style,attr,omitempty"`
-	Behavior    *Behavior `xml:"behavior,omitempty"`
+	Behavior    *Behavior `xml:",omitempty"`
 	Debounce    string    `xml:"debounce,attr,omitempty"`
 }
 
 type List struct {
-	ID    string `xml:"id,attr"`
-	Items Items  `xml:"items"`
+	XMLName xml.Name `xml:"list"`
+	ID      string   `xml:"id,attr"`
+	Items   Items    `xml:"items"`
 	// Behavior is embedded here, adding the behavior attributes directly
 	// to the list element, rather than adding the element to the list.
 	// This is a convenient shorthand. We do this when  because of the use
@@ -141,7 +143,7 @@ type Item struct {
 	Key      string    `xml:"key,attr,omitempty"`
 	Style    string    `xml:"style,attr,omitempty"`
 	Text     *Text     `xml:"text,omitempty"`
-	Behavior *Behavior `xml:"behavior,omitempty"`
+	Behavior *Behavior `xml:",omitempty"`
 	Spinner  *Spinner  `xml:"spinner,omitempty"`
 }
 
@@ -153,16 +155,30 @@ type Text struct {
 	ID       string    `xml:"id,attr,omitempty"`
 	Style    string    `xml:"style,attr,omitempty"`
 	Content  string    `xml:",chardata"`
-	Behavior *Behavior `xml:"behavior,omitempty"`
+	Behavior *Behavior `xml:",omitempty"`
 }
 
 type Behavior struct {
-	Trigger   string `xml:"trigger,attr,omitempty"`
-	Action    string `xml:"action,attr,omitempty"`
-	Target    string `xml:"target,attr,omitempty"`
-	Href      string `xml:"href,attr,omitempty"`
-	Verb      string `xml:"verb,attr,omitempty"`
-	EventName string `xml:"event-name,attr,omitempty"`
+	XMLName      xml.Name `xml:"behavior"`
+	Trigger      string   `xml:"trigger,attr,omitempty"`
+	Action       string   `xml:"action,attr,omitempty"`
+	Target       string   `xml:"target,attr,omitempty"`
+	Href         string   `xml:"href,attr,omitempty"`
+	Verb         string   `xml:"verb,attr,omitempty"`
+	EventName    string   `xml:"event-name,attr,omitempty"`
+	XmlnsAlert   string   `xml:"xmlns:alert,attr,omitempty"`
+	AlertTitle   string   `xml:"alert:title,attr,omitempty"`
+	AlertMessage string   `xml:"alert:message,attr,omitempty"`
+}
+
+type BehaviorAlertOpts struct {
+	Behavior     `xml:",any"`
+	AlertOptions []AlertOption `xml:"alert:option,omitempty"`
+}
+
+type AlertOption struct {
+	Label    string    `xml:"alert:label,attr,omitempty"`
+	Behavior *Behavior `xml:",omitempty"`
 }
 
 type Spinner struct {
