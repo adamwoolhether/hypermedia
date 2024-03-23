@@ -41,10 +41,7 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 							Verb:    "post",
 						},
 						Text: []xmlmodel.Text{
-							{
-								Style:   "bottom-button-label",
-								Content: "Save",
-							},
+							{Style: "bottom-button-label", Content: "Save"},
 						},
 					},
 					{
