@@ -55,7 +55,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 		}, Routes(), mux.WithStaticFS(fe.Static()))
 
 	api := http.Server{
-		Addr:    "localhost:42069",
+		Addr:    "192.168.1.71:42069",
 		Handler: app,
 		//ReadTimeout:  cfg.Web.ReadTimeout,
 		//WriteTimeout: cfg.Web.WriteTimeout,
