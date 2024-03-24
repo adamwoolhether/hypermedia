@@ -8,6 +8,7 @@ const (
 	Namespace      = "https://hyperview.org/hyperview"
 	NamespaceAlert = "https://hyperview.org/hyperview-alert"
 	NamespaceComms = "https://hypermedia.systems/hyperview/communications"
+	NamespaceToast = "https://hypermedia.systems/hyperview/toast"
 )
 
 // LAYOUT //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +181,9 @@ type Behavior struct {
 	XmlnsComms       string `xml:"xmlns:comms,attr,omitempty"`
 	CommsPhoneNumber string `xml:"comms:phone-number,attr,omitempty"`
 	CommsEmailAddr   string `xml:"comms:email-address,attr,omitempty"`
+	// Toast
+	XmlnsToast string `xml:"xmlns:toast,attr,omitempty"`
+	ToastText  string `xml:"toast:text,attr,omitempty"`
 }
 
 type BehaviorAlertOpts struct {

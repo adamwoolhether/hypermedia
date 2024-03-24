@@ -1,4 +1,4 @@
-// this should be places in the expo /src/ folder.
+// this should be placed in the expo /src/ folder.
 
 import { phonecall } from 'react-native-communications';
 

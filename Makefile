@@ -8,6 +8,7 @@ dev.setup.mobile:
 	cd hyperview && yarn
 	cd hyperview/demo && yarn
 	cd hyperview/demo && yarn add react-native-communications
+	cd hyperview/demo && yarn add react-native-root-toast
 	xcodebuild -runFirstLaunch
 	xcodebuild -downloadPlatform iOS
 
@@ -33,3 +34,10 @@ tidy:
 # curl -i -X POST http://localhost:42069/api/v1/contacts
 test:
 	/Users/adam/Library/Android/sdk/emulator/emulator -avd Pixel_8_Pro_API_UpsideDownCakePrivacySandbox -dns-server 8.8.8.8
+
+
+#import OpenPhone from './phone';
+#import OpenEmail from './email';
+#import ShowToast from './Toast';
+#HyperviewScreen.Behaviors = [OpenPhone, OpenEmail, ShowToast];
+#console.log(HyperviewScreen.Behaviors);

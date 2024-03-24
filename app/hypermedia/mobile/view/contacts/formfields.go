@@ -2,11 +2,13 @@ package contacts
 
 import (
 	"fmt"
+	"slices"
 
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func FormFields(contact UpdateContact, saved bool) xml.View {
+func FormFields(contact UpdateContact, saved bool, toasts ...string) xml.View {
 	view := xml.View{
 		Xmlns: xml.Namespace,
 		Style: "edit-group",
@@ -71,8 +73,8 @@ func FormFields(contact UpdateContact, saved bool) xml.View {
 
 	// Hyperview can't handle server-directed redirects.
 	if saved {
-		//view.Xmlns = "http://hyperview.org/hyperview"
-		view.Behavior = []xml.Behavior{
+		toasts := layout.ShowToasts(toasts...)
+		savedEvents := []xml.Behavior{
 			{
 				Trigger:   "load",
 				Action:    "dispatch-event",
@@ -84,6 +86,8 @@ func FormFields(contact UpdateContact, saved bool) xml.View {
 				Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
 			},
 		}
+
+		view.Behavior = slices.Concat(toasts, savedEvents)
 	}
 
 	return view

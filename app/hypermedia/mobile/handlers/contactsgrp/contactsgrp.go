@@ -97,7 +97,7 @@ func (h *Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Re
 
 	newContact.ID = created.ID
 
-	return web.RenderXML(ctx, w, fe.FormFields(newContact, true), http.StatusCreated)
+	return web.RenderXML(ctx, w, fe.FormFields(newContact, true, "Contact added"), http.StatusCreated)
 }
 
 func (h *Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -185,7 +185,7 @@ func (h *Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Re
 	//	h.log.Error(ctx, "adding flash", "err", err)
 	//}
 
-	return web.RenderXML(ctx, w, fe.FormFields(uc, true), http.StatusOK)
+	return web.RenderXML(ctx, w, fe.FormFields(uc, true, "Contact updated"), http.StatusOK)
 }
 
 func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -221,5 +221,5 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 	if err := h.core.Delete(ctx, id); err != nil {
 		return err
 	}
-	return web.RenderXML(ctx, w, fe.Deleted(), http.StatusNoContent)
+	return web.RenderXML(ctx, w, fe.Deleted("Contact deleted"), http.StatusNoContent)
 }

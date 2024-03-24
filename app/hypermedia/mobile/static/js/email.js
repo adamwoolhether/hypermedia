@@ -1,3 +1,4 @@
+// this should be placed in the expo /src/ folder.
 
 import { email } from 'react-native-communications';
 
