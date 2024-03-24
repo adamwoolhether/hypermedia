@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func Rows(contacts []ContactMobile, page int) xmlmodel.Items {
+func Rows(contacts []ContactMobile, page int) xml.Items {
 	if len(contacts) == 0 {
-		return xmlmodel.Items{}
+		return xml.Items{}
 	}
 
-	contactItems := make([]xmlmodel.Item, len(contacts)+1)
+	contactItems := make([]xml.Item, len(contacts)+1)
 
 	for i, contact := range contacts {
 		var itemTextContent string
@@ -26,14 +25,14 @@ func Rows(contacts []ContactMobile, page int) xmlmodel.Items {
 			itemTextContent = contact.Email
 		}
 
-		contactItems[i] = xmlmodel.Item{
+		contactItems[i] = xml.Item{
 			Key:   strconv.Itoa(contact.ID),
 			Style: "contact-item",
-			Text: &xmlmodel.Text{
+			Text: &xml.Text{
 				Style:   "contact-item-label",
 				Content: itemTextContent,
 			},
-			Behavior: &xmlmodel.Behavior{
+			Behavior: &xml.Behavior{
 				Trigger: "press",
 				Action:  "push",
 				Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
@@ -42,23 +41,23 @@ func Rows(contacts []ContactMobile, page int) xmlmodel.Items {
 	}
 
 	if len(contacts) == 10 {
-		contactItems[len(contacts)] = xmlmodel.Item{
+		contactItems[len(contacts)] = xml.Item{
 			ID:    "load-more",
 			Key:   "load-more",
 			Style: "load-more-item",
-			Behavior: &xmlmodel.Behavior{
+			Behavior: &xml.Behavior{
 				Trigger: "visible",
 				Action:  "replace",
 				Target:  "load-more",
 				Href:    fmt.Sprintf("/mobile/contacts?rows_only=true&page=%d", page+1),
 				Verb:    "get",
 			},
-			Spinner: &xmlmodel.Spinner{},
+			Spinner: &xml.Spinner{},
 		}
 	}
 
-	items := xmlmodel.Items{
-		Xmlns: layout.Namespace,
+	items := xml.Items{
+		Xmlns: xml.Namespace,
 		Item:  contactItems,
 	}
 

@@ -3,18 +3,17 @@ package contacts
 import (
 	"fmt"
 
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
-	view := xmlmodel.View{
-		Xmlns: layout.Namespace,
+func FormFields(contact UpdateContact, saved bool) xml.View {
+	view := xml.View{
+		Xmlns: xml.Namespace,
 		Style: "edit-group",
-		View: []xmlmodel.View{ // Maybe map is better to add errors by name instead of index.
+		View: []xml.View{ // Maybe map is better to add errors by name instead of index.
 			{
 				Style: "edit-field",
-				TextField: &xmlmodel.TextField{
+				TextField: &xml.TextField{
 					Style:       "edit-field-text",
 					Name:        "first_name",
 					Placeholder: "First name",
@@ -23,7 +22,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			},
 			{
 				Style: "edit-field",
-				TextField: &xmlmodel.TextField{
+				TextField: &xml.TextField{
 					Style:       "edit-field-text",
 					Name:        "last_name",
 					Placeholder: "Last name",
@@ -35,7 +34,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 			EmailView(contact),
 			{
 				Style: "edit-field",
-				TextField: &xmlmodel.TextField{
+				TextField: &xml.TextField{
 					Style:       "edit-field-text",
 					Name:        "phone",
 					Placeholder: "Phone",
@@ -46,7 +45,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	}
 
 	if contact.FieldErrs.FirstName != "" {
-		fNameErr := xmlmodel.Text{
+		fNameErr := xml.Text{
 			Style:   "edit-field-error",
 			Content: contact.FieldErrs.FirstName,
 		}
@@ -54,7 +53,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	}
 
 	if contact.FieldErrs.LastName != "" {
-		lNameErr := xmlmodel.Text{
+		lNameErr := xml.Text{
 			Style:   "edit-field-error",
 			Content: contact.FieldErrs.LastName,
 		}
@@ -62,7 +61,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	}
 
 	if contact.FieldErrs.Phone != "" {
-		phoneErr := xmlmodel.Text{
+		phoneErr := xml.Text{
 			ID:      "edit-email-error",
 			Style:   "edit-field-error",
 			Content: contact.FieldErrs.Phone,
@@ -73,7 +72,7 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	// Hyperview can't handle server-directed redirects.
 	if saved {
 		//view.Xmlns = "http://hyperview.org/hyperview"
-		view.Behavior = []xmlmodel.Behavior{
+		view.Behavior = []xml.Behavior{
 			{
 				Trigger:   "load",
 				Action:    "dispatch-event",
@@ -90,18 +89,18 @@ func FormFields(contact UpdateContact, saved bool) xmlmodel.View {
 	return view
 }
 
-func EmailView(contact UpdateContact) xmlmodel.View {
-	emailField := xmlmodel.View{
-		Xmlns: layout.Namespace,
+func EmailView(contact UpdateContact) xml.View {
+	emailField := xml.View{
+		Xmlns: xml.Namespace,
 		ID:    "email",
 		Style: "edit-field",
-		TextField: &xmlmodel.TextField{
+		TextField: &xml.TextField{
 			Style:       "edit-field-text",
 			Name:        "email",
 			Placeholder: "Email",
 			Value:       contact.Email,
 			Debounce:    "200",
-			Behavior: &xmlmodel.Behavior{
+			Behavior: &xml.Behavior{
 				Trigger: "change",
 				Action:  "replace",
 				Target:  "email",
@@ -112,7 +111,7 @@ func EmailView(contact UpdateContact) xmlmodel.View {
 	}
 
 	if contact.FieldErrs.Email != "" {
-		emailErr := xmlmodel.Text{
+		emailErr := xml.Text{
 			ID:      "edit-email-error",
 			Style:   "edit-field-error",
 			Content: contact.FieldErrs.Email,

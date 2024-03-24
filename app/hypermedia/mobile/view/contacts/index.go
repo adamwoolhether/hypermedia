@@ -2,13 +2,13 @@ package contacts
 
 import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
-	header := xmlmodel.Header{
+func Index(contacts []ContactMobile, page int) xml.Doc {
+	header := xml.Header{
 		Style: "buttons-row",
-		Text: []xmlmodel.Text{
+		Text: []xml.Text{
 			{
 				Style:   "header-title",
 				Content: "Contacts.app",
@@ -16,7 +16,7 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 			{
 				Style:   "header-button",
 				Content: "Add",
-				Behavior: &xmlmodel.Behavior{
+				Behavior: &xml.Behavior{
 					Trigger: "press",
 					Action:  "new",
 					Href:    "/mobile/contacts/new",
@@ -25,8 +25,8 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 		},
 	}
 
-	form := xmlmodel.Form{
-		Behavior: []xmlmodel.Behavior{
+	form := xml.Form{
+		Behavior: []xml.Behavior{
 			{
 				Trigger:   "on-event",
 				EventName: "contact-updated",
@@ -36,12 +36,12 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 				Verb:      "get",
 			},
 		},
-		TextField: &xmlmodel.TextField{
+		TextField: &xml.TextField{
 			Name:        "q",
 			Placeholder: "Search...",
 			Style:       "search-field",
 			Debounce:    "500",
-			Behavior: &xmlmodel.Behavior{
+			Behavior: &xml.Behavior{
 				Trigger: "change",
 				Action:  "replace-inner",
 				Target:  "contacts-list",
@@ -49,9 +49,9 @@ func Index(contacts []ContactMobile, page int) xmlmodel.Doc {
 				Verb:    "get",
 			},
 		},
-		List: &xmlmodel.List{
+		List: &xml.List{
 			ID: "contacts-list",
-			Behavior: &xmlmodel.Behavior{
+			Behavior: &xml.Behavior{
 				Trigger: "refresh",
 				Action:  "replace-inner",
 				Target:  "contacts-list",

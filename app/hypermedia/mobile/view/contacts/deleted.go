@@ -1,14 +1,13 @@
 package contacts
 
 import (
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func Deleted() xmlmodel.View {
-	deleted := xmlmodel.View{
-		Xmlns: layout.Namespace,
-		Behavior: []xmlmodel.Behavior{
+func Deleted() xml.View {
+	deleted := xml.View{
+		Xmlns: xml.Namespace,
+		Behavior: []xml.Behavior{
 			{
 				Trigger:   "load",
 				Action:    "dispatch-event",

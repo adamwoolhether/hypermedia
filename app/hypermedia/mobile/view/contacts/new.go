@@ -2,17 +2,17 @@ package contacts
 
 import (
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func New(contact UpdateContact) xmlmodel.Doc { // Use UpdateContact for ease of calling FormFields.
-	header := xmlmodel.Header{
+func New(contact UpdateContact) xml.Doc { // Use UpdateContact for ease of calling FormFields.
+	header := xml.Header{
 		Style: "buttons-row",
-		Text: []xmlmodel.Text{
+		Text: []xml.Text{
 			{
 				Style:   "header-button",
 				Content: "Close",
-				Behavior: &xmlmodel.Behavior{
+				Behavior: &xml.Behavior{
 					Trigger: "press",
 					Action:  "close",
 				},
@@ -20,20 +20,20 @@ func New(contact UpdateContact) xmlmodel.Doc { // Use UpdateContact for ease of 
 		},
 	}
 
-	form := xmlmodel.Form{
-		View: []xmlmodel.View{
+	form := xml.Form{
+		View: []xml.View{
 			{
 				Style: "edit-fields",
 				ID:    "form-fields",
-				View:  []xmlmodel.View{FormFields(contact, false)},
+				View:  []xml.View{FormFields(contact, false)},
 			},
 			{
 				Style: "buttons-row",
-				Text: []xmlmodel.Text{
+				Text: []xml.Text{
 					{
 						Style:   "bottom-button-label",
 						Content: "Add Contact",
-						Behavior: &xmlmodel.Behavior{
+						Behavior: &xml.Behavior{
 							Trigger: "press",
 							Action:  "replace-inner",
 							Target:  "form-fields",

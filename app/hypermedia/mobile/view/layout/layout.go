@@ -1,23 +1,21 @@
 package layout
 
 import (
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-const Namespace = "https://hyperview.org/hyperview"
-
-func Layout() xmlmodel.Doc {
-	doc := xmlmodel.Doc{
-		Xmlns: Namespace,
-		Screen: xmlmodel.Screen{
-			Styles: xmlmodel.Styles{
+func Layout() xml.Doc {
+	doc := xml.Doc{
+		Xmlns: xml.Namespace,
+		Screen: xml.Screen{
+			Styles: xml.Styles{
 				Style: styles(),
 			},
 
-			Body: xmlmodel.Body{
+			Body: xml.Body{
 				Style:    "body",
 				SafeArea: true,
-				View: xmlmodel.View{
+				View: xml.View{
 					Style: "main",
 				},
 			},
@@ -27,8 +25,8 @@ func Layout() xmlmodel.Doc {
 	return doc
 }
 
-func styles() []xmlmodel.Style {
-	styles := []xmlmodel.Style{
+func styles() []xml.Style {
+	styles := []xml.Style{
 		// Main
 		{
 			ID:   "body",

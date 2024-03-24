@@ -1,7 +1,12 @@
-package xmlmodel
+package xml
 
 import (
 	"encoding/xml"
+)
+
+const (
+	Namespace      = "https://hyperview.org/hyperview"
+	NamespaceAlert = "https://hyperview.org/hyperview-alert"
 )
 
 // LAYOUT //////////////////////////////////////////////////////////////////////////////////////////////////////////////

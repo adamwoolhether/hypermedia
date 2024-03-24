@@ -4,17 +4,17 @@ import (
 	"fmt"
 
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func Edit(contact UpdateContact) xmlmodel.Doc {
-	overrideHeader := xmlmodel.Header{
+func Edit(contact UpdateContact) xml.Doc {
+	overrideHeader := xml.Header{
 		Style: "buttons-row",
-		Text: []xmlmodel.Text{
+		Text: []xml.Text{
 			{
 				Style:   "header-button",
 				Content: "Back",
-				Behavior: &xmlmodel.Behavior{
+				Behavior: &xml.Behavior{
 					Trigger: "press",
 					Action:  "back",
 				},
@@ -22,18 +22,18 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 		},
 	}
 
-	form := xmlmodel.Form{
-		View: []xmlmodel.View{
+	form := xml.Form{
+		View: []xml.View{
 			{
 				ID:   "form-fields",
-				View: []xmlmodel.View{FormFields(contact, false)},
+				View: []xml.View{FormFields(contact, false)},
 			},
 			{
 				// HOW TO MAKE THIS SHOW AT THE BOTTOM OF THE SCREEN?
 				Style: "buttons-row-bottom",
-				View: []xmlmodel.View{
+				View: []xml.View{
 					{
-						Behavior: []xmlmodel.Behavior{
+						Behavior: []xml.Behavior{
 							{
 								Trigger: "press",
 								Action:  "replace-inner",
@@ -42,35 +42,35 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 								Verb:    "post",
 							},
 						},
-						Text: []xmlmodel.Text{
+						Text: []xml.Text{
 							{Style: "bottom-button-label", Content: "Save"},
 						},
 					},
 					{
-						Behavior: []xmlmodel.Behavior{
+						Behavior: []xml.Behavior{
 							{
 								Trigger: "press",
 								Action:  "reload",
 								Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
 							},
 						},
-						Text: []xmlmodel.Text{
+						Text: []xml.Text{
 							{Style: "bottom-button-label", Content: "Cancel"},
 						},
 					},
 					{
-						BehaviorWithAlertOpts: &xmlmodel.BehaviorAlertOpts{
-							Behavior: xmlmodel.Behavior{
-								XmlnsAlert:   "https://hyperview.org/hyperview-alert",
+						BehaviorWithAlertOpts: &xml.BehaviorAlertOpts{
+							Behavior: xml.Behavior{
+								XmlnsAlert:   xml.NamespaceAlert,
 								Trigger:      "press",
 								Action:       "alert",
 								AlertTitle:   "Confirm delete",
 								AlertMessage: fmt.Sprintf("Are you sure you want to delete %s?", contact.FirstName),
 							},
-							AlertOptions: []xmlmodel.AlertOption{
+							AlertOptions: []xml.AlertOption{
 								{
 									Label: "Confirm",
-									Behavior: &xmlmodel.Behavior{
+									Behavior: &xml.Behavior{
 										Trigger: "press",
 										Action:  "append",
 										Target:  "form-fields",
@@ -83,7 +83,7 @@ func Edit(contact UpdateContact) xmlmodel.Doc {
 								},
 							},
 						},
-						Text: []xmlmodel.Text{
+						Text: []xml.Text{
 							{Style: "bottom-button-label button-delete", Content: "Delete"},
 						},
 					},

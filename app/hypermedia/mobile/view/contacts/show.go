@@ -4,17 +4,17 @@ import (
 	"fmt"
 
 	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/layout"
-	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xmlmodel"
+	"github.com/adamwoolhether/hypermedia/app/hypermedia/mobile/view/xml"
 )
 
-func Show(contact ContactMobile) xmlmodel.Doc {
-	overrideHeader := xmlmodel.Header{
+func Show(contact ContactMobile) xml.Doc {
+	overrideHeader := xml.Header{
 		Style: "buttons-row",
-		Text: []xmlmodel.Text{
+		Text: []xml.Text{
 			{
 				Style:   "header-button",
 				Content: "Back",
-				Behavior: &xmlmodel.Behavior{
+				Behavior: &xml.Behavior{
 					Trigger: "press",
 					Action:  "back",
 				},
@@ -22,7 +22,7 @@ func Show(contact ContactMobile) xmlmodel.Doc {
 			{
 				Style:   "header-button",
 				Content: "Edit",
-				Behavior: &xmlmodel.Behavior{
+				Behavior: &xml.Behavior{
 					Trigger: "press",
 					Action:  "reload",
 					Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
@@ -31,24 +31,24 @@ func Show(contact ContactMobile) xmlmodel.Doc {
 		},
 	}
 
-	showContact := xmlmodel.View{
+	showContact := xml.View{
 		Style: "details",
-		Text: []xmlmodel.Text{{
+		Text: []xml.Text{{
 			Style:   "contact-name",
 			Content: fmt.Sprintf("%s %s", contact.FirstName, contact.LastName),
 		},
 		},
-		View: []xmlmodel.View{
+		View: []xml.View{
 			{
 				Style: "contact-section",
-				Text: []xmlmodel.Text{
+				Text: []xml.Text{
 					{Style: "contact-section-label", Content: "Phone"},
 					{Style: "contact-section-info", Content: contact.Phone},
 				},
 			},
 			{
 				Style: "contact-section",
-				Text: []xmlmodel.Text{
+				Text: []xml.Text{
 					{Style: "contact-section-label", Content: "Email"},
 					{Style: "contact-section-info", Content: contact.Email},
 				},
@@ -58,7 +58,7 @@ func Show(contact ContactMobile) xmlmodel.Doc {
 
 	doc := layout.Layout()
 	doc.Screen.Body.Header = overrideHeader
-	doc.Screen.Body.View.View = []xmlmodel.View{showContact}
+	doc.Screen.Body.View.View = []xml.View{showContact}
 
 	return doc
 }
