@@ -4,7 +4,7 @@ dev.setup:
 
 dev.setup.mobile:
 	git clone https://github.com/Instawork/hyperview.git
-	sed -i'' -e "s|export const ENTRY_POINT_URL = 'http://0.0.0.0:8085/index.xml';|export const ENTRY_POINT_URL = 'http://0.0.0.0:42069/mobile';|" hyperview/demo/src/constants.ts
+	sed -i'' -e "s|export const ENTRY_POINT_URL = 'http://0.0.0.0:8085/index.xml';|export const ENTRY_POINT_URL = 'http://0.0.0.0:42069/';|" hyperview/demo/src/constants.ts
 	cd hyperview && yarn
 	cd hyperview/demo && yarn
 	xcodebuild -runFirstLaunch

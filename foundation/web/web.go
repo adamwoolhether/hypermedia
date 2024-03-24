@@ -13,6 +13,11 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	HTMLMime = "text/html"
+	HXMLMime = "application/vnd.hyperview+xml"
+)
+
 // A Handler is a type that handles a http request within our own little mini
 // framework.
 type Handler func(ctx context.Context, w http.ResponseWriter, r *http.Request) error
@@ -29,13 +34,6 @@ type App struct {
 // NewApp creates an App value that handle a set of routes for the application.
 func NewApp(shutdown chan os.Signal, mw ...Middleware) *App {
 
-	// Create an OpenTelemetry HTTP Handler which wraps our router. This will start
-	// the initial span and annotate it with information about the request/trusted.
-	//
-	// This is configured to use the W3C TraceContext standard to set the remote
-	// parent if a client request includes the appropriate headers.
-	// https://w3c.github.io/trace-context/
-
 	mux := http.NewServeMux()
 
 	return &App{
@@ -51,10 +49,7 @@ func (a *App) SignalShutdown() {
 	a.shutdown <- syscall.SIGTERM
 }
 
-// ServeHTTP implements the http.Handler interface. It's the entry point for
-// all http traffic and allows the opentelemetry mux to run first to handle
-// tracing. The opentelemetry mux then calls the application mux to handle
-// application traffic. This was set up on line 44 in the NewApp function.
+// ServeHTTP implements the http.Handler interface.
 func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	a.mux.ServeHTTP(w, r)
 }

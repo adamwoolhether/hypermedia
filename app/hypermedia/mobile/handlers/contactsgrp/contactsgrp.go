@@ -30,13 +30,6 @@ func New(log *logger.Logger, core *contacts.Core) *Handlers {
 	}
 }
 
-func (h *Handlers) RootRedirect(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-
-	web.Redirect(w, r, "/mobile/contacts")
-
-	return nil
-}
-
 func (h *Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	query := web.QueryString(r, "q")
 	page := 1

@@ -36,13 +36,6 @@ func New(log *logger.Logger, core *contacts.Core, store *session.Store) *Handler
 	}
 }
 
-func (h *Handlers) RootRedirect(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-
-	web.Redirect(w, r, "/contacts")
-
-	return nil
-}
-
 func (h *Handlers) CreateForm(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
 	return web.RenderHTML(ctx, w, fe.NewForm(fe.NewContact{}), http.StatusOK)
