@@ -27,6 +27,7 @@ func Rows(contacts []ContactMobile, page int) xml.Items {
 
 		contactItems[i] = xml.Item{
 			Key: strconv.Itoa(contact.ID),
+			ID:  fmt.Sprintf("item-%d", contact.ID),
 			SwipeRow: &xml.SwipeRowParams{
 				SwipeRow: xml.SwipeRow{
 					XmlnsSwipe: xml.NamespaceSwipe,
