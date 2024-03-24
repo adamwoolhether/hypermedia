@@ -4,11 +4,14 @@ import (
 	"encoding/xml"
 )
 
+type NSSpace string
+
 const (
 	Namespace      = "https://hyperview.org/hyperview"
 	NamespaceAlert = "https://hyperview.org/hyperview-alert"
 	NamespaceComms = "https://hypermedia.systems/hyperview/communications"
 	NamespaceToast = "https://hypermedia.systems/hyperview/toast"
+	NamespaceSwipe = "https://hypermedia.systems/hyperview/swipeable"
 )
 
 // LAYOUT //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,12 +149,13 @@ type Items struct {
 }
 
 type Item struct {
-	ID       string    `xml:"id,attr,omitempty"`
-	Key      string    `xml:"key,attr,omitempty"`
-	Style    string    `xml:"style,attr,omitempty"`
-	Text     *Text     `xml:"text,omitempty"`
-	Behavior *Behavior `xml:",omitempty"`
-	Spinner  *Spinner  `xml:"spinner,omitempty"`
+	ID       string          `xml:"id,attr,omitempty"`
+	Key      string          `xml:"key,attr,omitempty"`
+	Style    string          `xml:"style,attr,omitempty"`
+	Text     *Text           `xml:"text,omitempty"`
+	Behavior *Behavior       `xml:",omitempty"`
+	Spinner  *Spinner        `xml:"spinner,omitempty"`
+	SwipeRow *SwipeRowParams `xml:",omitempty"`
 }
 
 // SHARED //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +198,33 @@ type BehaviorAlertOpts struct {
 type AlertOption struct {
 	Label    string    `xml:"alert:label,attr,omitempty"`
 	Behavior *Behavior `xml:",omitempty"`
+}
+
+type SwipeRow struct {
+	XMLName    xml.Name `xml:"swipe:row"`
+	XmlnsSwipe string   `xml:"xmlns:swipe,attr,omitempty"`
+	Style      string   `xml:"style,attr,omitempty"`
+}
+
+type SwipeRowParams struct {
+	SwipeRow     `xml:",any"`
+	SwipeMain    SwipeMainParams //`xml:"swipe:main"` //omitempty pointer???????
+	SwipeButtons []SwipeButton   `xml:"swipe:button,omitempty"`
+}
+
+type SwipeMain struct {
+	XMLName xml.Name `xml:"swipe:main"`
+	//Content  string    `xml:",chardata"`
+}
+
+type SwipeMainParams struct {
+	SwipeMain `xml:",any"`
+	View      *View `xml:"view,omitempty"`
+}
+
+type SwipeButton struct {
+	//XMLName    xml.Name `xml:"swipe:button"`
+	View *View `xml:"view,omitempty"`
 }
 
 type Spinner struct {

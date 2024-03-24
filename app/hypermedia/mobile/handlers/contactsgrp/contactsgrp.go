@@ -221,5 +221,6 @@ func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Re
 	if err := h.core.Delete(ctx, id); err != nil {
 		return err
 	}
+
 	return web.RenderXML(ctx, w, fe.Deleted("Contact deleted"), http.StatusNoContent)
 }

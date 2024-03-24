@@ -171,6 +171,13 @@ func styles() []xml.Style {
 			Color:      "red",
 			FontWeight: "500",
 		},
+		{
+			ID:             "swipe-button",
+			Height:         "100%",
+			JustifyContent: "center",
+			TextAlign:      "center",
+			PaddingLeft:    "24",
+		},
 	}
 
 	return styles

@@ -26,16 +26,75 @@ func Rows(contacts []ContactMobile, page int) xml.Items {
 		}
 
 		contactItems[i] = xml.Item{
-			Key:   strconv.Itoa(contact.ID),
-			Style: "contact-item",
-			Text: &xml.Text{
-				Style:   "contact-item-label",
-				Content: itemTextContent,
-			},
-			Behavior: &xml.Behavior{
-				Trigger: "press",
-				Action:  "push",
-				Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+			Key: strconv.Itoa(contact.ID),
+			SwipeRow: &xml.SwipeRowParams{
+				SwipeRow: xml.SwipeRow{
+					XmlnsSwipe: xml.NamespaceSwipe,
+				},
+				SwipeMain: xml.SwipeMainParams{
+					View: &xml.View{
+						Style: "contact-item",
+						Text: []xml.Text{
+							{Style: "contact-item-label", Content: itemTextContent},
+						},
+						Behavior: []xml.Behavior{
+							{
+								Trigger: "press",
+								Action:  "push",
+								Href:    fmt.Sprintf("/mobile/contacts/%d", contact.ID),
+							},
+						},
+					},
+				},
+				SwipeButtons: []xml.SwipeButton{
+					{
+						View: &xml.View{
+							Style: "swipe-button",
+							Behavior: []xml.Behavior{
+								{
+									Trigger: "press",
+									Action:  "push",
+									Href:    fmt.Sprintf("/mobile/contacts/%d/edit", contact.ID),
+								},
+							},
+							Text: []xml.Text{
+								{Style: "bottom-button-label", Content: "Edit"},
+							},
+						},
+					},
+					{
+						View: &xml.View{
+							Style: "swipe-button",
+							BehaviorWithAlertOpts: &xml.BehaviorAlertOpts{
+								Behavior: xml.Behavior{
+									XmlnsAlert:   xml.NamespaceAlert,
+									Trigger:      "press",
+									Action:       "alert",
+									AlertTitle:   "Confirm delete",
+									AlertMessage: fmt.Sprintf("Are you sure you want to delete %s?", contact.FirstName),
+								},
+								AlertOptions: []xml.AlertOption{
+									{
+										Label: "Confirm",
+										Behavior: &xml.Behavior{
+											Trigger: "press",
+											Action:  "append",
+											Target:  fmt.Sprintf("item-%d", contact.ID),
+											Href:    fmt.Sprintf("/mobile/contacts/%d/delete", contact.ID),
+											Verb:    "post",
+										},
+									},
+									{
+										Label: "Cancel",
+									},
+								},
+							},
+							Text: []xml.Text{
+								{Style: "button-delete", Content: "Delete"},
+							},
+						},
+					},
+				},
 			},
 		}
 	}
