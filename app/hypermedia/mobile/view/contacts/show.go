@@ -41,6 +41,14 @@ func Show(contact ContactMobile) xml.Doc {
 		View: []xml.View{
 			{
 				Style: "contact-section",
+				Behavior: []xml.Behavior{
+					{
+						XmlnsComms:       xml.NamespaceComms,
+						Trigger:          "press",
+						Action:           "open-phone",
+						CommsPhoneNumber: contact.Phone,
+					},
+				},
 				Text: []xml.Text{
 					{Style: "contact-section-label", Content: "Phone"},
 					{Style: "contact-section-info", Content: contact.Phone},
@@ -48,6 +56,14 @@ func Show(contact ContactMobile) xml.Doc {
 			},
 			{
 				Style: "contact-section",
+				Behavior: []xml.Behavior{
+					{
+						XmlnsComms:     xml.NamespaceComms,
+						Trigger:        "press",
+						Action:         "open-email",
+						CommsEmailAddr: contact.Email,
+					},
+				},
 				Text: []xml.Text{
 					{Style: "contact-section-label", Content: "Email"},
 					{Style: "contact-section-info", Content: contact.Email},

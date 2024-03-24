@@ -7,6 +7,7 @@ import (
 const (
 	Namespace      = "https://hyperview.org/hyperview"
 	NamespaceAlert = "https://hyperview.org/hyperview-alert"
+	NamespaceComms = "https://hypermedia.systems/hyperview/communications"
 )
 
 // LAYOUT //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,16 +165,21 @@ type Text struct {
 }
 
 type Behavior struct {
-	XMLName      xml.Name `xml:"behavior"`
-	Trigger      string   `xml:"trigger,attr,omitempty"`
-	Action       string   `xml:"action,attr,omitempty"`
-	Target       string   `xml:"target,attr,omitempty"`
-	Href         string   `xml:"href,attr,omitempty"`
-	Verb         string   `xml:"verb,attr,omitempty"`
-	EventName    string   `xml:"event-name,attr,omitempty"`
-	XmlnsAlert   string   `xml:"xmlns:alert,attr,omitempty"`
-	AlertTitle   string   `xml:"alert:title,attr,omitempty"`
-	AlertMessage string   `xml:"alert:message,attr,omitempty"`
+	XMLName   xml.Name `xml:"behavior"`
+	Trigger   string   `xml:"trigger,attr,omitempty"`
+	Action    string   `xml:"action,attr,omitempty"`
+	Target    string   `xml:"target,attr,omitempty"`
+	Href      string   `xml:"href,attr,omitempty"`
+	Verb      string   `xml:"verb,attr,omitempty"`
+	EventName string   `xml:"event-name,attr,omitempty"`
+	// Alert
+	XmlnsAlert   string `xml:"xmlns:alert,attr,omitempty"`
+	AlertTitle   string `xml:"alert:title,attr,omitempty"`
+	AlertMessage string `xml:"alert:message,attr,omitempty"`
+	// Comms
+	XmlnsComms       string `xml:"xmlns:comms,attr,omitempty"`
+	CommsPhoneNumber string `xml:"comms:phone-number,attr,omitempty"`
+	CommsEmailAddr   string `xml:"comms:email-address,attr,omitempty"`
 }
 
 type BehaviorAlertOpts struct {

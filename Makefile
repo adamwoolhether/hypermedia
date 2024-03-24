@@ -7,6 +7,7 @@ dev.setup.mobile:
 	sed -i'' -e "s|export const ENTRY_POINT_URL = 'http://0.0.0.0:8085/index.xml';|export const ENTRY_POINT_URL = 'http://0.0.0.0:42069/';|" hyperview/demo/src/constants.ts
 	cd hyperview && yarn
 	cd hyperview/demo && yarn
+	cd hyperview/demo && yarn add react-native-communications
 	xcodebuild -runFirstLaunch
 	xcodebuild -downloadPlatform iOS
 
