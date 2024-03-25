@@ -266,8 +266,10 @@ func (h *Handlers) DeleteBatch(ctx context.Context, w http.ResponseWriter, r *ht
 		}
 	}
 
-	if err := h.sessions.AddFlash(w, r, "Deleted contacts!"); err != nil {
-		h.log.Error(ctx, "adding flash", "err", err)
+	if len(ids) > 0 {
+		if err := h.sessions.AddFlash(w, r, "Deleted contacts!"); err != nil {
+			h.log.Error(ctx, "adding flash", "err", err)
+		}
 	}
 
 	contacts, err := h.core.Query(ctx, "", 1, defaultRows)

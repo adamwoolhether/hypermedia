@@ -1,4 +1,3 @@
-// couldn't get this to work
 function sweetConfirm(elt, config) {
     Swal.fire(config)
         .then((result) => {
