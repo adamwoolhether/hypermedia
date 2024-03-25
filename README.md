@@ -2,12 +2,17 @@ https://hypermedia.systems/
 
 Building hypermedia apps with HTMX, HXML, Go and Templ.
 
-### Install Templ and WGO command line tools.
+## Run the web example
 ```shell
-make dev
+make up
 ```
 
-### Run the example
+## Dev
+### Install Templ and WGO command line tools.
+```shell
+make dev.setupd
+```
+### Run wgo with templ file watching to auto-reload changes
 ```shell
 make dev
 ```
