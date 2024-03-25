@@ -16,6 +16,9 @@ dev.setup.mobile:
 	cd hyperview && npm update fsevents --force; npm audit fix --force
 	cd hyperview/demo && npm update fsevents --force; npm audit fix --force
 
+up:
+	go run app /contact/main.go
+
 templ:
 	templ generate
 
