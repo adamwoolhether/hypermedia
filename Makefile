@@ -36,7 +36,7 @@ tidy:
 	go mod vendor
 
 # curl -i -X POST http://localhost:42069/api/v1/contacts
-test:
+android:
 	/Users/adam/Library/Android/sdk/emulator/emulator -avd Pixel_8_Pro_API_UpsideDownCakePrivacySandbox -dns-server 8.8.8.8
 
 
