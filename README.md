@@ -19,3 +19,8 @@ make dev
 ```
 
 Will update this readme in the near future.
+
+## TODO enhancements/issue:
+- Better flash handling: currently just stuffing into context?
+- Smooth progress bar transition, needed to use JS.
+- Web cannot delete single contact with checkbox (alpine / sweet confirm)
