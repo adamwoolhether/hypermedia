@@ -18,7 +18,7 @@ export default class HyperviewScreen extends PureComponent {
         return (
             <Hyperview
                 behaviors={this.behaviors}
-                components={this.components}
+                components={components}
                 entrypointUrl={this.entrypointUrl}
             // more props...
             />
