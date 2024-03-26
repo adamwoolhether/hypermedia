@@ -34,6 +34,8 @@ make mobile
 *Alternatively, you can navigate to [hyperview/demo/](hyperview/demo/) and use one of the other options to run the demo,
 but note that Android simulator requires our app to listen on the same IP as your machine. (maybe can add as config later).
 
+![Alt Text](mobile.gif)
+
 
 ### Dev
 ### Install Templ and WGO command line tools.
