@@ -9,12 +9,10 @@ dev.setup.mobile:
 	cd hyperview/demo && yarn && \
 		yarn add react-native-communications && \
 		yarn add react-native-root-toast && \
-		yarn add react-native-swipeable
+		yarn add react-native-swipeable\
 	cp app/hypermedia/mobile/static/js/{email.js,phone.js,toast.js,swipeable.js,HyperviewScreen.tsx} hyperview/demo/src
 	xcodebuild -runFirstLaunch
 	xcodebuild -downloadPlatform iOS
-	cd hyperview && npm update fsevents --force; npm audit fix --force
-	cd hyperview/demo && npm update fsevents --force; npm audit fix --force
 
 up:
 	go run app/main.go
