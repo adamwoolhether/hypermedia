@@ -5,7 +5,7 @@ a wonderful book about, well, Hypermedia.
 All HTMX and HXML code relevant to the book can can be found in [app/hypermedia](app/hypermedia).  
 It remains true to the book's examples for the most part, making a few small css styling adjustments here and there.
 
-The project structure was geared towards a more production-oriented approach, and is inspired by [Ardan Labs](https://github.com/ardanlabs).  
+The project structure was geared towards a more production-oriented approach, and is inspired by [Ardan Labs Service Repo](https://github.com/ardanlabs/service). And yes, some of the structural code was taken directly from there for ease of learning htmx.  
 Naturally, this is far from anything production ready. There is no auth, and the "DB" is, well, a slice of json objects loaded into memory :).
 
 #### <span style="color:red">All makefile commands below have been tested on MacOS only.</span>
