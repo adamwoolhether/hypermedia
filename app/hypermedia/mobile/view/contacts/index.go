@@ -40,7 +40,7 @@ func Index(contacts []ContactMobile, page int) xml.Doc {
 			Name:        "q",
 			Placeholder: "Search...",
 			Style:       "search-field",
-			Debounce:    "500",
+			Debounce:    "200",
 			Behavior: &xml.Behavior{
 				Trigger: "change",
 				Action:  "replace-inner",
