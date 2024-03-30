@@ -1,6 +1,7 @@
 package contacts
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"os"
@@ -72,6 +73,10 @@ func (c *Core) Query(ctx context.Context, query string, page, rows int) ([]Conta
 	if end > len(results) {
 		end = len(results)
 	}
+
+	slices.SortFunc(results, func(a, b Contact) int {
+		return cmp.Compare(a.FirstName, b.FirstName)
+	})
 
 	return results[start:end], nil
 }

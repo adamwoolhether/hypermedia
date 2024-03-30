@@ -31,9 +31,27 @@ func FormFields(contact UpdateContact, saved bool, toasts ...string) xml.View {
 					Value:       contact.LastName,
 				},
 			},
-			// We need to put email in its own view, to allow dynamic
-			// updating of the error-field and replace the entire view.
-			EmailView(contact),
+			{
+				Xmlns: xml.Namespace,
+				Style: "edit-field",
+				TextField: &xml.TextField{
+					Style:       "edit-field-text",
+					Name:        "email",
+					Placeholder: "Email",
+					Value:       contact.Email,
+					Debounce:    "200",
+					Behavior: &xml.Behavior{
+						Trigger: "change",
+						Action:  "replace",
+						Target:  "edit-email-error",
+						Href:    fmt.Sprintf("/mobile/contacts/%d/email", contact.ID),
+						Verb:    "get",
+					},
+				},
+				Text: []xml.Text{
+					CheckEmailErr(contact),
+				},
+			},
 			{
 				Style: "edit-field",
 				TextField: &xml.TextField{
@@ -93,35 +111,18 @@ func FormFields(contact UpdateContact, saved bool, toasts ...string) xml.View {
 	return view
 }
 
-func EmailView(contact UpdateContact) xml.View {
-	emailField := xml.View{
-		Xmlns: xml.Namespace,
-		ID:    "email",
-		Style: "edit-field",
-		TextField: &xml.TextField{
-			Style:       "edit-field-text",
-			Name:        "email",
-			Placeholder: "Email",
-			Value:       contact.Email,
-			Debounce:    "200",
-			Behavior: &xml.Behavior{
-				Trigger: "change",
-				Action:  "replace",
-				Target:  "email",
-				Href:    fmt.Sprintf("/mobile/contacts/%d/email", contact.ID),
-				Verb:    "get",
-			},
-		},
-	}
-
+func CheckEmailErr(contact UpdateContact) xml.Text {
+	style := "hide"
 	if contact.FieldErrs.Email != "" {
-		emailErr := xml.Text{
-			ID:      "edit-email-error",
-			Style:   "edit-field-error",
-			Content: contact.FieldErrs.Email,
-		}
-		emailField.Text = append(emailField.Text, emailErr)
+		style = "edit-field-error"
 	}
 
-	return emailField
+	emailErr := xml.Text{
+		Xmlns:   xml.Namespace,
+		ID:      "edit-email-error",
+		Style:   style,
+		Content: contact.FieldErrs.Email,
+	}
+
+	return emailErr
 }

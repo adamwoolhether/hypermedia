@@ -162,6 +162,10 @@ func styles() []xml.Style {
 			MarginTop: "4",
 		},
 		{
+			ID:      "hide",
+			Display: "none",
+		},
+		{
 			ID:         "bottom-button-label",
 			Color:      "blue",
 			FontWeight: "500",

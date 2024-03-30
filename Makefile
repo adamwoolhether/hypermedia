@@ -51,3 +51,7 @@ android:
 #let components = [SwipeableRow];
 
 #components={components}
+
+# to move warnings from react-native:
+#import { LogBox } from 'react-native';
+#LogBox.ignoreAllLogs();

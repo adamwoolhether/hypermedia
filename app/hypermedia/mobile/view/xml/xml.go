@@ -167,6 +167,7 @@ type Text struct {
 	Style    string    `xml:"style,attr,omitempty"`
 	Content  string    `xml:",chardata"`
 	Behavior *Behavior `xml:",omitempty"`
+	Debounce string    `xml:"debounce,attr,omitempty"`
 }
 
 type Behavior struct {

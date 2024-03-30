@@ -195,20 +195,20 @@ func (h *Handlers) ValidateEmail(ctx context.Context, w http.ResponseWriter, r *
 		return err
 	}
 
-	email := strings.ToLower(r.FormValue("email"))
+	email := r.FormValue("email")
 
 	uc := fe.UpdateContact{
 		ID:    id,
 		Email: email,
 	}
 
-	if !h.core.UniqueEmail(ctx, id, email) {
+	if !h.core.UniqueEmail(ctx, id, strings.ToLower(email)) {
 		uc.FieldErrs = fe.ContactErrors{Email: "This email is taken"}
-		return web.RenderXML(ctx, w, fe.EmailView(uc), http.StatusBadRequest)
+		return web.RenderXML(ctx, w, fe.CheckEmailErr(uc), http.StatusBadRequest)
 	}
 
 	// We need to return the `text` element with empty error.
-	return web.RenderXML(ctx, w, fe.EmailView(uc), http.StatusBadRequest)
+	return web.RenderXML(ctx, w, fe.CheckEmailErr(uc), http.StatusOK)
 }
 
 func (h *Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
