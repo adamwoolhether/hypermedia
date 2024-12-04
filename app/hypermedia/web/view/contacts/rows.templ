@@ -1,0 +1,41 @@
+package contacts
+
+import (
+    "fmt"
+)
+
+templ Rows(contacts []ContactWeb) {
+    for _, contact := range contacts {
+        <tr>
+        <td><input type="checkbox" name="selected_contact_ids" value={ fmt.Sprintf("%d", contact.ID) } x-model="selected" /></td>
+        <td>{ contact.FirstName }</td>
+        <td>{ contact.LastName }</td>
+        <td>{ contact.Phone }</td>
+        <td>{ contact.Email }</td>
+        <td>
+            <div data-overflow-menu>
+                <button type="button" aria-haspopup="menu"
+                    aria-controls={ fmt.Sprintf("contact-menu-%d", contact.ID) }>
+                    Options
+                </button>
+                <div role="menu" hidden id={ fmt.Sprintf("contact-menu-%d", contact.ID) }>
+                    <a role="menuitem" href={ templ.URL(fmt.Sprintf("/contacts/%d/edit", contact.ID)) }>Edit</a>
+                    <a role="menuitem" href={ templ.URL(fmt.Sprintf("/contacts/%d", contact.ID)) }>View</a>
+                    <a role="menuitem" href="#"
+                        hx-delete={ fmt.Sprintf("/contacts/%d", contact.ID) }
+                        hx-swap="outerHTML swap:1s"
+                        hx-confirm="Are you sure you want to delete this contact?"
+                        hx-target="closest tr">Delete</a>
+                </div>
+            </div>
+            // Old example without dropdown
+            // <a href={ templ.URL(fmt.Sprintf("/contacts/%d/edit", contact.ID)) }>Edit</a>
+            // <a href={ templ.URL(fmt.Sprintf("/contacts/%d", contact.ID)) }>View</a>
+            // <a href="#" hx-delete={ fmt.Sprintf("/contacts/%d", contact.ID) }
+            //     hx-swap="outerHTML swap:1s"
+            //     hx-confirm="Are you sure you want to delete this contact?"
+            //     hx-target="closest tr">Delete</a>
+        </td>
+        </tr>
+    }
+}

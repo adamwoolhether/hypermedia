@@ -1,0 +1,171 @@
+package contacts
+
+import (
+    "fmt"
+    "github.com/adamwoolhether/hypermedia/app/hypermedia/web/view/layout"
+	"github.com/adamwoolhether/hypermedia/business/contacts/archiver"
+)
+
+templ Index(query string, page int, contacts []ContactWeb, arch archiver.ArchiveView) {
+    @layout.Layout() {
+    <div class="form-container">
+
+        @Archive(arch)
+
+        <form action="/contacts" method="get" class="tool-bar">
+            <label for="search">Search</label>
+            // Use _hyperscript to focus on the search input elemtent.
+            // Note we need to prevent the keystroke from actually being entered
+            // which is done with `event.preventDefault()` or just `halt`.
+            <input id="search" type="search" name="q" placeholder="Search Contacts" value={ query }
+                _="on keydown[altKey and code is 'KeyS'] from the window me.focus() then halt"
+                hx-get="/contacts"
+                hx-trigger="change, keyup delay:200ms changed"
+                hx-target="tbody"
+                hx-push-url="true"
+                hx-indicator="#spinner"/>
+            // htmx-indicator is a CSS class that is automatically injected into the page by htmx.
+            <input type="submit" value="&rightarrow;" style="font-weight: bold;"/>
+            <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg" alt="Loading..."/>
+        </form>
+        // Use `x-data` to hold state determining if the toolbar is visible or not.
+        // We use `x-effect` to run a function when the state changes. when we're calling
+        // sweetConfirm() from the sweetconfirm.js file.
+        <form x-data="{selected: []}" x-effect="if (selected.length) htmx.process($el)">
+            // template typically not rendered by default. By using `x-if` attribute,
+            // we can tell Alpine to render HTML within template if condition is true.
+            // We bind to this state in rows.templ using `x-model` attribute.
+            <template x-if="selected.length > 0">
+                // The class here reference missing.css
+                <div class="box info tool-bar">
+                    <slot x-text="selected.length"></slot>
+                    contacts selected
+
+                    // We short-circuit the htmx.ajax call if the user clicks cancel.
+                    // `$root` in Alpine will be the element that has the `x-data` attribute
+                    // declared on it - the form with our contacts in this case.
+                    // We're delegating the AJAX request to htmx's JS API.
+                    //<button type="button" class="bad bg color border"
+                    //    @click="confirm(`Delete ${selected.length} contacts?`) &&
+                    //    htmx.ajax('DELETE', '/contacts', { source: $root, target: document.body })"
+                    //    >Delete
+                    //</button>
+                    //
+                    // More stylized delete button with SweetAlert2 library.
+                    <button type="button" class="bad bg color border"
+                            hx-delete="/contacts" hx-target="body" hx-trigger="confirmed"
+                            @click="sweetConfirm($el,
+                                    { title: 'Delete these contacts?',
+                                      showCancelButton: true,
+                                      confirmButtonText: 'Delete'})">
+                                      Delete
+                    </button>
+                    <hr aria-orientation="vertical"/>
+                    <button type="button" @click="selected = []">Cancel</button>
+                </div>
+            </template>
+
+            @renderContacts(page, contacts)
+
+            <button hx-delete="/contacts"
+                    hx-confirm="Are you sure you want to delete these contacts?"
+                    hx-target="body">Delete Selected
+            </button>
+            // This button demonstrates calling a JS function to use in `hx-trigger`
+            // It will never work, cause our superAdmin() script always returns false.
+            // See layout.templ for definition.
+            <button hx-get="/contacts/deleteall" hx-trigger="click[superAdmin()]">
+                Delete All Contacts
+            </button>
+        </form>
+        <p>
+            <div class="bottom-row">
+                <div class="left-aligned-items">
+                    <a href="/contacts/new">Add Contact</a>
+                    <span hx-get="/contacts/count" hx-trigger="revealed">
+                        <img id="spinner" style="height: 30px" class="htmx-indicator" src="/static/img/spinning-circles.svg"/>
+                    </span>
+                </div>
+
+                // Increment counter done with _hyperscript.
+                <div class="counter">
+                    <output>0</output>
+                    <button _="on click increment the textContent of the previous <output/>">Increment (_hyperscript)</button>
+                </div>
+                // Increment counter done with Alpine.
+                <div class="counter" x-data="{ count: 0 }">
+                    <output x-text="count"></output>
+                    <button x-on:click="count++">Increment (Alpine)</button>
+                </div>
+            </div>
+        </p>
+    </div>
+    }
+}
+
+
+
+templ renderContacts(page int, contacts []ContactWeb) {
+    <table>
+        <thead>
+        <tr>
+            <th style="width:6%"></th>
+            <th style="width:15%">First</th>
+            <th style="width:15%">Last</th>
+            <th>Phone</th>
+            <th style="width:40%">Email</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+            @Rows(contacts)
+
+            if len(contacts) == 10 {
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 10px;">
+                        // Demonstrate use of hx-sync with these two buttons.
+                        <div id="sync-req" hx-sync="this">
+                        // To auto-scroll instead of loading more on click
+                        // change button to space and add a revealed trigger.
+                        //<span   hx-trigger="revealed"
+                            <button hx-target="closest tr"
+                                    hx-swap="outerHTML"
+                                    hx-select="tbody > tr"
+                                    hx-get={ fmt.Sprintf("/contacts?page=%d", page + 1) }>
+                                Load More
+                            </button>
+                            <button id="slow-req-btn"
+                                    hx-target="closest tr"
+                                    hx-swap="outerHTML"
+                                    hx-select="tbody > tr"
+                                    hx-get={ fmt.Sprintf("/contacts/slow?page=%d", page + 1) }>
+                                Load More Slowly
+                            </button>
+                            // Demonstrate use of htmx:abort to cancel a slow request.
+                            // Note in this example we abort the div with id sync-req, not the button.
+                            <button disabled _="on click send htmx:abort to #sync-req
+                                                on htmx:beforeRequest from #slow-req-btn remove @disabled from me
+                                                on htmx:afterRequest from #slow-req-btn add @disabled to me">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    // Example to do simple pagination, but forget the previously loaded page
+    //
+    //<div>
+    //    <span style="float: right">
+    //        if page > 1 {
+    //            <a href={ templ.URL(fmt.Sprintf("/contacts?page=%d", page - 1)) }>Previous</a>
+    //        }
+    //        if len(contacts) == 10 {
+    //            <a href={ templ.URL(fmt.Sprintf("/contacts?page=%d", page + 1)) }>Next</a>
+    //        }
+    //    </span>
+    //</div>
+}
+
