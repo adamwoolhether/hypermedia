@@ -13,13 +13,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/adamwoolhether/hypermedia/app/dataapi"
 	"github.com/adamwoolhether/hypermedia/app/hypermedia"
-	fe "github.com/adamwoolhether/hypermedia/app/hypermedia/web"
-	"github.com/adamwoolhether/hypermedia/business/contacts"
-	"github.com/adamwoolhether/hypermedia/business/web/mux"
 	"github.com/adamwoolhether/hypermedia/foundation/logger"
-	"github.com/adamwoolhether/hypermedia/foundation/session"
 	"github.com/adamwoolhether/hypermedia/foundation/web"
 )
 
@@ -56,9 +51,9 @@ func run(ctx context.Context, log *logger.Logger) error {
 	api := http.Server{
 		Addr:    "localhost:42069",
 		Handler: app,
-		//ReadTimeout:  cfg.Web.ReadTimeout,
-		//WriteTimeout: cfg.Web.WriteTimeout,
-		//IdleTimeout:  cfg.Web.IdleTimeout,
+		// ReadTimeout:  cfg.Web.ReadTimeout,
+		// WriteTimeout: cfg.Web.WriteTimeout,
+		// IdleTimeout:  cfg.Web.IdleTimeout,
 		ErrorLog: logger.NewStdLogger(log, logger.LevelError),
 	}
 
