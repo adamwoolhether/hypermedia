@@ -23,7 +23,7 @@ type WebAppConfig struct {
 }
 
 // WebApp constructs a http.Handler with all application routes defined.
-func WebApp(cfg WebAppConfig, routes RouteAdder, options ...func(opts *Options)) http.Handler {
+func WebApp(cfg WebAppConfig, routes RouteAdder, options ...func(opts *options)) http.Handler {
 	var opts Options
 	for _, option := range options {
 		option(&opts)

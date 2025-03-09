@@ -2,7 +2,6 @@ package hypermedia
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -34,13 +33,13 @@ func Routes(app *web.App, cfg Config) {
 		case strings.Contains(accept, web.HTMLMime):
 			web.Redirect(w, r, "/contacts")
 		default:
-			return response.NewError(errors.New("invalid accept headers"), http.StatusBadRequest)
+			return response.NewError(fmt.Errorf("invalid accept headers [%v]", accept), http.StatusBadRequest)
 		}
 
 		return nil
 	}
 
-	app.Handle(http.MethodGet, root, "/", rootRedirect)
+	app.Handle(http.MethodGet, root, "/{$}", rootRedirect)
 
 	webRoutes(app, cfg)
 	mobileRoutes(app, cfg)
